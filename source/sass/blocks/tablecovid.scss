@@ -3,12 +3,37 @@
   padding: 0;
 }
 
-.container-table {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 300px;
-  padding: 5px;
+.container {
+  &-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    padding: 5px;
+  }
+
+  &-switcher {
+    display: flex;
+    height: 30px;
+    padding: 4px;
+    border: 1px solid #000;
+    justify-content: space-between;
+    align-items: center;
+
+    &__left,
+    &__right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      cursor: pointer;
+    }
+
+    &__left:hover,
+    &__right:hover {
+      background-color: #ccc;
+    }
+  }
 }
 
 .options {
@@ -53,4 +78,8 @@
 
 .visibility {
   display: none;
+}
+
+.active {
+  background-color: #ccc;
 }
