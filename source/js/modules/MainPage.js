@@ -1,4 +1,4 @@
-import { Graphic } from './Graphic';
+import {Graphic} from './Graphic';
 import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
 
@@ -12,6 +12,9 @@ export class MainPage {
     this.listContainer = null;
     this.mapContainer = null;
     this.graphicContainer = null;
+    this.dataAttributeIndex = 0;
+    this.dataAttributeBottomSwitcher = 'Confirmed';
+    this.dataAttributeArray = ['All period', 'Last day', 'All period 100000', 'Last day 100000'];
   }
 
   init() {
@@ -45,10 +48,65 @@ export class MainPage {
     worldMap.init();
     tableCovid.init();
     graphic.init();
+    this.clickSwitcher(this.rootElement, tableCovid);
   }
 
   renderFooter() {
     this.footerElement = document.createElement('footer');
     this.footerElement.classList.add('footer');
+  }
+
+  clickSwitcher(button, instanceClass) {
+    button.addEventListener('click', (e) => {
+      if (e.target.textContent === '<' || e.target.textContent === '>') {
+        if (this.dataAttributeIndex > 3) {
+          this.dataAttributeIndex = 0;
+        } else if (this.dataAttributeIndex < 0) {
+          this.dataAttributeIndex = 3;
+        }
+      }
+
+      if (e.target.textContent === 'Confirmed') {
+        this.dataAttributeBottomSwitcher = 'Confirmed';
+      } else if (e.target.textContent === 'Dead') {
+        this.dataAttributeBottomSwitcher = 'Dead';
+      } else if (e.target.textContent === 'Recovered') {
+        this.dataAttributeBottomSwitcher = 'Recovered';
+      }
+
+      if (e.target.textContent === '<') {
+        const switcherText = document.querySelector('.container-switcher__title');
+        this.dataAttributeIndex -= 1;
+        this.dataAttributeIndex = this.dataAttributeIndex < 0 ? 3 : this.dataAttributeIndex;
+        switcherText.textContent = this.dataAttributeArray[this.dataAttributeIndex];
+        const confirmedButton = document.querySelectorAll('.options__item')[0];
+        const deadButton = document.querySelectorAll('.options__item')[1];
+        const recoveredButton = document.querySelectorAll('.options__item')[2];
+        instanceClass.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        if (this.dataAttributeBottomSwitcher === 'Confirmed') {
+          confirmedButton.click();
+        } else if (this.dataAttributeBottomSwitcher === 'Dead') {
+          deadButton.click();
+        } else if (this.dataAttributeBottomSwitcher === 'Recovered') {
+          recoveredButton.click();
+        }
+      } else if (e.target.textContent === '>') {
+        const switcherText = document.querySelector('.container-switcher__title');
+        this.dataAttributeIndex += 1;
+        this.dataAttributeIndex = this.dataAttributeIndex > 3 ? 0 : this.dataAttributeIndex;
+        switcherText.textContent = this.dataAttributeArray[this.dataAttributeIndex];
+        const confirmedButton = document.querySelectorAll('.options__item')[0];
+        const deadButton = document.querySelectorAll('.options__item')[1];
+        const recoveredButton = document.querySelectorAll('.options__item')[2];
+        instanceClass.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        if (this.dataAttributeBottomSwitcher === 'Confirmed') {
+          confirmedButton.click();
+        } else if (this.dataAttributeBottomSwitcher === 'Dead') {
+          deadButton.click();
+        } else if (this.dataAttributeBottomSwitcher === 'Recovered') {
+          recoveredButton.click();
+        }
+      }
+    });
   }
 }
