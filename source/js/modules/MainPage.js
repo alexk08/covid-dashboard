@@ -1,3 +1,4 @@
+import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
 
 export class MainPage {
@@ -33,11 +34,13 @@ export class MainPage {
     this.listContainer = document.createElement('div');
     this.mapContainer = document.createElement('div');
     this.graphicContainer = document.createElement('div');
-    
+
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
 
     const worldMap = new WorldMap(this.mapContainer);
+    const tableCovid = new TableCovid(this.tableContainer);
     worldMap.init();
+    tableCovid.init();
   }
 
   renderFooter() {
