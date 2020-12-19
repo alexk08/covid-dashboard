@@ -16,6 +16,7 @@ export class MainPage {
     this.renderHeader();
     this.renderContent();
     this.renderFooter();
+    this.rootElement.append(this.headerElement, this.contentElement, this.footerElement);
   }
 
   renderHeader() {
