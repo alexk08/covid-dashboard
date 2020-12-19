@@ -1,3 +1,4 @@
+import {Graphic} from './Graphic';
 import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
 
@@ -37,13 +38,16 @@ export class MainPage {
     this.listContainer = document.createElement('div');
     this.mapContainer = document.createElement('div');
     this.graphicContainer = document.createElement('div');
+    this.graphicContainer.classList.add('graphic_container');
 
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
 
     const worldMap = new WorldMap(this.mapContainer);
     const tableCovid = new TableCovid(this.tableContainer);
+    const graphic = new Graphic(this.graphicContainer);
     worldMap.init();
     tableCovid.init();
+    graphic.init();
     this.clickSwitcher(this.rootElement, tableCovid);
   }
 
