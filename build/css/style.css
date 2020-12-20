@@ -1170,6 +1170,76 @@ button,
           box-sizing: border-box;
   padding: 0; }
 
+.container-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  padding: 5px; }
+  .container-list-options {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+            box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset; }
+    .container-list-options__item {
+      padding: 0 5px 5px 5px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+    .container-list-options__item:hover {
+      background-color: #ccc;
+      cursor: pointer; }
+    .container-list-options__item:active {
+      background-color: #ccc; }
+  .container-list-nav {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+  .container-list-menu {
+    margin: 0;
+    overflow-y: scroll;
+    height: 370px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+    .container-list-menu-item {
+      padding: 5px 5px 0 5px;
+      -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+              box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+      cursor: pointer; }
+
+.flag-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 25px; }
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0; }
+
 .container-table {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1275,36 +1345,10 @@ button,
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
+  height: 480px;
   max-width: 500px;
   padding: 5px; }
-  .container-graphic .container-switcher {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    height: 30px;
-    padding: 4px;
-    border: 1px solid #000;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center; }
-    .container-graphic .container-switcher__left, .container-graphic .container-switcher__right {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: center;
-          -ms-flex-pack: center;
-              justify-content: center;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
-      width: 24px;
-      cursor: pointer; }
-    .container-graphic .container-switcher__left:hover, .container-graphic .container-switcher__right:hover {
-      background-color: #ccc; }
-  .container-graphic .options {
+  .container-graphic-options {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1317,6 +1361,19 @@ button,
             justify-content: space-between;
     -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
             box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset; }
+    .container-graphic-options__item {
+      padding: 0 5px 5px 5px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+    .container-graphic-options__item:hover {
+      background-color: #ccc;
+      cursor: pointer; }
+    .container-graphic-options__item:active {
+      background-color: #ccc; }
+
+.chart {
+  height: 400px; }
 
 .info {
   padding: 6px 8px;

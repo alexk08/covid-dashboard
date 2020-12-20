@@ -1,6 +1,7 @@
 import {Graphic} from './Graphic';
 import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
+import {ListCountries} from './ListCountries';
 
 export class MainPage {
   constructor(rootElement) {
@@ -44,11 +45,13 @@ export class MainPage {
 
     const worldMap = new WorldMap(this.mapContainer);
     const tableCovid = new TableCovid(this.tableContainer);
+    const listCountries = new ListCountries(this.listContainer);
     const graphic = new Graphic(this.graphicContainer);
     worldMap.init();
     tableCovid.init();
+    listCountries.init();
     graphic.init();
-    this.clickSwitcher(this.rootElement, tableCovid);
+    this.clickSwitcher(this.rootElement, tableCovid, listCountries, graphic);
   }
 
   renderFooter() {
@@ -56,7 +59,7 @@ export class MainPage {
     this.footerElement.classList.add('footer');
   }
 
-  clickSwitcher(button, instanceClass) {
+  clickSwitcher(button, instanceClassTable, instanceClassList, instanceClassGraphic) {
     button.addEventListener('click', (e) => {
       if (e.target.textContent === '<' || e.target.textContent === '>') {
         if (this.dataAttributeIndex > 3) {
@@ -68,43 +71,94 @@ export class MainPage {
 
       if (e.target.textContent === 'Confirmed') {
         this.dataAttributeBottomSwitcher = 'Confirmed';
+        const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
+        const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
+        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
+        confirmedButtonTable.click();
+        confirmedButtonList.click();
+        confirmedButtonGraphic.click();
       } else if (e.target.textContent === 'Dead') {
         this.dataAttributeBottomSwitcher = 'Dead';
+        const deadButtonTable = document.querySelectorAll('.options__item')[1];
+        const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
+        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
+        deadButtonTable.click();
+        deadButtonList.click();
+        deadButtonGraphic.click();
       } else if (e.target.textContent === 'Recovered') {
         this.dataAttributeBottomSwitcher = 'Recovered';
+        const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
+        const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
+        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
+        recoveredButtonTable.click();
+        recoveredButtonList.click();
+        recoveredButtonGraphic.click();
       }
 
       if (e.target.textContent === '<') {
-        const switcherText = document.querySelector('.container-switcher__title');
+        const switcherTextArray = document.querySelectorAll('.container-switcher__title');
         this.dataAttributeIndex -= 1;
         this.dataAttributeIndex = this.dataAttributeIndex < 0 ? 3 : this.dataAttributeIndex;
-        switcherText.textContent = this.dataAttributeArray[this.dataAttributeIndex];
-        const confirmedButton = document.querySelectorAll('.options__item')[0];
-        const deadButton = document.querySelectorAll('.options__item')[1];
-        const recoveredButton = document.querySelectorAll('.options__item')[2];
-        instanceClass.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        for (let i = 0; i < switcherTextArray.length; i += 1) {
+          switcherTextArray[i].textContent = this.dataAttributeArray[this.dataAttributeIndex];
+        }
+        const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
+        const deadButtonTable = document.querySelectorAll('.options__item')[1];
+        const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
+        const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
+        const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
+        const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
+        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
+        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
+        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
+        instanceClassTable.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        instanceClassList.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        instanceClassGraphic.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         if (this.dataAttributeBottomSwitcher === 'Confirmed') {
-          confirmedButton.click();
+          confirmedButtonTable.click();
+          confirmedButtonList.click();
+          confirmedButtonGraphic.click();
         } else if (this.dataAttributeBottomSwitcher === 'Dead') {
-          deadButton.click();
+          deadButtonTable.click();
+          deadButtonList.click();
+          deadButtonGraphic.click();
         } else if (this.dataAttributeBottomSwitcher === 'Recovered') {
-          recoveredButton.click();
+          recoveredButtonTable.click();
+          recoveredButtonList.click();
+          recoveredButtonGraphic.click();
         }
       } else if (e.target.textContent === '>') {
-        const switcherText = document.querySelector('.container-switcher__title');
+        const switcherTextArray = document.querySelectorAll('.container-switcher__title');
         this.dataAttributeIndex += 1;
         this.dataAttributeIndex = this.dataAttributeIndex > 3 ? 0 : this.dataAttributeIndex;
-        switcherText.textContent = this.dataAttributeArray[this.dataAttributeIndex];
-        const confirmedButton = document.querySelectorAll('.options__item')[0];
-        const deadButton = document.querySelectorAll('.options__item')[1];
-        const recoveredButton = document.querySelectorAll('.options__item')[2];
-        instanceClass.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        for (let i = 0; i < switcherTextArray.length; i += 1) {
+          switcherTextArray[i].textContent = this.dataAttributeArray[this.dataAttributeIndex];
+        }
+        const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
+        const deadButtonTable = document.querySelectorAll('.options__item')[1];
+        const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
+        const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
+        const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
+        const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
+        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
+        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
+        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
+        console.log(confirmedButtonList, confirmedButtonTable, confirmedButtonGraphic);
+        instanceClassTable.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        instanceClassList.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+        instanceClassGraphic.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         if (this.dataAttributeBottomSwitcher === 'Confirmed') {
-          confirmedButton.click();
+          confirmedButtonTable.click();
+          confirmedButtonList.click();
+          confirmedButtonGraphic.click();
         } else if (this.dataAttributeBottomSwitcher === 'Dead') {
-          deadButton.click();
+          deadButtonTable.click();
+          deadButtonList.click();
+          deadButtonGraphic.click();
         } else if (this.dataAttributeBottomSwitcher === 'Recovered') {
-          recoveredButton.click();
+          recoveredButtonTable.click();
+          recoveredButtonList.click();
+          recoveredButtonGraphic.click();
         }
       }
     });
