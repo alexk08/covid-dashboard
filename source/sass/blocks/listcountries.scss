@@ -51,6 +51,25 @@
       }
     }
   }
+
+  &-search-list {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin: 0;
+    overflow-y: scroll;
+    max-width: 290px;
+    width: 100%;
+    max-height: 430px;
+
+    &__item {
+      height: 25px;
+      width: 100%;
+      cursor: pointer;
+      background-color: #fff;
+      box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+    }
+  }
 }
 
 .flag-container {

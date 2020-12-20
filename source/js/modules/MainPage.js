@@ -2,6 +2,9 @@ import {Graphic} from './Graphic';
 import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
 import {ListCountries} from './ListCountries';
+import {Keyboard} from './keyboard';
+// import {textarea} from './keyboard';
+// console.log(textarea);
 
 export class MainPage {
   constructor(rootElement) {
@@ -23,6 +26,9 @@ export class MainPage {
     this.renderContent();
     this.renderFooter();
     this.rootElement.append(this.headerElement, this.contentElement, this.footerElement);
+    window.addEventListener('DOMContentLoaded', function () {
+      Keyboard.init();
+    });
   }
 
   renderHeader() {
