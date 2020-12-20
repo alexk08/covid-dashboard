@@ -129,7 +129,6 @@ export class MainPage {
         const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
         const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
         const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
-        console.log(confirmedButtonList, confirmedButtonTable);
         instanceClassTable.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         instanceClassList.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         if (this.dataAttributeBottomSwitcher === 'Confirmed') {
