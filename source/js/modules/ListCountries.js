@@ -78,7 +78,6 @@ export class ListCountries {
       xhrSecond.send();
 
       xhrSecond.onload = () => {
-        console.log(xhrSecond.response);
         this.addListeners(xhrSecond.response);
         document.querySelectorAll('.container-list-options__item')[0].click();
       };
@@ -123,48 +122,106 @@ export class ListCountries {
         'Venezuela (Bolivarian Republic)': 'Venezuela (Bolivarian Republic of)',
       };
 
+      const sortCountry = [];
       for (let i = 0; i < data.Countries.length; i += 1) {
+        let index = index = population.findIndex((value) => value.name === data.Countries[i].Country);
+        if (index === -1) {
+          index = population.findIndex((value) => value.name === differenceCountry[data.Countries[i].Country]);
+        }
+        let obj = {
+          'Country': data.Countries[i].Country,
+          'TotalConfirmed': data.Countries[i].TotalConfirmed,
+          'TotalDeaths': data.Countries[i].TotalDeaths,
+          'TotalRecovered': data.Countries[i].TotalRecovered,
+          'NewConfirmed': data.Countries[i].NewConfirmed,
+          'NewDeaths': data.Countries[i].NewDeaths,
+          'NewRecovered': data.Countries[i].NewRecovered,
+          'AllThousandConfirmed': +((data.Countries[i].TotalConfirmed / population[index].population * 100000).toFixed(2)),
+          'AllThousandDeaths': +((data.Countries[i].TotalDeaths / population[index].population * 100000).toFixed(2)),
+          'AllThousandRecovered': +((data.Countries[i].TotalRecovered / population[index].population * 100000).toFixed(2)),
+          'LastThousandConfirmed': +((data.Countries[i].NewConfirmed / population[index].population * 100000).toFixed(2)),
+          'LastThousandDeaths': +((data.Countries[i].NewDeaths / population[index].population * 100000).toFixed(2)),
+          'LastThousandRecovered': +((data.Countries[i].NewRecovered / population[index].population * 100000).toFixed(2)),
+        };
+        sortCountry.push(obj);
+      }
+
+      if (this.dataAttributeHeaderSwitcher === 'All period') {
+        if (statusBottom === 'Confirmed') {
+          sortCountry.sort((a, b) => b.TotalConfirmed - a.TotalConfirmed);
+        } else if (statusBottom === 'Dead') {
+          sortCountry.sort((a, b) => b.TotalDeaths - a.TotalDeaths);
+        } else {
+          sortCountry.sort((a, b) => b.TotalRecovered - a.TotalRecovered);
+        }
+      } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
+        if (statusBottom === 'Confirmed') {
+          sortCountry.sort((a, b) => b.NewConfirmed - a.NewConfirmed);
+        } else if (statusBottom === 'Dead') {
+          sortCountry.sort((a, b) => b.NewDeaths - a.NewDeaths);
+        } else {
+          sortCountry.sort((a, b) => b.NewRecovered - a.NewRecovered);
+        }
+      } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
+        if (statusBottom === 'Confirmed') {
+          sortCountry.sort((a, b) => b.AllThousandConfirmed - a.AllThousandConfirmed);
+        } else if (statusBottom === 'Dead') {
+          sortCountry.sort((a, b) => b.AllThousandDeaths - a.AllThousandDeaths);
+        } else {
+          sortCountry.sort((a, b) => b.AllThousandRecovered - a.AllThousandRecovered);
+        }
+      } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
+        if (statusBottom === 'Confirmed') {
+          sortCountry.sort((a, b) => b.LastThousandConfirmed - a.LastThousandConfirmed);
+        } else if (statusBottom === 'Dead') {
+          sortCountry.sort((a, b) => b.LastThousandDeaths - a.LastThousandDeaths);
+        } else {
+          sortCountry.sort((a, b) => b.LastThousandRecovered - a.LastThousandRecovered);
+        }
+      }
+
+      for (let i = 0; i < sortCountry.length; i += 1) {
         const liMenu = document.createElement('li');
         const flagDiv = document.createElement('div');
         const flagImg = document.createElement('img');
         const country = document.createElement('div');
         const count = document.createElement('div');
-        country.textContent = data.Countries[i].Country;
-        let index = index = population.findIndex((value) => value.name === data.Countries[i].Country);
+        country.textContent = sortCountry[i].Country;
+        let index = index = population.findIndex((value) => value.name === sortCountry[i].Country);
         if (index === -1) {
-          index = population.findIndex((value) => value.name === differenceCountry[data.Countries[i].Country]);
+          index = population.findIndex((value) => value.name === differenceCountry[sortCountry[i].Country]);
         }
         if (this.dataAttributeHeaderSwitcher === 'All period') {
           if (statusBottom === 'Confirmed') {
-            count.textContent = data.Countries[i].TotalConfirmed;
+            count.textContent = sortCountry[i].TotalConfirmed;
           } else if (statusBottom === 'Dead') {
-            count.textContent = data.Countries[i].TotalDeaths;
+            count.textContent = sortCountry[i].TotalDeaths;
           } else {
-            count.textContent = data.Countries[i].TotalRecovered;
+            count.textContent = sortCountry[i].TotalRecovered;
           }
         } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
           if (statusBottom === 'Confirmed') {
-            count.textContent = data.Countries[i].NewConfirmed;
+            count.textContent = sortCountry[i].NewConfirmed;
           } else if (statusBottom === 'Dead') {
-            count.textContent = data.Countries[i].NewDeaths;
+            count.textContent = sortCountry[i].NewDeaths;
           } else {
-            count.textContent = data.Countries[i].NewRecovered;
+            count.textContent = sortCountry[i].NewRecovered;
           }
         } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
           if (statusBottom === 'Confirmed') {
-            count.textContent = (data.Countries[i].TotalConfirmed / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].AllThousandConfirmed;
           } else if (statusBottom === 'Dead') {
-            count.textContent = (data.Countries[i].TotalDeaths / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].AllThousandDeaths;
           } else {
-            count.textContent = (data.Countries[i].TotalRecovered / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].AllThousandRecovered;
           }
         } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
           if (statusBottom === 'Confirmed') {
-            count.textContent = (data.Countries[i].NewConfirmed / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].LastThousandConfirmed;
           } else if (statusBottom === 'Dead') {
-            count.textContent = (data.Countries[i].NewDeaths / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].LastThousandDeaths;
           } else {
-            count.textContent = (data.Countries[i].NewRecovered / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].LastThousandRecovered;
           }
         }
         liMenu.classList.add('container-list-menu-item');

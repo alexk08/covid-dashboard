@@ -3,7 +3,7 @@ export class TableCovid {
     this.rootElement = rootElement;
     this.country = null;
     this.indexOfCountry = null;
-    this.dataAttributeBottomSwitcher = 'Confirmed';
+    // this.dataAttributeBottomSwitcher = 'Confirmed';
     this.dataAttributeHeaderSwitcher = 'All period';
   }
 
@@ -97,6 +97,7 @@ export class TableCovid {
   clickBottomPanel(button, statusBottom, data, population) {
     const navMenu = document.querySelector('.nav.menu');
     const buttons = document.querySelectorAll('.options__item');
+
     button.addEventListener('click', () => {
       this.clearTable();
       this.installActiveButton(buttons);
