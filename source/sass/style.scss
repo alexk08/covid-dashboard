@@ -20,8 +20,10 @@
 
 @import "blocks/header";
 @import "blocks/footer";
-@import "blocks/tablecovid.scss";
-@import "blocks/listcountries.scss";
+@import "blocks/listcountries";
+@import "blocks/tablecovid";
+@import "blocks/info";
+@import "blocks/legend";
 
 // используйте это для отключения ховеров на тач устройствах
 // ! но не используйте это для текстовых полей ( input, textarea )
