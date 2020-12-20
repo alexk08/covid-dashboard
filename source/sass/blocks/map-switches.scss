@@ -1,0 +1,26 @@
+.map-switches {
+  display: flex;
+  height: 30px;
+  padding: 4px;
+  border: 1px solid #000;
+  justify-content: space-between;
+  align-items: center;
+
+  &__left,
+  &__right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+
+  &__left:hover,
+  &__right:hover {
+    background-color: #ccc;
+  }
+}
