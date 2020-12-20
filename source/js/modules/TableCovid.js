@@ -101,7 +101,7 @@ export class TableCovid {
     button.addEventListener('click', () => {
       this.clearTable();
       this.installActiveButton(buttons);
-      button.classList.toggle('active');
+      button.classList.toggle('active-background');
 
       const differenceCountry = {
         'Bolivia': 'Bolivia (Plurinational State of)',
@@ -202,7 +202,7 @@ export class TableCovid {
 
   installActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
-      arrayButtons[i].classList.remove('active');
+      arrayButtons[i].classList.remove('active-background');
     }
   }
 }
