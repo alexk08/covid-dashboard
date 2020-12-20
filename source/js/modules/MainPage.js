@@ -46,6 +46,8 @@ export class MainPage {
     this.mapContainer = document.createElement('div');
     this.graphicContainer = document.createElement('div');
     this.graphicContainer.classList.add('graphic_container');
+    
+    this.mapContainer.classList.add('map-container');
 
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
 
