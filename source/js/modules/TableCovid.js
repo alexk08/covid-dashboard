@@ -3,7 +3,7 @@ export class TableCovid {
     this.rootElement = rootElement;
     this.country = null;
     this.indexOfCountry = null;
-    this.dataAttributeBottomSwitcher = 'Confirmed';
+    // this.dataAttributeBottomSwitcher = 'Confirmed';
     this.dataAttributeHeaderSwitcher = 'All period';
   }
 
@@ -97,10 +97,11 @@ export class TableCovid {
   clickBottomPanel(button, statusBottom, data, population) {
     const navMenu = document.querySelector('.nav.menu');
     const buttons = document.querySelectorAll('.options__item');
+
     button.addEventListener('click', () => {
       this.clearTable();
       this.installActiveButton(buttons);
-      button.classList.toggle('active');
+      button.classList.toggle('active-background');
 
       const differenceCountry = {
         'Bolivia': 'Bolivia (Plurinational State of)',
@@ -201,7 +202,7 @@ export class TableCovid {
 
   installActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
-      arrayButtons[i].classList.remove('active');
+      arrayButtons[i].classList.remove('active-background');
     }
   }
 }

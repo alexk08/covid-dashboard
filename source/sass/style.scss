@@ -20,11 +20,17 @@
 
 @import "blocks/header";
 @import "blocks/footer";
+@import "blocks/main";
 @import "blocks/listcountries";
 @import "blocks/tablecovid";
 @import "blocks/graphic";
 @import "blocks/info";
 @import "blocks/legend";
+@import "blocks/keyboard";
+@import "blocks/map-container";
+@import "blocks/map";
+@import "blocks/map-switches";
+@import "blocks/map-options";
 
 // используйте это для отключения ховеров на тач устройствах
 // ! но не используйте это для текстовых полей ( input, textarea )

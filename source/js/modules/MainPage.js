@@ -2,6 +2,9 @@ import {Graphic} from './Graphic';
 import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
 import {ListCountries} from './ListCountries';
+import {Keyboard} from './keyboard';
+// import {textarea} from './keyboard';
+// console.log(textarea);
 
 export class MainPage {
   constructor(rootElement) {
@@ -23,6 +26,9 @@ export class MainPage {
     this.renderContent();
     this.renderFooter();
     this.rootElement.append(this.headerElement, this.contentElement, this.footerElement);
+    window.addEventListener('DOMContentLoaded', function () {
+      Keyboard.init();
+    });
   }
 
   renderHeader() {
@@ -40,6 +46,8 @@ export class MainPage {
     this.mapContainer = document.createElement('div');
     this.graphicContainer = document.createElement('div');
     this.graphicContainer.classList.add('graphic_container');
+    
+    this.mapContainer.classList.add('map-container');
 
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
 
@@ -140,10 +148,6 @@ export class MainPage {
         const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
         const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
         const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
-        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
-        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
-        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
-        console.log(confirmedButtonList, confirmedButtonTable, confirmedButtonGraphic);
         instanceClassTable.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         instanceClassList.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         instanceClassGraphic.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];

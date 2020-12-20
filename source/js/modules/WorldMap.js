@@ -1,56 +1,111 @@
-// import './../vendor/leaflet-src';
-import {statesData} from './statesData';
-import {geoJSON} from './geoJSON';
 import {countries} from './countries'
+
 const URL = {
-  SUMMARY: 'https://api.covid19api.com/summary'
+  SUMMARY: 'https://corona.lmao.ninja/v2/countries',
+  SUMMARY1: 'https://api.covid19api.com/summary'
 };
+
+const RATE = {
+  cases: 'cases',
+  deaths: 'deaths',
+  recovered: 'recovered',
+  todayCases: 'todayCases',
+  todayDeaths: 'todayDeaths',
+  todayRecovered: 'todayRecovered',
+}
 
 export class WorldMap {
   constructor(rootElement) {
     this.rootElement = rootElement;
     this.mapElement = null;
     this.data = null;
-    // this.renderMap = this.renderMap.bind(this);
-    this.data1 = null;
+    this.containerSwitches = null;
+    this.containerOptions = null;
+    this.dataAttributeOptions = 'options';
+    this.onSwithesClick = this.onSwithesClick.bind(this);
+    this.onOptionsClick = this.onOptionsClick.bind(this);
   }
 
   init() {
     this.getData();
-    this.getData1();
     this.renderContent();
     // document.addEventListener('DOMContentLoaded', this.renderMap);
   }
 
   renderContent() {
     this.mapElement = document.createElement('div');
-    this.mapElement.setAttribute('id', 'mapid');
-    this.mapElement.style.height = '400px';
-    this.rootElement.appendChild(this.mapElement);
+    this.mapElement.classList.add('map');
+    const map = this.createMap();
+    this.mapElement.appendChild(map);
+
+    this.containerSwitches = this.createSwitches();
+    this.containerOptions = this.createOptions();
+    this.rootElement.append(this.containerSwitches, this.mapElement, this.containerOptions);
   }
 
-  renderMap() {
-    // var geoJSON1 = JSON.parse(geoJSON);
-    // console.log(geoJSON)
-    // const mymap = L.map('mapid').setView([51.505, -0.09], 2);
+  createMap() {
+    const map = document.createElement('div');
+    map.setAttribute('id', 'map-covid');
+    map.classList.add('map__covid');
 
-    // L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    //   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    //   maxZoom: 18,
-    //   id: 'mapbox/streets-v11',
-    //   tileSize: 512,
-    //   zoomOffset: -1,
-    //   accessToken: 'pk.eyJ1Ijoia2FwYWN1ayIsImEiOiJja2l2Z29uZGgzOWMzMnZxanF4NG9neTJxIn0.1-lo4qPbQ2u_XnwjwVQHIA'
-    // }).addTo(mymap);
+    return map;
+  }
 
-    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(mymap);
+  createSwitches() {
+    const containerSwitches = document.createElement('div');
+    const switchLeft = document.createElement('button');
+    const switchText = document.createElement('div');
+    const switchRight = document.createElement('button');
 
-    // const marker = L.marker([51.5, -0.09]).addTo(mymap);
+    containerSwitches.classList.add('map-switches');
+    switchLeft.classList.add('map-switches__left');
+    switchText.classList.add('map-switches__title');
+    switchRight.classList.add('map-switches__right');
+    switchLeft.textContent = '<';
+    switchRight.textContent = '>';
+    switchText.textContent = 'All period';
+    containerSwitches.append(switchLeft, switchText, switchRight);
+    containerSwitches.addEventListener('click', this.onSwithesClick);
 
+    return containerSwitches;
+  }
+
+  createOptions() {
+    const containerOptions = document.createElement('div');
+
+    for (let i = 0; i < 3; i += 1) {
+      const option = document.createElement('button');
+      switch (i) {
+        case 0:
+          option.textContent = 'Confirmed';
+          option.classList.add('map-options__item');
+          option.classList.add('map-options__item--confirmed');
+          option.dataset[this.dataAttributeOptions] = RATE.cases;
+          break;
+        case 1:
+          option.textContent = 'Dead';
+          option.classList.add('map-options__item');
+          option.classList.add('map-options__item--dead');
+          option.dataset[this.dataAttributeOptions] = RATE.deaths;
+          break;
+        case 2:
+          option.textContent = 'Recovered';
+          option.classList.add('map-options__item');
+          option.classList.add('map-options__item--recovered');
+          option.dataset[this.dataAttributeOptions] = RATE.recovered;
+          break;
+      }
+      containerOptions.append(option);
+    }
+    containerOptions.classList.add('map-options');
+    containerOptions.addEventListener('click', this.onOptionsClick);
+
+    return containerOptions;
+  }
+
+  renderMap(data, rate) {
     var mapboxAccessToken = 'pk.eyJ1Ijoia2FwYWN1ayIsImEiOiJja2l2Z29uZGgzOWMzMnZxanF4NG9neTJxIn0.1-lo4qPbQ2u_XnwjwVQHIA';
-    var map = L.map('mapid').setView([37.8, -96], 4);
+    var map = L.map('map-covid').setView([37.8, 10], 2);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
         id: 'mapbox/light-v9',
@@ -58,8 +113,6 @@ export class WorldMap {
         tileSize: 512,
         zoomOffset: -1
     }).addTo(map);
-
-    // L.geoJson(countries).addTo(map);
 
     function getColor(d) {
       return d > 10000000 ? '#800026' :
@@ -74,7 +127,7 @@ export class WorldMap {
 
     function style(feature) {
       return {
-          fillColor: getColor(feature.properties.cases),
+          fillColor: getColor(feature.properties[rate]),
           weight: 2,
           opacity: 1,
           color: 'white',
@@ -95,8 +148,8 @@ export class WorldMap {
 
     // method that we will use to update the control based on feature properties passed
     info.update = function (props) {
-        this._div.innerHTML = '<h4>Total confirmed cases of Covid-19</h4>' +  (props ?
-            '<b>' + props.name + '</b><br />' + props.cases + ' people'
+        this._div.innerHTML = `<h4>${rate} of Covid-19</h4>` +  (props ?
+            '<b>' + props.name + '</b><br />' + props[rate] + ' people'
             : 'Hover over a country');
     };
 
@@ -136,12 +189,10 @@ export class WorldMap {
       });
     }
   
-    geojson = L.geoJson(countries, {
+    geojson = L.geoJson(data, {
         style: style,
         onEachFeature: onEachFeature
     }).addTo(map);
-
-    // geojson = L.geoJson(countries, {style: style}).addTo(map);
 
     var legend = L.control({position: 'bottomright'});
 
@@ -164,24 +215,10 @@ export class WorldMap {
     legend.addTo(map);
   }
 
-  getData1() {
-    let xhr = new XMLHttpRequest();
-
-    xhr.open('GET', 'https://corona.lmao.ninja/v2/countries');
-
-    xhr.responseType = 'json';
-    
-    xhr.send();
-
-    xhr.onload = () => {
-      if (xhr.status !== 200) {
-        console.log(`Error ${xhr.status}: ${xhr.statusText}`);
-        return
-      }
-      this.data1 = xhr.response;
-      this.transformData();
-      this.renderMap();
-    };
+  refreshMap() {
+    this.mapElement.innerHTML = '';
+    const map = this.createMap();
+    this.mapElement.appendChild(map);
   }
 
   getData() {
@@ -199,45 +236,23 @@ export class WorldMap {
         return
       }
       this.data = xhr.response;
+      this.transformData();
+      this.renderMap(countries, RATE.recovered);
     };
   }
 
   transformData() {
-    // console.log(countries.features)
-    // console.log(countries)
     const arr = [];
-    // countries.features.map((item, index) => {
-    //   if (item.properties.name.toLowerCase() === this.data.Countries[index].Country.toLowerCase()) return item.properties.TotalDeaths = this.data.Countries[index].TotalDeaths;
-    // })
 
-    // countries.features.sort((a, b) => {
-    //   if (a.properties.name > b.properties.name) {
-    //     return 1;
-    //   }
-    //   if (a.properties.name < b.properties.name) {
-    //     return -1;
-    //   }
-    //   return 0;
-    // })
-
-    // this.data.Countries.sort((a, b) => {
-    //   if (a.Country > b.Country) {
-    //     return 1;
-    //   }
-    //   if (a.Country < b.Country) {
-    //     return -1;
-    //   }
-    //   return 0;
-    // })
-
-
-
-    this.data1.forEach(item => {
-      // if (this.data.Countries.includes(item.properties.name)
+    this.data.forEach(item => {
       const goodCountry = countries.features.find(el => el.id === item.countryInfo.iso3);
       if (goodCountry !== undefined) {
-        goodCountry.properties.cases = item.cases;
-        goodCountry.properties.deaths = item.deaths;
+        goodCountry.properties[RATE.cases] = item[RATE.cases];
+        goodCountry.properties[RATE.deaths] = item[RATE.deaths];
+        goodCountry.properties[RATE.recovered] = item[RATE.recovered];
+        goodCountry.properties[RATE.todayCases] = item[RATE.todayCases];
+        goodCountry.properties[RATE.todayDeaths] = item[RATE.todayDeaths];
+        goodCountry.properties[RATE.todayRecovered] = item[RATE.todayRecovered];
         arr.push(goodCountry);
       }
     });
@@ -246,9 +261,18 @@ export class WorldMap {
     
     console.log(arr);
     console.log(countries.features);
-    // console.log(this.data.Countries);
-    // let str = 'ABC';
-    // console.log(str.slice(0,2));
-    console.log(this.data1)
+    console.log(this.data)
+  }
+
+  onSwithesClick({ target }) {
+
+  }
+
+  onOptionsClick({ target }) {
+    if (target.dataset[this.dataAttributeOptions]) {
+      const rate = target.dataset[this.dataAttributeOptions];
+      this.refreshMap();
+      this.renderMap(countries, rate);
+    }
   }
 }
