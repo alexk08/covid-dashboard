@@ -4,6 +4,9 @@ import {WorldMap} from './WorldMap';
 import {ListCountries} from './ListCountries';
 import {Keyboard} from './keyboard';
 
+const START_INDEX = 0;
+const END_INDEX = 3;
+
 export class MainPage {
   constructor(rootElement) {
     this.rootElement = rootElement;
@@ -17,6 +20,9 @@ export class MainPage {
     this.dataAttributeIndex = 0;
     this.dataAttributeBottomSwitcher = 'Confirmed';
     this.dataAttributeArray = ['All period', 'Last day', 'All period 100000', 'Last day 100000'];
+
+    this.optionsIndex = START_INDEX;
+    this.switchesIndex = START_INDEX;
   }
 
   init() {
@@ -49,7 +55,7 @@ export class MainPage {
 
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
 
-    const worldMap = new WorldMap(this.mapContainer);
+    const worldMap = new WorldMap(this.mapContainer, this);
     const tableCovid = new TableCovid(this.tableContainer);
     const listCountries = new ListCountries(this.listContainer);
     const graphic = new Graphic(this.graphicContainer);
@@ -63,6 +69,18 @@ export class MainPage {
   renderFooter() {
     this.footerElement = document.createElement('footer');
     this.footerElement.classList.add('footer');
+  }
+
+  changeSwithesIndex(targetDataAttribute, switchRight, switchLeft) {
+    if (targetDataAttribute === switchRight) {
+      this.switchesIndex = this.switchesIndex === END_INDEX ? START_INDEX : this.switchesIndex + 1;
+    } else if (targetDataAttribute === switchLeft) {
+      this.switchesIndex = this.switchesIndex === START_INDEX ? END_INDEX : this.switchesIndex - 1;
+    }
+  }
+
+  changeOptionsIndex(targetDataAttribute, names) {
+    this.optionsIndex = names.findIndex(name => name === targetDataAttribute);
   }
 
   clickSwitcher(button, instanceClassTable, instanceClassList, instanceClassGraphic) {
