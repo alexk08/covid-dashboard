@@ -1,5 +1,10 @@
 const populationData = [
     {
+        flag: "",
+        name: "Global",
+        population: 7763035303
+    },
+    {
     flag: "https://restcountries.eu/data/afg.svg",
     name: "Afghanistan",
     population: 27657145
