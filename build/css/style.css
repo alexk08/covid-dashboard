@@ -1184,7 +1184,7 @@ button,
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
-  max-width: 300px;
+  min-width: 300px;
   padding: 5px; }
   .container-list-options {
     display: -webkit-box;
@@ -1502,7 +1502,6 @@ button,
 <<<<<<< HEAD
 =======
 
-<<<<<<< HEAD
 .use-keyboard-input {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1593,7 +1592,7 @@ button,
 @media (max-width: 950px) {
   .keyboard__key--wide {
     width: 5%; } }
-=======
+
 .map-container {
   width: 800px; }
 
@@ -1659,6 +1658,9 @@ button,
     cursor: pointer; }
   .map-options__item:active {
     background-color: #ccc; }
+<<<<<<< HEAD
+=======
+>>>>>>> develop
 >>>>>>> develop
 >>>>>>> develop
 
