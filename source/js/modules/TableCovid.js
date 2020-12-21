@@ -14,6 +14,10 @@ export class TableCovid {
   renderContent() {
     const containerTable = document.createElement('div');
 
+    const containerGlobalInformation = document.createElement('div');
+    const globalInformationTitle = document.createElement('div');
+    const globalInformationCount = document.createElement('div');
+
     const containerSwitcher = document.createElement('div');
     const switcherLeft = document.createElement('div');
     const switcherText = document.createElement('div');
@@ -42,7 +46,9 @@ export class TableCovid {
     }
 
     containerTable.classList.add('container-table');
-
+    containerGlobalInformation.classList.add('container-global-information');
+    globalInformationTitle.classList.add('container-global-information__title');
+    globalInformationCount.classList.add('container-global-information__count');
     containerSwitcher.classList.add('container-switcher');
     switcherLeft.classList.add('container-switcher__left');
     switcherText.classList.add('container-switcher__title');
@@ -50,6 +56,9 @@ export class TableCovid {
     switcherLeft.textContent = '<';
     switcherRight.textContent = '>';
     switcherText.textContent = 'All period';
+    globalInformationTitle.textContent = 'Global';
+
+    containerGlobalInformation.append(globalInformationTitle, globalInformationCount);
 
     navConfirmed.classList.add('nav');
     ulConfirmed.classList.add('nav', 'menu');
@@ -59,114 +68,127 @@ export class TableCovid {
     navConfirmed.append(ulConfirmed);
     containerSwitcher.append(switcherLeft, switcherText, switcherRight);
 
-    containerTable.append(containerSwitcher, navConfirmed, containerOptions);
+    containerTable.append(containerGlobalInformation, containerSwitcher, navConfirmed, containerOptions);
     this.rootElement.append(containerTable);
     this.getData();
   }
 
   getData() {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://api.covid19api.com/summary', true);
+    xhr.open('GET', 'https://disease.sh/v3/covid-19/countries', true);
     xhr.responseType = 'json';
     xhr.send();
 
     xhr.onload = () => {
       this.data = xhr.response;
-      const xhrSecond = new XMLHttpRequest();
-      xhrSecond.open('GET', 'https://restcountries.eu/rest/v2/all?fields=name;population;flag', true);
-      xhrSecond.responseType = 'json';
-      xhrSecond.send();
-
-      xhrSecond.onload = () => {
-        this.addListeners(xhrSecond.response);
-        document.querySelectorAll('.options__item')[0].click();
-      };
+      this.addListeners();
+      document.querySelectorAll('.options__item')[0].click();
     };
   }
 
-  addListeners(population) {
+  addListeners() {
     const confirmedButton = document.querySelectorAll('.options__item')[0];
     const deadButton = document.querySelectorAll('.options__item')[1];
     const recoveredButton = document.querySelectorAll('.options__item')[2];
 
-    this.clickBottomPanel(confirmedButton, 'Confirmed', this.data, population);
-    this.clickBottomPanel(deadButton, 'Dead', this.data, population);
-    this.clickBottomPanel(recoveredButton, 'Recovered', this.data, population);
+    this.clickBottomPanel(confirmedButton, 'Confirmed', this.data);
+    this.clickBottomPanel(deadButton, 'Dead', this.data);
+    this.clickBottomPanel(recoveredButton, 'Recovered', this.data);
   }
 
-  clickBottomPanel(button, statusBottom, data, population) {
+  clickBottomPanel(button, statusBottom, data) {
     const navMenu = document.querySelector('.nav.menu');
     const buttons = document.querySelectorAll('.options__item');
+    const globalCountElement = document.querySelector('.container-global-information__count');
 
     button.addEventListener('click', () => {
       this.clearTable();
       this.installActiveButton(buttons);
       button.classList.toggle('active-background');
 
-      const differenceCountry = {
-        'Bolivia': 'Bolivia (Plurinational State of)',
-        'Cape Verde': 'Cabo Verde',
-        'Congo (Brazzaville)': 'Congo',
-        'Congo (Kinshasa)': 'Congo (Democratic Republic of the)',
-        'Holy See (Vatican City State)': 'Holy See',
-        'Iran, Islamic Republic of': 'Iran (Islamic Republic of)',
-        'Korea (South)': 'Korea (Republic of)',
-        'Lao PDR': 'Lao People\'s Democratic Republic',
-        'Macao, SAR China': 'Macao',
-        'Macedonia, Republic of': 'Macedonia (the former Yugoslav Republic of)',
-        'Moldova': 'Moldova (Republic of)',
-        'Palestinian Territory': 'Palestine, State of',
-        'Saint Vincent and Grenadines': 'Saint Vincent and the Grenadines',
-        'Syrian Arab Republic (Syria)': 'Syrian Arab Republic',
-        'Taiwan, Republic of China': 'Taiwan',
-        'United Kingdom': 'United Kingdom of Great Britain and Northern Ireland',
-        'Venezuela (Bolivarian Republic)': 'Venezuela (Bolivarian Republic of)',
-      };
+      const sortCountry = this.sortData(data, statusBottom);
+      if (this.dataAttributeHeaderSwitcher === 'All period') {
+        if (statusBottom === 'Confirmed') {
+          const globalCount = sortCountry.map((value) => value.cases).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        } else if (statusBottom === 'Dead') {
+          const globalCount = sortCountry.map((value) => value.deaths).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        } else {
+          const globalCount = sortCountry.map((value) => value.recovered).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        }
+      } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
+        if (statusBottom === 'Confirmed') {
+          const globalCount = sortCountry.map((value) => value.todayCases).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        } else if (statusBottom === 'Dead') {
+          const globalCount = sortCountry.map((value) => value.todayDeaths).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        } else {
+          const globalCount = sortCountry.map((value) => value.todayRecovered).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        }
+      } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
+        if (statusBottom === 'Confirmed') {
+          const globalCount = sortCountry.map((value) => value.allThousandCases).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        } else if (statusBottom === 'Dead') {
+          const globalCount = sortCountry.map((value) => value.allThousandDeaths).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        } else {
+          const globalCount = sortCountry.map((value) => value.allThousandRecovered).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        }
+      } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
+        if (statusBottom === 'Confirmed') {
+          const globalCount = sortCountry.map((value) => value.lastThousandCases).reduce((previousValue, currentValue) => previousValue + currentValue).toFixed(2);
+          globalCountElement.textContent = globalCount;
+        } else if (statusBottom === 'Dead') {
+          const globalCount = sortCountry.map((value) => value.lastThousandDeaths).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        } else {
+          const globalCount = sortCountry.map((value) => value.lastThousandRecovered).reduce((previousValue, currentValue) => previousValue + currentValue);
+          globalCountElement.textContent = globalCount;
+        }
+      }
 
-      for (let i = 0; i < data.Countries.length; i += 1) {
+      for (let i = 0; i < sortCountry.length; i += 1) {
         const liMenu = document.createElement('li');
         const country = document.createElement('div');
         const count = document.createElement('div');
-        country.textContent = data.Countries[i].Country;
+        country.textContent = sortCountry[i].country;
         if (this.dataAttributeHeaderSwitcher === 'All period') {
           if (statusBottom === 'Confirmed') {
-            count.textContent = data.Countries[i].TotalConfirmed;
+            count.textContent = sortCountry[i].cases;
           } else if (statusBottom === 'Dead') {
-            count.textContent = data.Countries[i].TotalDeaths;
+            count.textContent = sortCountry[i].deaths;
           } else {
-            count.textContent = data.Countries[i].TotalRecovered;
+            count.textContent = sortCountry[i].recovered;
           }
         } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
           if (statusBottom === 'Confirmed') {
-            count.textContent = data.Countries[i].NewConfirmed;
+            count.textContent = sortCountry[i].todayCases;
           } else if (statusBottom === 'Dead') {
-            count.textContent = data.Countries[i].NewDeaths;
+            count.textContent = sortCountry[i].todayDeaths;
           } else {
-            count.textContent = data.Countries[i].NewRecovered;
+            count.textContent = sortCountry[i].todayRecovered;
           }
         } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
-          let index = population.findIndex((value) => value.name === data.Countries[i].Country);
-          if (index === -1) {
-            index = population.findIndex((value) => value.name === differenceCountry[data.Countries[i].Country]);
-          }
           if (statusBottom === 'Confirmed') {
-            count.textContent = (data.Countries[i].TotalConfirmed / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].allThousandCases;
           } else if (statusBottom === 'Dead') {
-            count.textContent = (data.Countries[i].TotalDeaths / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].allThousandDeaths;
           } else {
-            count.textContent = (data.Countries[i].TotalRecovered / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].allThousandRecovered;
           }
         } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
-          let index = population.findIndex((value) => value.name === data.Countries[i].Country);
-          if (index === -1) {
-            index = population.findIndex((value) => value.name === differenceCountry[data.Countries[i].Country]);
-          }
           if (statusBottom === 'Confirmed') {
-            count.textContent = (data.Countries[i].NewConfirmed / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].lastThousandCases;
           } else if (statusBottom === 'Dead') {
-            count.textContent = (data.Countries[i].NewDeaths / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].lastThousandDeaths;
           } else {
-            count.textContent = (data.Countries[i].NewRecovered / population[index].population * 100000).toFixed(2);
+            count.textContent = sortCountry[i].lastThousandRecovered;
           }
         }
         liMenu.classList.add('menu-item');
@@ -184,12 +206,42 @@ export class TableCovid {
             liMenu.append(country, count);
             navMenu.append(liMenu);
             this.liMenuVisibility = true;
-            this.country = data.Countries[i].Country;
+            this.country = sortCountry[i].country;
             this.indexOfCountry = i;
           }
         });
       }
     });
+  }
+
+  sortData(data) {
+    const sortCountry = [];
+    console.log(data);
+    for (let i = 0; i < data.length; i += 1) {
+      const lastThousandCases = isNaN(+((data[i].todayCases / data[i].population * 100000).toFixed(2))) ? 0 : +((data[i].todayCases / data[i].population * 100000).toFixed(2));
+      const lastThousandDeaths = isNaN(+((data[i].todayDeaths / data[i].population * 100000).toFixed(2))) ? 0 : +((data[i].todayDeaths / data[i].population * 100000).toFixed(2));
+      const lastThousandRecovered = isNaN(+((data[i].todayRecovered / data[i].population * 100000).toFixed(2))) ? 0 : +((data[i].todayRecovered / data[i].population * 100000).toFixed(2));
+
+      let obj = {
+        'country': data[i].country,
+        'cases': data[i].cases,
+        'deaths': data[i].deaths,
+        'recovered': data[i].recovered,
+        'todayCases': data[i].todayCases,
+        'todayDeaths': data[i].todayDeaths,
+        'todayRecovered': data[i].todayRecovered,
+        'allThousandCases': +((data[i].casesPerOneMillion * 10).toFixed()),
+        'allThousandDeaths': +((data[i].deathsPerOneMillion * 10).toFixed()),
+        'allThousandRecovered': +((data[i].recoveredPerOneMillion * 10).toFixed()),
+        'lastThousandCases': lastThousandCases,
+        'lastThousandDeaths': lastThousandDeaths,
+        'lastThousandRecovered': lastThousandRecovered,
+      };
+      sortCountry.push(obj);
+    }
+    sortCountry.sort();
+
+    return sortCountry;
   }
 
   clearTable() {

@@ -77,28 +77,28 @@ export class MainPage {
 
       if (e.target.textContent === 'Confirmed') {
         this.dataAttributeBottomSwitcher = 'Confirmed';
-        const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
-        const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
-        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
-        confirmedButtonTable.click();
-        confirmedButtonList.click();
-        confirmedButtonGraphic.click();
+        // const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
+        // const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
+        // const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
+        // confirmedButtonTable.click();
+        // confirmedButtonList.click();
+        // confirmedButtonGraphic.click();
       } else if (e.target.textContent === 'Dead') {
         this.dataAttributeBottomSwitcher = 'Dead';
-        const deadButtonTable = document.querySelectorAll('.options__item')[1];
-        const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
-        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
-        deadButtonTable.click();
-        deadButtonList.click();
-        deadButtonGraphic.click();
+        // const deadButtonTable = document.querySelectorAll('.options__item')[1];
+        // const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
+        // const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
+        // deadButtonTable.click();
+        // deadButtonList.click();
+        // deadButtonGraphic.click();
       } else if (e.target.textContent === 'Recovered') {
         this.dataAttributeBottomSwitcher = 'Recovered';
-        const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
-        const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
-        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
-        recoveredButtonTable.click();
-        recoveredButtonList.click();
-        recoveredButtonGraphic.click();
+        // const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
+        // const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
+        // const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
+        // recoveredButtonTable.click();
+        // recoveredButtonList.click();
+        // recoveredButtonGraphic.click();
       }
 
       if (e.target.textContent === '<') {
@@ -146,6 +146,9 @@ export class MainPage {
         const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
         const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
         const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
+        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
+        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
+        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
         instanceClassTable.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         instanceClassList.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         instanceClassGraphic.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
