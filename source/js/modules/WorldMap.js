@@ -40,11 +40,8 @@ const DATA_ATTRIBUTE = {
   switch: 'switch'
 };
 
-const START_INDEX = 0;
-const END_INDEX = 3;
-
 export class WorldMap {
-  constructor(rootElement) {
+  constructor(rootElement, mainPage) {
     this.rootElement = rootElement;
     this.mapElement = null;
     this.data = null;
@@ -53,10 +50,14 @@ export class WorldMap {
     this.switchText = null;
     this.dataAttributeOption = DATA_ATTRIBUTE.option;
     this.dataAttributeSwitch = DATA_ATTRIBUTE.switch;
-    this.optionsIndex = START_INDEX;
-    this.switchesIndex = START_INDEX;
+
+    // this.optionsIndex = START_INDEX;
+    // this.switchesIndex = START_INDEX;
+
     this.onSwitchesClick = this.onSwitchesClick.bind(this);
     this.onOptionsClick = this.onOptionsClick.bind(this);
+
+    this.mainPage = mainPage;
   }
 
   init() {
@@ -91,7 +92,7 @@ export class WorldMap {
 
     this.switchText = document.createElement('div');
     this.switchText.classList.add(`map-switches__${SWITCH.title}`);
-    this.switchText.textContent = SWITCHES_NAMES[this.switchesIndex];
+    this.switchText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
 
     containerSwitches.classList.add('map-switches');
     switchLeft.classList.add(`map-switches__${SWITCH.left}`);
@@ -292,20 +293,20 @@ export class WorldMap {
   }
 
   onSwitchesClick({ target }) {
-    if (target.dataset[this.dataAttributeSwitch] === SWITCH.right) {
-      this.switchesIndex = this.switchesIndex === END_INDEX ? START_INDEX : this.switchesIndex + 1;
-    } else if (target.dataset[this.dataAttributeSwitch] === SWITCH.left) {
-      this.switchesIndex = this.switchesIndex === START_INDEX ? END_INDEX : this.switchesIndex - 1;
+    const dataSwitch = target.dataset[this.dataAttributeSwitch];
+    if (dataSwitch) {
+      this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
+      this.switchText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
+      this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
-    this.switchText.textContent = SWITCHES_NAMES[this.switchesIndex];
-    this.changeRate(this.optionsIndex, this.switchesIndex);
   }
 
   onOptionsClick({ target }) {
-    if (target.dataset[this.dataAttributeOption]) {
-      this.optionsIndex = OPTIONS_NAMES.findIndex(item => item === target.dataset[this.dataAttributeOption]);
-      this.changeRate(this.optionsIndex, this.switchesIndex);
-    }
+    const dataOption = target.dataset[this.dataAttributeOption];
+    if (dataOption) {
+      this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
+      this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+    } 
   }
 
   changeRate(optionsIndex, switchesIndex) {
