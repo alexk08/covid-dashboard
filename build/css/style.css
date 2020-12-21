@@ -1184,7 +1184,7 @@ button,
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
-  max-width: 300px;
+  min-width: 300px;
   padding: 5px; }
   .container-list-options {
     display: -webkit-box;

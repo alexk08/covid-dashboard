@@ -3,8 +3,6 @@ import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
 import {ListCountries} from './ListCountries';
 import {Keyboard} from './keyboard';
-// import {textarea} from './keyboard';
-// console.log(textarea);
 
 export class MainPage {
   constructor(rootElement) {
@@ -46,7 +44,7 @@ export class MainPage {
     this.mapContainer = document.createElement('div');
     this.graphicContainer = document.createElement('div');
     this.graphicContainer.classList.add('graphic_container');
-    
+
     this.mapContainer.classList.add('map-container');
 
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
