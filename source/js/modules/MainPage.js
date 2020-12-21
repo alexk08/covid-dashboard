@@ -148,6 +148,9 @@ export class MainPage {
         const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
         const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
         const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
+        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
+        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
+        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
         instanceClassTable.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         instanceClassList.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
         instanceClassGraphic.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
