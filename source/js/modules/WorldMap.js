@@ -12,7 +12,36 @@ const RATE = {
   todayCases: 'todayCases',
   todayDeaths: 'todayDeaths',
   todayRecovered: 'todayRecovered',
+  casesPerOneMillion: 'casesPerOneMillion',
+  deathsPerOneMillion: 'deathsPerOneMillion',
+  recoveredPerOneMillion: 'recoveredPerOneMillion',
+  casesPerHundredThousands: 'casesPerHundredThousands',
+  deathsPerHundredThousands: 'deathsPerHundredThousands',
+  recoveredPerHundredThousands: 'recoveredPerHundredThousands',
+  todayCasesPerHundredThousands: 'todayCasesPerHundredThousands',
+  todayDeathsPerHundredThousands: 'todayDeathsPerHundredThousands',
+  todayRecoveredPerHundredThousands: 'todayRecoveredPerHundredThousands',
+  population: 'population',
+  coefficient: 10,
+  oneHundredThousands: 100000
 }
+
+const SWITCH = {
+  left: 'left',
+  right: 'right',
+  title: 'title'
+}
+
+const OPTIONS_NAMES = ['Confirmed', 'Dead', 'Recovered'];
+const SWITCHES_NAMES = ['All period', 'Last day', 'All period 100000', 'Last day 100000'];
+
+const DATA_ATTRIBUTE = {
+  option: 'option',
+  switch: 'switch'
+};
+
+const START_INDEX = 0;
+const END_INDEX = 3;
 
 export class WorldMap {
   constructor(rootElement) {
@@ -21,8 +50,12 @@ export class WorldMap {
     this.data = null;
     this.containerSwitches = null;
     this.containerOptions = null;
-    this.dataAttributeOptions = 'options';
-    this.onSwithesClick = this.onSwithesClick.bind(this);
+    this.switchText = null;
+    this.dataAttributeOption = DATA_ATTRIBUTE.option;
+    this.dataAttributeSwitch = DATA_ATTRIBUTE.switch;
+    this.optionsIndex = START_INDEX;
+    this.switchesIndex = START_INDEX;
+    this.onSwitchesClick = this.onSwitchesClick.bind(this);
     this.onOptionsClick = this.onOptionsClick.bind(this);
   }
 
@@ -54,18 +87,21 @@ export class WorldMap {
   createSwitches() {
     const containerSwitches = document.createElement('div');
     const switchLeft = document.createElement('button');
-    const switchText = document.createElement('div');
     const switchRight = document.createElement('button');
 
+    this.switchText = document.createElement('div');
+    this.switchText.classList.add(`map-switches__${SWITCH.title}`);
+    this.switchText.textContent = SWITCHES_NAMES[this.switchesIndex];
+
     containerSwitches.classList.add('map-switches');
-    switchLeft.classList.add('map-switches__left');
-    switchText.classList.add('map-switches__title');
-    switchRight.classList.add('map-switches__right');
+    switchLeft.classList.add(`map-switches__${SWITCH.left}`);
+    switchRight.classList.add(`map-switches__${SWITCH.right}`);
+    switchLeft.dataset[this.dataAttributeSwitch] = SWITCH.left;
+    switchRight.dataset[this.dataAttributeSwitch] = SWITCH.right;
     switchLeft.textContent = '<';
     switchRight.textContent = '>';
-    switchText.textContent = 'All period';
-    containerSwitches.append(switchLeft, switchText, switchRight);
-    containerSwitches.addEventListener('click', this.onSwithesClick);
+    containerSwitches.append(switchLeft, this.switchText, switchRight);
+    containerSwitches.addEventListener('click', this.onSwitchesClick);
 
     return containerSwitches;
   }
@@ -73,30 +109,15 @@ export class WorldMap {
   createOptions() {
     const containerOptions = document.createElement('div');
 
-    for (let i = 0; i < 3; i += 1) {
+    OPTIONS_NAMES.forEach((item) => {
       const option = document.createElement('button');
-      switch (i) {
-        case 0:
-          option.textContent = 'Confirmed';
-          option.classList.add('map-options__item');
-          option.classList.add('map-options__item--confirmed');
-          option.dataset[this.dataAttributeOptions] = RATE.cases;
-          break;
-        case 1:
-          option.textContent = 'Dead';
-          option.classList.add('map-options__item');
-          option.classList.add('map-options__item--dead');
-          option.dataset[this.dataAttributeOptions] = RATE.deaths;
-          break;
-        case 2:
-          option.textContent = 'Recovered';
-          option.classList.add('map-options__item');
-          option.classList.add('map-options__item--recovered');
-          option.dataset[this.dataAttributeOptions] = RATE.recovered;
-          break;
-      }
+      option.textContent = item;
+      option.classList.add('map-options__item');
+      option.classList.add(`map-options__item--${item.toLowerCase()}`);
+      option.dataset[this.dataAttributeOption] = item;
       containerOptions.append(option);
-    }
+    });
+
     containerOptions.classList.add('map-options');
     containerOptions.addEventListener('click', this.onOptionsClick);
 
@@ -237,7 +258,7 @@ export class WorldMap {
       }
       this.data = xhr.response;
       this.transformData();
-      this.renderMap(countries, RATE.recovered);
+      this.renderMap(countries, RATE.cases);
     };
   }
 
@@ -253,6 +274,12 @@ export class WorldMap {
         goodCountry.properties[RATE.todayCases] = item[RATE.todayCases];
         goodCountry.properties[RATE.todayDeaths] = item[RATE.todayDeaths];
         goodCountry.properties[RATE.todayRecovered] = item[RATE.todayRecovered];
+        goodCountry.properties[RATE.casesPerHundredThousands] = +(item[RATE.casesPerOneMillion] / RATE.coefficient).toFixed(2);
+        goodCountry.properties[RATE.deathsPerHundredThousands] = +(item[RATE.deathsPerOneMillion] / RATE.coefficient).toFixed(2);
+        goodCountry.properties[RATE.recoveredPerHundredThousands] = +(item[RATE.recoveredPerOneMillion] / RATE.coefficient).toFixed(2);
+        goodCountry.properties[RATE.todayCasesPerHundredThousands] = +(item[RATE.todayCases] / item[RATE.population] * RATE.oneHundredThousands).toFixed(2);
+        goodCountry.properties[RATE.todayDeathsPerHundredThousands] = +(item[RATE.todayDeaths] / item[RATE.population] * RATE.oneHundredThousands).toFixed(2);
+        goodCountry.properties[RATE.todayRecoveredPerHundredThousands] = +(item[RATE.todayRecovered] / item[RATE.population] * RATE.oneHundredThousands).toFixed(2);
         arr.push(goodCountry);
       }
     });
@@ -264,15 +291,50 @@ export class WorldMap {
     console.log(this.data)
   }
 
-  onSwithesClick({ target }) {
-
+  onSwitchesClick({ target }) {
+    if (target.dataset[this.dataAttributeSwitch] === SWITCH.right) {
+      this.switchesIndex = this.switchesIndex === END_INDEX ? START_INDEX : this.switchesIndex + 1;
+    } else if (target.dataset[this.dataAttributeSwitch] === SWITCH.left) {
+      this.switchesIndex = this.switchesIndex === START_INDEX ? END_INDEX : this.switchesIndex - 1;
+    }
+    this.switchText.textContent = SWITCHES_NAMES[this.switchesIndex];
+    this.changeRate(this.optionsIndex, this.switchesIndex);
   }
 
   onOptionsClick({ target }) {
-    if (target.dataset[this.dataAttributeOptions]) {
-      const rate = target.dataset[this.dataAttributeOptions];
-      this.refreshMap();
-      this.renderMap(countries, rate);
+    if (target.dataset[this.dataAttributeOption]) {
+      this.optionsIndex = OPTIONS_NAMES.findIndex(item => item === target.dataset[this.dataAttributeOption]);
+      this.changeRate(this.optionsIndex, this.switchesIndex);
+    }
+  }
+
+  changeRate(optionsIndex, switchesIndex) {
+    this.refreshMap();
+
+    if (optionsIndex === 0 && switchesIndex === 0) {
+      this.renderMap(countries, RATE.cases);
+    } else if (optionsIndex === 1 && switchesIndex === 0) {
+      this.renderMap(countries, RATE.deaths);
+    } else if (optionsIndex === 2 && switchesIndex === 0) {
+      this.renderMap(countries, RATE.recovered);
+    } else if (optionsIndex === 0 && switchesIndex === 1) {
+      this.renderMap(countries, RATE.todayCases);
+    } else if (optionsIndex === 1 && switchesIndex === 1) {
+      this.renderMap(countries, RATE.todayDeaths);
+    } else if (optionsIndex === 2 && switchesIndex === 1) {
+      this.renderMap(countries, RATE.todayRecovered);
+    } else if (optionsIndex === 0 && switchesIndex === 2) {
+      this.renderMap(countries, RATE.casesPerHundredThousands);
+    } else if (optionsIndex === 1 && switchesIndex === 2) {
+      this.renderMap(countries, RATE.deathsPerHundredThousands);
+    } else if (optionsIndex === 2 && switchesIndex === 2) {
+      this.renderMap(countries, RATE.recoveredPerHundredThousands);
+    } else if (optionsIndex === 0 && switchesIndex === 3) {
+      this.renderMap(countries, RATE.todayCasesPerHundredThousands);
+    } else if (optionsIndex === 1 && switchesIndex === 3) {
+      this.renderMap(countries, RATE.todayDeathsPerHundredThousands);
+    } else if (optionsIndex === 2 && switchesIndex === 3) {
+      this.renderMap(countries, RATE.todayRecoveredPerHundredThousands);
     }
   }
 }

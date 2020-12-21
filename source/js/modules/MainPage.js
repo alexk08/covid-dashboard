@@ -3,8 +3,6 @@ import {TableCovid} from './TableCovid';
 import {WorldMap} from './WorldMap';
 import {ListCountries} from './ListCountries';
 import {Keyboard} from './keyboard';
-// import {textarea} from './keyboard';
-// console.log(textarea);
 
 export class MainPage {
   constructor(rootElement) {
@@ -46,7 +44,7 @@ export class MainPage {
     this.mapContainer = document.createElement('div');
     this.graphicContainer = document.createElement('div');
     this.graphicContainer.classList.add('graphic_container');
-    
+
     this.mapContainer.classList.add('map-container');
 
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
@@ -79,28 +77,28 @@ export class MainPage {
 
       if (e.target.textContent === 'Confirmed') {
         this.dataAttributeBottomSwitcher = 'Confirmed';
-        const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
-        const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
-        const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
-        confirmedButtonTable.click();
-        confirmedButtonList.click();
-        confirmedButtonGraphic.click();
+        // const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
+        // const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
+        // const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
+        // confirmedButtonTable.click();
+        // confirmedButtonList.click();
+        // confirmedButtonGraphic.click();
       } else if (e.target.textContent === 'Dead') {
         this.dataAttributeBottomSwitcher = 'Dead';
-        const deadButtonTable = document.querySelectorAll('.options__item')[1];
-        const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
-        const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
-        deadButtonTable.click();
-        deadButtonList.click();
-        deadButtonGraphic.click();
+        // const deadButtonTable = document.querySelectorAll('.options__item')[1];
+        // const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
+        // const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
+        // deadButtonTable.click();
+        // deadButtonList.click();
+        // deadButtonGraphic.click();
       } else if (e.target.textContent === 'Recovered') {
         this.dataAttributeBottomSwitcher = 'Recovered';
-        const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
-        const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
-        const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
-        recoveredButtonTable.click();
-        recoveredButtonList.click();
-        recoveredButtonGraphic.click();
+        // const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
+        // const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
+        // const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
+        // recoveredButtonTable.click();
+        // recoveredButtonList.click();
+        // recoveredButtonGraphic.click();
       }
 
       if (e.target.textContent === '<') {
