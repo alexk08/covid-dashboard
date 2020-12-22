@@ -7,6 +7,29 @@
     min-width: 500px;
     padding: 5px;
 
+    &-switcher {
+      display: flex;
+      height: 30px;
+      padding: 4px;
+      border: 1px solid #000;
+      justify-content: space-between;
+      align-items: center;
+  
+      &__left,
+      &__right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 24px;
+        cursor: pointer;
+      }
+  
+      &__left:hover,
+      &__right:hover {
+        background-color: #ccc;
+      }
+    }
+
     &-options {
       display: flex;
       flex-direction: row;

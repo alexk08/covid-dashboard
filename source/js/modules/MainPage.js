@@ -26,6 +26,7 @@ export class MainPage {
 
     this.worldMap = null;
     this.tableCovid = null;
+    this.graphic = null;
   }
 
   init() {
@@ -62,14 +63,16 @@ export class MainPage {
     this.worldMap.init();
     this.tableCovid = new TableCovid(this.tableContainer, this);
     this.tableCovid.init();
+    this.graphic = new Graphic(this.graphicContainer, this);
+    this.graphic.init();
     // const worldMap = new WorldMap(this.mapContainer, this);
     // const tableCovid = new TableCovid(this.tableContainer, this);
     const listCountries = new ListCountries(this.listContainer);
-    const graphic = new Graphic(this.graphicContainer);
+    //const graphic = new Graphic(this.graphicContainer);
     // worldMap.init();
     // tableCovid.init();
     listCountries.init();
-    graphic.init();
+    //graphic.init();
     // worldMap.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     // tableCovid.changeTable();
   }
@@ -80,6 +83,7 @@ export class MainPage {
   }
 
   changeSwithesIndex(targetDataAttribute, switchRight, switchLeft) {
+    console.log(`MainPage, changeSwithesIndex`);
     if (targetDataAttribute === switchRight) {
       this.switchesIndex = this.switchesIndex === END_INDEX ? START_INDEX : this.switchesIndex + 1;
     } else if (targetDataAttribute === switchLeft) {
@@ -88,12 +92,17 @@ export class MainPage {
 
     this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
     this.tableCovid.changeTable();
+    this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex);
   }
 
   changeOptionsIndex(targetDataAttribute, names) {
+    console.log(`MainPage, changeOptionsIndex`);
     this.optionsIndex = names.findIndex((name) => name === targetDataAttribute);
 
     this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
     this.tableCovid.changeTable();
+    this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex);
+    //console.log(`this.optionsIndex ${this.optionsIndex}`);
+    //console.log(`this.switchesIndex ${this.switchesIndex}`);
   }
 }

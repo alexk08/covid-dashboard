@@ -1,5 +1,10 @@
 const countryData = [
     {
+        flag: "",
+        country: "Global",
+        population: 7763035303
+    },
+    {
         country: "Afghanistan",
         countryInfo: {
             _id: 4,
