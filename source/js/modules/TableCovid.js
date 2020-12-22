@@ -93,7 +93,7 @@ export class TableCovid {
       this.data = xhr.response;
       this.drawTable(this.data);
       this.addListeners();
-      document.querySelectorAll('.container-table-options__item')[0].click();
+      //document.querySelectorAll('.container-table-options__item')[0].click();
     };
   }
 
