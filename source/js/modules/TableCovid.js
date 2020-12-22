@@ -50,9 +50,6 @@ export class TableCovid {
       const option = document.createElement('div');
       option.textContent = OPTIONS_NAMES[i];
       option.dataset[this.dataAttributeOption] = OPTIONS_NAMES[i];
-      if (i === 0) {
-        option.classList.add('container-table-options__item', 'active-background');
-      }
       option.classList.add('container-table-options__item');
       containerOptions.append(option);
     }
@@ -99,12 +96,13 @@ export class TableCovid {
       this.dataCurrent = sortCountry;
       this.drawTable(sortCountry);
       this.addListeners();
-      // document.querySelectorAll('.container-table-options__item')[0].click();
     };
   }
 
   drawTable(data) {
     const navMenu = document.querySelector('.nav.menu');
+    const buttons = document.querySelectorAll('.container-table-options__item');
+    this.changeActiveButton(buttons);
 
     for (let i = 0; i < data.length; i += 1) {
       const liMenu = document.createElement('li');
@@ -125,6 +123,9 @@ export class TableCovid {
           this.drawTable(this.dataCurrent);
           this.renderTable(this.dataCurrent);
           this.liMenuVisibility = false;
+          this.country = null;
+          this.mainPage.selectedCountryName = this.country;
+          this.mainPage.showRateByCountry();
         } else {
           this.clearTable();
           const sortCountry = this.sortData(this.data);
@@ -133,6 +134,8 @@ export class TableCovid {
           this.renderTable(this.dataCurrent);
           this.liMenuVisibility = true;
           this.country = sortCountry[i].country;
+          this.mainPage.selectedCountryName = this.country;
+          this.mainPage.showRateByCountry();
         }
       });
     }
@@ -156,10 +159,7 @@ export class TableCovid {
 
   onOptionsClick({target}) {
     const dataOption = target.dataset[this.dataAttributeOption];
-    const buttons = document.querySelectorAll('.container-table-options__item');
     if (dataOption) {
-      this.removeActiveButton(buttons);
-      target.classList.toggle('active-background');
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
       this.changeTable();
     }
@@ -168,6 +168,8 @@ export class TableCovid {
   renderTable(data) {
     const menuItemsCountry = document.querySelectorAll('.menu-item__country');
     const menuItemsCount = document.querySelectorAll('.menu-item__count');
+    const buttons = document.querySelectorAll('.container-table-options__item');
+    this.changeActiveButton(buttons);
 
     for (let i = 0; i < data.length; i += 1) {
       menuItemsCountry[i].textContent = data[i].country;
@@ -273,9 +275,21 @@ export class TableCovid {
     }
   }
 
-  removeActiveButton(arrayButtons) {
+  changeActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
       arrayButtons[i].classList.remove('active-background');
+    }
+    arrayButtons[this.mainPage.optionsIndex].classList.add('active-background');
+  }
+
+  selectCountry(name) {
+    if (name !== null) {
+      const sortCountry = this.sortData(this.data);
+      const selectedCountry = sortCountry.find((value) => name === value.country);
+      this.dataCurrent = [selectedCountry];
+      this.clearTable();
+      this.liMenuVisibility = true;
+      this.drawTable([selectedCountry]);
     }
   }
 }
