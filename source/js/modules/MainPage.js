@@ -66,15 +66,17 @@ export class MainPage {
     this.worldMap.init();
     this.tableCovid = new TableCovid(this.tableContainer, this);
     this.tableCovid.init();
+    this.listCountries = new ListCountries(this.listContainer, this);
+    this.listCountries.init();
     this.graphic = new Graphic(this.graphicContainer, this);
     this.graphic.init();
     // const worldMap = new WorldMap(this.mapContainer, this);
     // const tableCovid = new TableCovid(this.tableContainer, this);
-    const listCountries = new ListCountries(this.listContainer);
+    // const listCountries = new ListCountries(this.listContainer);
     //const graphic = new Graphic(this.graphicContainer);
     // worldMap.init();
     // tableCovid.init();
-    listCountries.init();
+    // listCountries.init();
     //graphic.init();
     // worldMap.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     // tableCovid.changeTable();
@@ -95,15 +97,16 @@ export class MainPage {
 
     this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
     this.tableCovid.changeTable();
+    this.listCountries.changeList();
     this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex);
   }
 
   changeOptionsIndex(targetDataAttribute, names) {
     console.log(`MainPage, changeOptionsIndex`);
     this.optionsIndex = names.findIndex((name) => name === targetDataAttribute);
-
     this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
     this.tableCovid.changeTable();
+    this.listCountries.changeList();
     this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex);
     //console.log(`this.optionsIndex ${this.optionsIndex}`);
     //console.log(`this.switchesIndex ${this.switchesIndex}`);
