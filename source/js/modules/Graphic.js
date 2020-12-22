@@ -1,5 +1,4 @@
-import {populationData} from './populationData';
-import {slagsData} from './slagsData';
+import {countryData} from './countryData';
 
 const URL = {
   SUMMARY: 'https://api.covid19api.com/summary',
@@ -35,8 +34,8 @@ export class Graphic {
     const switcherRight = document.createElement('div');
 
     const select = document.createElement('select');
-    populationData.forEach((item) => {
-      select.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+    countryData.forEach((item) => {
+      select.innerHTML += `<option value="${item.country}">${item.country}</option>`;
     });
     select.value = "global";
     select.addEventListener("change", () => {
@@ -142,7 +141,7 @@ export class Graphic {
 
     let populationFactor;
     if (/10/.test(this.dataAttributeHeaderSwitcher)) 
-    populationFactor = populationData.filter((item) => item.name === countryName)[0].population / (10 ** 5);
+    populationFactor = countryData.filter((item) => item.country === countryName)[0].population / (10 ** 5);
     else populationFactor = 1;
 
     let srcDataCovid;
