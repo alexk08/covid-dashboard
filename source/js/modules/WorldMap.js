@@ -56,6 +56,7 @@ export class WorldMap {
 
     this.onSwitchesClick = this.onSwitchesClick.bind(this);
     this.onOptionsClick = this.onOptionsClick.bind(this);
+    this.onFullScreenButtonClick = this.onFullScreenButtonClick.bind(this);
 
     this.mainPage = mainPage;
   }
@@ -67,6 +68,7 @@ export class WorldMap {
   }
 
   renderContent() {
+    const fullScreenButton = this.createFullScreenButton();
     this.mapElement = document.createElement('div');
     this.mapElement.classList.add('map');
     const map = this.createMap();
@@ -74,7 +76,7 @@ export class WorldMap {
 
     this.containerSwitches = this.createSwitches();
     this.containerOptions = this.createOptions();
-    this.rootElement.append(this.containerSwitches, this.mapElement, this.containerOptions);
+    this.rootElement.append(this.containerSwitches, fullScreenButton, this.mapElement, this.containerOptions);
   }
 
   createMap() {
@@ -123,6 +125,15 @@ export class WorldMap {
     containerOptions.addEventListener('click', this.onOptionsClick);
 
     return containerOptions;
+  }
+
+  createFullScreenButton() {
+    const fullScreenButton = document.createElement('button');
+    fullScreenButton.setAttribute('type', 'button');
+    fullScreenButton.classList.add('fullscreen-button');
+    fullScreenButton.classList.add('fullscreen-button--map');
+    fullScreenButton.addEventListener('click', this.onFullScreenButtonClick);
+    return fullScreenButton;
   }
 
   renderMap(data, rate) {
@@ -294,9 +305,9 @@ export class WorldMap {
 
     countries.features = arr;
 
-    console.log(arr);
-    console.log(countries.features);
-    console.log(this.data)
+    // console.log(arr);
+    // console.log(countries.features);
+    // console.log(this.data)
   }
 
   onSwitchesClick({ target }) {
@@ -344,5 +355,10 @@ export class WorldMap {
     } else if (optionsIndex === 2 && switchesIndex === 3) {
       this.renderMap(countries, RATE.todayRecoveredPerHundredThousands);
     }
+  }
+
+  onFullScreenButtonClick() {
+    this.mainPage.mapContainer.classList.toggle('fullscreen');
+    this.mainPage.rootElement.classList.toggle('module-fullscreen');
   }
 }

@@ -1108,6 +1108,9 @@ button,
   border: none;
   cursor: pointer; }
 
+body.module-fullscreen {
+  position: relative; }
+
 .container {
   width: 100%;
   max-width: 1920px;
@@ -1570,6 +1573,10 @@ button,
 
 .map-container {
   width: 800px; }
+  .map-container.fullscreen {
+    position: absolute;
+    width: 100vw;
+    height: 100vh; }
 
 .map {
   width: 100%;
@@ -1633,6 +1640,11 @@ button,
     cursor: pointer; }
   .map-options__item:active {
     background-color: #ccc; }
+
+.fullscreen-button {
+  width: 20px;
+  height: 20px;
+  background-color: blue; }
 
 /* @media (hover: hover), screen and (min-width: 0\0) {
   &:hover,

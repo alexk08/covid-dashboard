@@ -1,3 +1,9 @@
 .map-container {
   width: 800px;
+
+  &.fullscreen {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+  }
 }
