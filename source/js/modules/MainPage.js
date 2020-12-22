@@ -23,6 +23,9 @@ export class MainPage {
 
     this.optionsIndex = START_INDEX;
     this.switchesIndex = START_INDEX;
+
+    this.worldMap = null;
+    this.tableCovid = null;
   }
 
   init() {
@@ -55,15 +58,20 @@ export class MainPage {
 
     this.contentElement.append(this.tableContainer, this.listContainer, this.mapContainer, this.graphicContainer);
 
-    const worldMap = new WorldMap(this.mapContainer, this);
-    const tableCovid = new TableCovid(this.tableContainer);
+    this.worldMap = new WorldMap(this.mapContainer, this);
+    this.worldMap.init();
+    this.tableCovid = new TableCovid(this.tableContainer, this);
+    this.tableCovid.init();
+    // const worldMap = new WorldMap(this.mapContainer, this);
+    // const tableCovid = new TableCovid(this.tableContainer, this);
     const listCountries = new ListCountries(this.listContainer);
     const graphic = new Graphic(this.graphicContainer);
-    worldMap.init();
-    tableCovid.init();
+    // worldMap.init();
+    // tableCovid.init();
     listCountries.init();
     graphic.init();
-    this.clickSwitcher(this.rootElement, tableCovid, listCountries, graphic);
+    // worldMap.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+    // tableCovid.changeTable();
   }
 
   renderFooter() {
@@ -77,24 +85,15 @@ export class MainPage {
     } else if (targetDataAttribute === switchLeft) {
       this.switchesIndex = this.switchesIndex === START_INDEX ? END_INDEX : this.switchesIndex - 1;
     }
+
+    this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
+    this.tableCovid.changeTable();
   }
 
   changeOptionsIndex(targetDataAttribute, names) {
-    this.optionsIndex = names.findIndex(name => name === targetDataAttribute);
-  }
+    this.optionsIndex = names.findIndex((name) => name === targetDataAttribute);
 
-  clickSwitcher(button, instanceClassTable, instanceClassList, instanceClassGraphic) {
-    const confirmedButtonTable = document.querySelectorAll('.options__item')[0];
-    const deadButtonTable = document.querySelectorAll('.options__item')[1];
-    const recoveredButtonTable = document.querySelectorAll('.options__item')[2];
-    const confirmedButtonList = document.querySelectorAll('.container-list-options__item')[0];
-    const deadButtonList = document.querySelectorAll('.container-list-options__item')[1];
-    const recoveredButtonList = document.querySelectorAll('.container-list-options__item')[2];
-    const confirmedButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[0];
-    const deadButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[1];
-    const recoveredButtonGraphic = document.querySelectorAll('.container-graphic-options__item')[2];
-    instanceClassTable.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
-    instanceClassList.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
-    instanceClassGraphic.dataAttributeHeaderSwitcher = this.dataAttributeArray[this.dataAttributeIndex];
+    this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
+    this.tableCovid.changeTable();
   }
 }

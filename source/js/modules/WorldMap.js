@@ -179,14 +179,14 @@ export class WorldMap {
 
     function highlightFeature(e) {
       var layer = e.target;
-  
+
       layer.setStyle({
           weight: 2,
           color: '#666',
           dashArray: '',
           fillOpacity: 0.7
       });
-  
+
       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
           layer.bringToFront();
       }
@@ -210,7 +210,7 @@ export class WorldMap {
           click: zoomToFeature
       });
     }
-  
+
     geojson = L.geoJson(data, {
         style: style,
         onEachFeature: onEachFeature
@@ -249,7 +249,7 @@ export class WorldMap {
     xhr.open('GET', URL.SUMMARY);
 
     xhr.responseType = 'json';
-    
+
     xhr.send();
 
     xhr.onload = () => {
@@ -286,7 +286,7 @@ export class WorldMap {
     });
 
     countries.features = arr;
-    
+
     console.log(arr);
     console.log(countries.features);
     console.log(this.data)
@@ -296,7 +296,6 @@ export class WorldMap {
     const dataSwitch = target.dataset[this.dataAttributeSwitch];
     if (dataSwitch) {
       this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
-      this.switchText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
       this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
   }
@@ -306,11 +305,12 @@ export class WorldMap {
     if (dataOption) {
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
       this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
-    } 
+    }
   }
 
   changeRate(optionsIndex, switchesIndex) {
     this.refreshMap();
+    this.switchText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
 
     if (optionsIndex === 0 && switchesIndex === 0) {
       this.renderMap(countries, RATE.cases);
