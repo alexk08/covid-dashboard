@@ -56,6 +56,7 @@ export class WorldMap {
 
     this.onSwitchesClick = this.onSwitchesClick.bind(this);
     this.onOptionsClick = this.onOptionsClick.bind(this);
+    this.onFullScreenButtonClick = this.onFullScreenButtonClick.bind(this);
 
     this.mainPage = mainPage;
   }
@@ -67,6 +68,7 @@ export class WorldMap {
   }
 
   renderContent() {
+    const fullScreenButton = this.createFullScreenButton();
     this.mapElement = document.createElement('div');
     this.mapElement.classList.add('map');
     const map = this.createMap();
@@ -74,7 +76,7 @@ export class WorldMap {
 
     this.containerSwitches = this.createSwitches();
     this.containerOptions = this.createOptions();
-    this.rootElement.append(this.containerSwitches, this.mapElement, this.containerOptions);
+    this.rootElement.append(this.containerSwitches, fullScreenButton, this.mapElement, this.containerOptions);
   }
 
   createMap() {
@@ -123,6 +125,15 @@ export class WorldMap {
     containerOptions.addEventListener('click', this.onOptionsClick);
 
     return containerOptions;
+  }
+
+  createFullScreenButton() {
+    const fullScreenButton = document.createElement('button');
+    fullScreenButton.setAttribute('type', 'button');
+    fullScreenButton.classList.add('fullscreen-button');
+    fullScreenButton.classList.add('fullscreen-button--map');
+    fullScreenButton.addEventListener('click', this.onFullScreenButtonClick);
+    return fullScreenButton;
   }
 
   renderMap(data, rate) {
@@ -199,15 +210,22 @@ export class WorldMap {
       info.update();
     }
 
-    function zoomToFeature(e) {
-      map.fitBounds(e.target.getBounds());
+    // function zoomToFeature(e) {
+    //   map.fitBounds(e.target.getBounds());
+    // }
+
+    const selectCountry = (e) =>  {
+      this.mainPage.selectedCountryName = e.target.feature.properties.name;
+      this.mainPage.selectedCountryId = e.target.feature.id;
+      this.mainPage.showRateByCountry();
     }
 
     function onEachFeature(feature, layer) {
       layer.on({
           mouseover: highlightFeature,
           mouseout: resetHighlight,
-          click: zoomToFeature
+          click: selectCountry
+          // click: zoomToFeature
       });
     }
 
@@ -287,16 +305,16 @@ export class WorldMap {
 
     countries.features = arr;
 
-    console.log(arr);
-    console.log(countries.features);
-    console.log(this.data)
+    // console.log(arr);
+    // console.log(countries.features);
+    // console.log(this.data)
   }
 
   onSwitchesClick({ target }) {
     const dataSwitch = target.dataset[this.dataAttributeSwitch];
     if (dataSwitch) {
       this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
-      this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+      // this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
   }
 
@@ -304,7 +322,7 @@ export class WorldMap {
     const dataOption = target.dataset[this.dataAttributeOption];
     if (dataOption) {
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
-      this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+      // this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
   }
 
@@ -337,5 +355,10 @@ export class WorldMap {
     } else if (optionsIndex === 2 && switchesIndex === 3) {
       this.renderMap(countries, RATE.todayRecoveredPerHundredThousands);
     }
+  }
+
+  onFullScreenButtonClick() {
+    this.mainPage.mapContainer.classList.toggle('fullscreen');
+    this.mainPage.rootElement.classList.toggle('module-fullscreen');
   }
 }
