@@ -1,10 +1,28 @@
+const SWITCH = {
+  left: 'left',
+  right: 'right',
+  title: 'title',
+};
+
+const OPTIONS_NAMES = ['Confirmed', 'Dead', 'Recovered'];
+const SWITCHES_NAMES = ['All period', 'Last day', 'All period 100000', 'Last day 100000'];
+
+const DATA_ATTRIBUTE = {
+  option: 'option',
+  switch: 'switch',
+};
+
 export class ListCountries {
-  constructor(rootElement) {
+  constructor(rootElement, mainPage) {
     this.rootElement = rootElement;
     this.country = null;
-    this.indexOfCountry = null;
-    this.dataAttributeBottomSwitcher = 'Confirmed';
-    this.dataAttributeHeaderSwitcher = 'All period';
+    this.dataAttributeOption = DATA_ATTRIBUTE.option;
+    this.dataAttributeSwitch = DATA_ATTRIBUTE.switch;
+    this.mainPage = mainPage;
+    this.onSwitchesClick = this.onSwitchesClick.bind(this);
+    this.onOptionsClick = this.onOptionsClick.bind(this);
+    this.liMenuVisibility = false;
+    this.dataCurrent = null;
   }
 
   init() {
@@ -22,7 +40,7 @@ export class ListCountries {
 
     const containerSwitcher = document.createElement('div');
     const switcherLeft = document.createElement('div');
-    const switcherText = document.createElement('div');
+    this.switcherText = document.createElement('div');
     const switcherRight = document.createElement('div');
 
     const navConfirmed = document.createElement('nav');
@@ -32,16 +50,10 @@ export class ListCountries {
 
     for (let i = 0; i < 3; i += 1) {
       const option = document.createElement('div');
-      switch (i) {
-        case 0:
-          option.textContent = 'Confirmed';
-          break;
-        case 1:
-          option.textContent = 'Dead';
-          break;
-        case 2:
-          option.textContent = 'Recovered';
-          break;
+      option.textContent = OPTIONS_NAMES[i];
+      option.dataset[this.dataAttributeOption] = OPTIONS_NAMES[i];
+      if (i === 0) {
+        option.classList.add('container-list-options__item', 'active-background');
       }
       option.classList.add('container-list-options__item');
       containerOptions.append(option);
@@ -51,13 +63,15 @@ export class ListCountries {
     searchContainer.classList.add('container-search');
     searchText.classList.add('use-keyboard-input');
     searchField.classList.add('container-search-list', 'visibility');
-    containerSwitcher.classList.add('container-switcher');
-    switcherLeft.classList.add('container-switcher__left');
-    switcherText.classList.add('container-switcher__title');
-    switcherRight.classList.add('container-switcher__right');
+    containerSwitcher.classList.add('container-list-switcher');
+    switcherLeft.classList.add('container-list-switcher__left');
+    this.switcherText.classList.add('container-switcher__title');
+    switcherRight.classList.add('container-list-switcher__right');
     switcherLeft.textContent = '<';
     switcherRight.textContent = '>';
-    switcherText.textContent = 'All period';
+    this.switcherText.textContent = 'All period';
+    switcherLeft.dataset[this.dataAttributeSwitch] = SWITCH.left;
+    switcherRight.dataset[this.dataAttributeSwitch] = SWITCH.right;
 
     searchContainer.append(searchText, searchField);
     navConfirmed.classList.add('container-list-nav');
@@ -66,7 +80,7 @@ export class ListCountries {
     containerOptions.classList.add('container-list-options');
 
     navConfirmed.append(ulConfirmed);
-    containerSwitcher.append(switcherLeft, switcherText, switcherRight);
+    containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
 
     containerList.append(searchContainer, containerSwitcher, navConfirmed, containerOptions);
     this.rootElement.append(containerList);
@@ -81,103 +95,124 @@ export class ListCountries {
 
     xhr.onload = () => {
       this.data = xhr.response;
+      const sortCountry = this.sortData(this.data);
+      this.dataCurrent = sortCountry;
+      this.drawList(sortCountry);
       this.addListeners();
-      document.querySelectorAll('.container-list-options__item')[0].click();
+      // document.querySelectorAll('.container-list-options__item')[0].click();
     };
   }
 
-  addListeners() {
-    const confirmedButton = document.querySelectorAll('.container-list-options__item')[0];
-    const deadButton = document.querySelectorAll('.container-list-options__item')[1];
-    const recoveredButton = document.querySelectorAll('.container-list-options__item')[2];
-
-    this.clickBottomPanel(confirmedButton, 'Confirmed', this.data);
-    this.clickBottomPanel(deadButton, 'Dead', this.data);
-    this.clickBottomPanel(recoveredButton, 'Recovered', this.data);
-  }
-
-  clickBottomPanel(button, statusBottom, data) {
+  drawList(data) {
     const navMenu = document.querySelector('.container-list-nav.container-list-menu');
-    const buttons = document.querySelectorAll('.container-list-options__item');
-    button.addEventListener('click', () => {
-      this.clearTable();
-      this.installActiveButton(buttons);
-      button.classList.toggle('active-background');
-      document.querySelector('.use-keyboard-input').value = '';
 
-      const sortCountry = this.sortData(data, statusBottom);
-      this.clickSearch(document.querySelector('.use-keyboard-input'), sortCountry, statusBottom);
+    for (let i = 0; i < data.length; i += 1) {
+      const liMenu = document.createElement('li');
+      const flag = document.createElement('div');
+      const imgFlag = document.createElement('img');
+      const country = document.createElement('div');
+      const count = document.createElement('div');
 
-      for (let i = 0; i < sortCountry.length; i += 1) {
-        const liMenu = document.createElement('li');
-        const flagDiv = document.createElement('div');
-        const flagImg = document.createElement('img');
-        const country = document.createElement('div');
-        const count = document.createElement('div');
-        country.textContent = sortCountry[i].country;
-        if (this.dataAttributeHeaderSwitcher === 'All period') {
-          if (statusBottom === 'Confirmed') {
-            count.textContent = sortCountry[i].cases;
-          } else if (statusBottom === 'Dead') {
-            count.textContent = sortCountry[i].deaths;
-          } else {
-            count.textContent = sortCountry[i].recovered;
-          }
-        } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
-          if (statusBottom === 'Confirmed') {
-            count.textContent = sortCountry[i].todayCases;
-          } else if (statusBottom === 'Dead') {
-            count.textContent = sortCountry[i].todayDeaths;
-          } else {
-            count.textContent = sortCountry[i].todayRecovered;
-          }
-        } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
-          if (statusBottom === 'Confirmed') {
-            count.textContent = sortCountry[i].allThousandCases;
-          } else if (statusBottom === 'Dead') {
-            count.textContent = sortCountry[i].allThousandDeaths;
-          } else {
-            count.textContent = sortCountry[i].allThousandRecovered;
-          }
-        } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
-          if (statusBottom === 'Confirmed') {
-            count.textContent = sortCountry[i].lastThousandCases;
-          } else if (statusBottom === 'Dead') {
-            count.textContent = sortCountry[i].lastThousandDeaths;
-          } else {
-            count.textContent = sortCountry[i].lastThousandRecovered;
-          }
+      liMenu.classList.add('container-list-menu-item');
+      flag.classList.add('flag-container');
+      imgFlag.classList.add('flag-container__item');
+      country.classList.add('container-list-menu-item__country');
+      count.classList.add('container-list-menu-item__count');
+      flag.append(imgFlag);
+      liMenu.append(flag, country, count);
+      navMenu.append(liMenu);
+
+      liMenu.addEventListener('click', () => {
+        if (this.liMenuVisibility) {
+          this.clearList();
+          const sortCountry = this.sortData(this.data);
+          this.dataCurrent = sortCountry;
+          this.drawList(this.dataCurrent);
+          this.renderList(this.dataCurrent);
+          this.liMenuVisibility = false;
+        } else {
+          this.clearList();
+          const sortCountry = this.sortData(this.data);
+          this.dataCurrent = [sortCountry[i]];
+          this.drawList(this.dataCurrent);
+          this.renderList(this.dataCurrent);
+          this.liMenuVisibility = true;
+          this.country = sortCountry[i].country;
         }
-        liMenu.classList.add('container-list-menu-item');
-        country.classList.add('container-list-menu-item__country');
-        count.classList.add('container-list-menu-item__count');
-        flagDiv.classList.add('flag-container');
-        flagImg.setAttribute('src', `${sortCountry[i].flag}`);
-        flagImg.setAttribute('alt', `flag ${sortCountry[i].country}`);
+      });
+    }
 
-        flagDiv.append(flagImg);
-        liMenu.append(flagDiv, country, count);
-        navMenu.append(liMenu);
-
-        liMenu.addEventListener('click', () => {
-          console.log('Я тут');
-          if (this.liMenuVisibility) {
-            this.liMenuVisibility = false;
-            button.click();
-          } else {
-            this.clearTable();
-            liMenu.append(country, count);
-            navMenu.append(liMenu);
-            this.liMenuVisibility = true;
-            this.country = sortCountry[i].country;
-            this.indexOfCountry = i;
-          }
-        });
-      }
-    });
+    this.renderList(data);
+    this.clickSearch(document.querySelector('.use-keyboard-input'), this.sortData(this.data));
   }
 
-  sortData(data, statusBottom) {
+  addListeners() {
+    document.querySelector('.container-list-switcher').addEventListener('click', this.onSwitchesClick);
+    document.querySelector('.container-list-options').addEventListener('click', this.onOptionsClick);
+  }
+
+  onSwitchesClick({target}) {
+    const dataSwitch = target.dataset[this.dataAttributeSwitch];
+    if (dataSwitch) {
+      this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
+      this.changeList();
+    }
+  }
+
+  onOptionsClick({target}) {
+    const dataOption = target.dataset[this.dataAttributeOption];
+    const buttons = document.querySelectorAll('.container-list-options__item');
+    if (dataOption) {
+      this.removeActiveButton(buttons);
+      target.classList.toggle('active-background');
+      this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
+      this.changeList();
+    }
+  }
+
+  changeList() {
+    this.switcherText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
+    this.renderList(this.dataCurrent);
+  }
+
+  renderList(data) {
+    const menuItemsCountry = document.querySelectorAll('.container-list-menu-item__country');
+    const menuItemsCount = document.querySelectorAll('.container-list-menu-item__count');
+    const flag = document.querySelectorAll('.flag-container__item');
+
+    for (let i = 0; i < data.length; i += 1) {
+      menuItemsCountry[i].textContent = data[i].country;
+      flag[i].setAttribute('src', `${data[i].flag}`);
+      flag[i].setAttribute('alt', `${data[i].flag}`);
+      if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 0) {
+        menuItemsCount[i].textContent = data[i].cases;
+      } else if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 1) {
+        menuItemsCount[i].textContent = data[i].deaths;
+      } else if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 2) {
+        menuItemsCount[i].textContent = data[i].recovered;
+      } else if (this.mainPage.switchesIndex === 1 && this.mainPage.optionsIndex === 0) {
+        menuItemsCount[i].textContent = data[i].todayCases;
+      } else if (this.mainPage.switchesIndex === 1 && this.mainPage.optionsIndex === 1) {
+        menuItemsCount[i].textContent = data[i].todayDeaths;
+      } else if (this.mainPage.switchesIndex === 1 && this.mainPage.optionsIndex === 2) {
+        menuItemsCount[i].textContent = data[i].todayRecovered;
+      } else if (this.mainPage.switchesIndex === 2 && this.mainPage.optionsIndex === 0) {
+        menuItemsCount[i].textContent = data[i].allThousandCases;
+      } else if (this.mainPage.switchesIndex === 2 && this.mainPage.optionsIndex === 1) {
+        menuItemsCount[i].textContent = data[i].allThousandDeaths;
+      } else if (this.mainPage.switchesIndex === 2 && this.mainPage.optionsIndex === 2) {
+        menuItemsCount[i].textContent = data[i].allThousandRecovered;
+      } else if (this.mainPage.switchesIndex === 3 && this.mainPage.optionsIndex === 0) {
+        menuItemsCount[i].textContent = data[i].lastThousandCases;
+      } else if (this.mainPage.switchesIndex === 3 && this.mainPage.optionsIndex === 1) {
+        menuItemsCount[i].textContent = data[i].lastThousandDeaths;
+      } else if (this.mainPage.switchesIndex === 3 && this.mainPage.optionsIndex === 2) {
+        menuItemsCount[i].textContent = data[i].lastThousandRecovered;
+      }
+    }
+  }
+
+  sortData(data) {
     const sortCountry = [];
     for (let i = 0; i < data.length; i += 1) {
       let obj = {
@@ -188,9 +223,9 @@ export class ListCountries {
         'todayCases': data[i].todayCases,
         'todayDeaths': data[i].todayDeaths,
         'todayRecovered': data[i].todayRecovered,
-        'allThousandCases': +((data[i].casesPerOneMillion * 10).toFixed()),
-        'allThousandDeaths': +((data[i].deathsPerOneMillion * 10).toFixed()),
-        'allThousandRecovered': +((data[i].recoveredPerOneMillion * 10).toFixed()),
+        'allThousandCases': +((data[i].casesPerOneMillion / 10).toFixed(2)),
+        'allThousandDeaths': +((data[i].deathsPerOneMillion / 10).toFixed(2)),
+        'allThousandRecovered': +((data[i].recoveredPerOneMillion / 10).toFixed(2)),
         'lastThousandCases': +((data[i].todayCases / data[i].population * 100000).toFixed(2)),
         'lastThousandDeaths': +((data[i].todayDeaths / data[i].population * 100000).toFixed(2)),
         'lastThousandRecovered': +((data[i].todayRecovered / data[i].population * 100000).toFixed(2)),
@@ -199,44 +234,38 @@ export class ListCountries {
       sortCountry.push(obj);
     }
 
-    if (this.dataAttributeHeaderSwitcher === 'All period') {
-      if (statusBottom === 'Confirmed') {
-        sortCountry.sort((a, b) => b.cases - a.cases);
-      } else if (statusBottom === 'Dead') {
-        sortCountry.sort((a, b) => b.deaths - a.deaths);
-      } else {
-        sortCountry.sort((a, b) => b.recovered - a.recovered);
-      }
-    } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
-      if (statusBottom === 'Confirmed') {
-        sortCountry.sort((a, b) => b.todayCases - a.todayCases);
-      } else if (statusBottom === 'Dead') {
-        sortCountry.sort((a, b) => b.todayDeaths - a.todayDeaths);
-      } else {
-        sortCountry.sort((a, b) => b.todayRecovered - a.todayRecovered);
-      }
-    } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
-      if (statusBottom === 'Confirmed') {
-        sortCountry.sort((a, b) => b.allThousandCases - a.allThousandCases);
-      } else if (statusBottom === 'Dead') {
-        sortCountry.sort((a, b) => b.allThousandDeaths - a.allThousandDeaths);
-      } else {
-        sortCountry.sort((a, b) => b.allThousandRecovered - a.allThousandRecovered);
-      }
-    } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
-      if (statusBottom === 'Confirmed') {
-        sortCountry.sort((a, b) => b.lastThousandCases - a.lastThousandCases);
-      } else if (statusBottom === 'Dead') {
-        sortCountry.sort((a, b) => b.lastThousandDeaths - a.lastThousandDeaths);
-      } else {
-        sortCountry.sort((a, b) => b.lastThousandRecovered - a.lastThousandRecovered);
-      }
+    console.log(sortCountry);
+
+    if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 0) {
+      sortCountry.sort((a, b) => b.cases - a.cases);
+    } else if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 1) {
+      sortCountry.sort((a, b) => b.deaths - a.deaths);
+    } else if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 2) {
+      sortCountry.sort((a, b) => b.recovered - a.recovered);
+    } else if (this.mainPage.switchesIndex === 1 && this.mainPage.optionsIndex === 0) {
+      sortCountry.sort((a, b) => b.todayCases - a.todayCases);
+    } else if (this.mainPage.switchesIndex === 1 && this.mainPage.optionsIndex === 1) {
+      sortCountry.sort((a, b) => b.todayDeaths - a.todayDeaths);
+    } else if (this.mainPage.switchesIndex === 1 && this.mainPage.optionsIndex === 2) {
+      sortCountry.sort((a, b) => b.todayRecovered - a.todayRecovered);
+    } else if (this.mainPage.switchesIndex === 2 && this.mainPage.optionsIndex === 0) {
+      sortCountry.sort((a, b) => b.allThousandCases - a.allThousandCases);
+    } else if (this.mainPage.switchesIndex === 2 && this.mainPage.optionsIndex === 1) {
+      sortCountry.sort((a, b) => b.allThousandDeaths - a.allThousandDeaths);
+    } else if (this.mainPage.switchesIndex === 2 && this.mainPage.optionsIndex === 2) {
+      sortCountry.sort((a, b) => b.allThousandRecovered - a.allThousandRecovered);
+    } else if (this.mainPage.switchesIndex === 3 && this.mainPage.optionsIndex === 0) {
+      sortCountry.sort((a, b) => b.lastThousandCases - a.lastThousandCases);
+    } else if (this.mainPage.switchesIndex === 3 && this.mainPage.optionsIndex === 1) {
+      sortCountry.sort((a, b) => b.lastThousandDeaths - a.lastThousandDeaths);
+    } else if (this.mainPage.switchesIndex === 3 && this.mainPage.optionsIndex === 2) {
+      sortCountry.sort((a, b) => b.lastThousandRecovered - a.lastThousandRecovered);
     }
 
     return sortCountry;
   }
 
-  clickSearch(button, sortArray, statusBottom) {
+  clickSearch(button, sortArray) {
     button.addEventListener('click', () => {
       button.addEventListener('keyup', (e) => {
         const searchField = document.querySelector('.container-search-list');
@@ -254,60 +283,10 @@ export class ListCountries {
           searchItem.addEventListener('click', () => {
             searchField.classList.add('visibility');
             document.querySelector('.use-keyboard-input').value = response[i].country;
-            this.clearTable();
-            const menuNav = document.querySelector('.container-list-menu');
-            const menuItem = document.createElement('div');
-
-            const flagContainer = document.createElement('div');
-            const flagImg = document.createElement('img');
-            const country = document.createElement('div');
-            const count = document.createElement('div');
-
-            menuItem.classList.add('container-list-menu-item');
-            flagContainer.classList.add('flag-container');
-            country.classList.add('container-list-menu-item__country');
-            count.classList.add('container-list-menu-item__count');
-
-            flagImg.setAttribute('src', `${response[i].flag}`);
-            flagImg.setAttribute('alt', `flag ${response[i].country}`);
-            country.textContent = response[i].country;
-            if (this.dataAttributeHeaderSwitcher === 'All period') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].cases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].deaths;
-              } else {
-                count.textContent = response[i].recovered;
-              }
-            } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].todayCases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].todayDeaths;
-              } else {
-                count.textContent = response[i].todayRecovered;
-              }
-            } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].allThousandCases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].allThousandDeaths;
-              } else {
-                count.textContent = response[i].allThousandRecovered;
-              }
-            } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].lastThousandCases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].lastThousandDeaths;
-              } else {
-                count.textContent = response[i].lastThousandRecovered;
-              }
-            }
-
-            flagContainer.append(flagImg);
-            menuItem.append(flagContainer, country, count);
-            menuNav.append(menuItem);
+            this.clearList();
+            this.dataCurrent = [response[i]];
+            this.drawList(this.dataCurrent);
+            this.liMenuVisibility = true;
           });
           searchItem.classList.add('container-search-list__item');
           searchField.append(searchItem);
@@ -334,60 +313,10 @@ export class ListCountries {
           searchItem.addEventListener('click', () => {
             searchField.classList.add('visibility');
             document.querySelector('.use-keyboard-input').value = response[i].country;
-            this.clearTable();
-            const menuNav = document.querySelector('.container-list-menu');
-            const menuItem = document.createElement('div');
-
-            const flagContainer = document.createElement('div');
-            const flagImg = document.createElement('img');
-            const country = document.createElement('div');
-            const count = document.createElement('div');
-
-            menuItem.classList.add('container-list-menu-item');
-            flagContainer.classList.add('flag-container');
-            country.classList.add('container-list-menu-item__country');
-            count.classList.add('container-list-menu-item__count');
-
-            flagImg.setAttribute('src', `${response[i].flag}`);
-            flagImg.setAttribute('alt', `flag ${response[i].country}`);
-            country.textContent = response[i].country;
-            if (this.dataAttributeHeaderSwitcher === 'All period') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].cases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].deaths;
-              } else {
-                count.textContent = response[i].recovered;
-              }
-            } else if (this.dataAttributeHeaderSwitcher === 'Last day') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].todayCases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].todayDeaths;
-              } else {
-                count.textContent = response[i].todayRecovered;
-              }
-            } else if (this.dataAttributeHeaderSwitcher === 'All period 100000') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].allThousandCases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].allThousandDeaths;
-              } else {
-                count.textContent = response[i].allThousandRecovered;
-              }
-            } else if (this.dataAttributeHeaderSwitcher === 'Last day 100000') {
-              if (statusBottom === 'Confirmed') {
-                count.textContent = response[i].lastThousandCases;
-              } else if (statusBottom === 'Dead') {
-                count.textContent = response[i].lastThousandDeaths;
-              } else {
-                count.textContent = response[i].lastThousandRecovered;
-              }
-            }
-
-            flagContainer.append(flagImg);
-            menuItem.append(flagContainer, country, count);
-            menuNav.append(menuItem);
+            this.clearList();
+            this.dataCurrent = [response[i]];
+            this.drawList(this.dataCurrent);
+            this.liMenuVisibility = true;
           });
           searchItem.classList.add('container-search-list__item');
           searchField.append(searchItem);
@@ -400,7 +329,7 @@ export class ListCountries {
     });
   }
 
-  clearTable() {
+  clearList() {
     const navMenu = document.querySelector('.container-list-nav.container-list-menu');
     const menuItem = document.querySelectorAll('.container-list-menu-item');
     for (let i = 0; i < menuItem.length; i += 1) {
@@ -416,7 +345,7 @@ export class ListCountries {
     }
   }
 
-  installActiveButton(arrayButtons) {
+  removeActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
       arrayButtons[i].classList.remove('active-background');
     }

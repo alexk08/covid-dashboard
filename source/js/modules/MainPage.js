@@ -62,13 +62,15 @@ export class MainPage {
     this.worldMap.init();
     this.tableCovid = new TableCovid(this.tableContainer, this);
     this.tableCovid.init();
+    this.listCountries = new ListCountries(this.listContainer, this);
+    this.listCountries.init();
     // const worldMap = new WorldMap(this.mapContainer, this);
     // const tableCovid = new TableCovid(this.tableContainer, this);
-    const listCountries = new ListCountries(this.listContainer);
+    // const listCountries = new ListCountries(this.listContainer);
     const graphic = new Graphic(this.graphicContainer);
     // worldMap.init();
     // tableCovid.init();
-    listCountries.init();
+    // listCountries.init();
     graphic.init();
     // worldMap.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     // tableCovid.changeTable();
@@ -88,12 +90,13 @@ export class MainPage {
 
     this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
     this.tableCovid.changeTable();
+    this.listCountries.changeList();
   }
 
   changeOptionsIndex(targetDataAttribute, names) {
     this.optionsIndex = names.findIndex((name) => name === targetDataAttribute);
-
     this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
     this.tableCovid.changeTable();
+    this.listCountries.changeList();
   }
 }

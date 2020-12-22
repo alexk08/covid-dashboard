@@ -1209,6 +1209,33 @@ button,
       cursor: pointer; }
     .container-list-options__item:active {
       background-color: #ccc; }
+  .container-list-switcher {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 30px;
+    padding: 4px;
+    border: 1px solid #000;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .container-list-switcher__left, .container-list-switcher__right {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      width: 24px;
+      cursor: pointer; }
+    .container-list-switcher__left:hover, .container-list-switcher__right:hover {
+      background-color: #ccc; }
   .container-list-nav {
     display: -webkit-box;
     display: -ms-flexbox;
