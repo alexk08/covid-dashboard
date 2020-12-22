@@ -28,8 +28,8 @@ export class MainPage {
     this.tableCovid = null;
     this.graphic = null;
 
-    this.selectedCountryName = null; 
-    this.selectedCountryId = null; 
+    this.selectedCountryName = null;
+    this.selectedCountryId = null;
   }
 
   init() {
@@ -117,9 +117,8 @@ export class MainPage {
     // this.graphic.someMethod(this.selectedCountryName);
     //or
     // это пример
-    // this.graphic.someMethod(this.selectedCountryId); 
-    
-    console.log(this.selectedCountryName);
-    console.log(this.selectedCountryId);
+    // this.graphic.someMethod(this.selectedCountryId);
+    this.tableCovid.selectCountry(this.selectedCountryName);
+    this.listCountries.selectCountry(this.selectedCountryName);
   }
 }
