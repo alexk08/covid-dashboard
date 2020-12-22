@@ -58,9 +58,9 @@ export class Graphic {
     });
     select.value = "global";
     select.addEventListener("change", () => {
-      this.country = select.value;
+      this.mainPage.selectedCountryName = select.value;
       //console.log(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
-      this.drawGraphic(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+      this.drawGraphic(this.mainPage.optionsIndex, this.mainPage.switchesIndex, this.mainPage.selectedCountryName);
     });
 
     const containerChart = document.createElement('div');
@@ -120,7 +120,7 @@ export class Graphic {
     
   initGraphic(optionsIndex, switchesIndex) {
     console.log('initGraphic');
-    this.drawGraphic(optionsIndex, switchesIndex);
+    this.drawGraphic(optionsIndex, switchesIndex, this.mainPage.selectedCountryName);
     this.addListeners();
   }
 
@@ -150,10 +150,11 @@ export class Graphic {
     }
   }
 
-  drawGraphic(optionsIndex, switchesIndex) {
-    console.log('click');
-    console.log(`optionsIndex: ${optionsIndex}`);
-    console.log(`switchesIndex: ${switchesIndex}`);
+  drawGraphic(optionsIndex, switchesIndex, countryName) {
+    //console.log('click');
+    //console.log(`optionsIndex: ${optionsIndex}`);
+    //console.log(`switchesIndex: ${switchesIndex}`);
+    console.log(`countryName: ${countryName}`);
 
     this.switcherText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
     const buttons = document.querySelectorAll('.container-graphic-options__item');
@@ -161,8 +162,7 @@ export class Graphic {
 
     const chart = document.querySelector('.chart');
     chart.innerHTML = "";
-    let countryName = this.country;
-    //console.log(countryName);
+    if (countryName === null) countryName = 'Global';
 
     let populationFactor;
     if (switchesIndex === 2 || switchesIndex === 3) {
@@ -180,7 +180,7 @@ export class Graphic {
       if (optionsIndex === 2) optionCases = 'total_recovered';
     }
     else {
-      srcDataCovid = URL.COUNTRY_TOTAL.replace('countryName', `${this.country}`);
+      srcDataCovid = URL.COUNTRY_TOTAL.replace('countryName', `${this.mainPage.selectedCountryName}`);
       if (optionsIndex === 0) optionCases = 'cases';
       if (optionsIndex === 1) optionCases = 'deaths';
       if (optionsIndex === 2) optionCases = 'recovered';

@@ -1558,9 +1558,8 @@ const countryData = [
         activePerOneMillion: 12827.08,
         recoveredPerOneMillion: 1697.9,
         criticalPerOneMillion: 13.21
-        },
-        {
-        updated: 1608558685727,
+    },
+    {
         country: "Czechia",
         countryInfo: {
         _id: 203,
@@ -1570,27 +1569,22 @@ const countryData = [
         long: 15.5,
         flag: "https://disease.sh/assets/img/flags/cz.png"
         },
-        cases: 627523,
-        todayCases: 3364,
-        deaths: 10411,
-        todayDeaths: 35,
-        recovered: 534686,
-        todayRecovered: 136,
-        active: 82426,
-        critical: 588,
-        casesPerOneMillion: 58546,
-        deathsPerOneMillion: 971,
-        tests: 3538944,
-        testsPerOneMillion: 330175,
         population: 10718380,
         continent: "Europe",
-        oneCasePerPeople: 17,
-        oneDeathPerPeople: 1030,
-        oneTestPerPeople: 3,
-        activePerOneMillion: 7690.15,
-        recoveredPerOneMillion: 49884.96,
-        criticalPerOneMillion: 54.86
+    },
+    {
+        country: "Czech Republic",
+        countryInfo: {
+        _id: 203,
+        iso2: "CZ",
+        iso3: "CZE",
+        lat: 49.75,
+        long: 15.5,
+        flag: "https://disease.sh/assets/img/flags/cz.png"
         },
+        population: 10718380,
+        continent: "Europe",
+    },
         {
         updated: 1608558686117,
         country: "Côte d'Ivoire",
@@ -6550,9 +6544,21 @@ const countryData = [
         activePerOneMillion: 28987.84,
         recoveredPerOneMillion: 0,
         criticalPerOneMillion: 20.04
+    },
+    {
+        country: "United States of America",
+        countryInfo: {
+        _id: 840,
+        iso2: "US",
+        iso3: "USA",
+        lat: 38,
+        long: -97,
+        flag: "https://disease.sh/assets/img/flags/us.png"
         },
-        {
-        updated: 1608558685630,
+        population: 331918024,
+        continent: "North America",
+    },
+    {
         country: "USA",
         countryInfo: {
         _id: 840,
@@ -6562,29 +6568,10 @@ const countryData = [
         long: -97,
         flag: "https://disease.sh/assets/img/flags/us.png"
         },
-        cases: 18267579,
-        todayCases: 0,
-        deaths: 324869,
-        todayDeaths: 0,
-        recovered: 10622082,
-        todayRecovered: 0,
-        active: 7320628,
-        critical: 27997,
-        casesPerOneMillion: 55036,
-        deathsPerOneMillion: 979,
-        tests: 234217195,
-        testsPerOneMillion: 705648,
         population: 331918024,
         continent: "North America",
-        oneCasePerPeople: 18,
-        oneDeathPerPeople: 1022,
-        oneTestPerPeople: 1,
-        activePerOneMillion: 22055.53,
-        recoveredPerOneMillion: 32002.12,
-        criticalPerOneMillion: 84.35
-        },
-        {
-        updated: 1608558686105,
+    },
+    {
         country: "Uganda",
         countryInfo: {
         _id: 800,
