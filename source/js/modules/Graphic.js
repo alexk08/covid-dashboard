@@ -1,5 +1,19 @@
 import {countryData} from './countryData';
 
+const SWITCH = {
+  left: 'left',
+  right: 'right',
+  title: 'title',
+};
+
+const OPTIONS_NAMES = ['Confirmed', 'Dead', 'Recovered'];
+const SWITCHES_NAMES = ['All period', 'Last day', 'All period 100000', 'Last day 100000'];
+
+const DATA_ATTRIBUTE = {
+  option: 'option',
+  switch: 'switch',
+};
+
 const URL = {
   SUMMARY: 'https://api.covid19api.com/summary',
   TIME_LINE: 'https://covid19-api.org/api/timeline',                                                      //unstable access
@@ -11,26 +25,31 @@ const URL = {
 const DATE_START = new Date(2020, 3, 14, 0, 0, 0, 0);
 
 export class Graphic {
-  constructor(rootElement) {
+  constructor(rootElement, mainPage) {
     this.rootElement = rootElement;
     this.data = null;
     this.country = 'Global';
+    this.dataAttributeOption = DATA_ATTRIBUTE.option;
+    this.dataAttributeSwitch = DATA_ATTRIBUTE.switch;
     this.indexOfCountry = null;
+    this.mainPage = mainPage;
+    this.onSwitchesClick = this.onSwitchesClick.bind(this);
+    this.onOptionsClick = this.onOptionsClick.bind(this);
     this.dataAttributeBottomSwitcher = 'Confirmed';
     this.dataAttributeHeaderSwitcher = 'All period';  
   }
 
   init() {
     this.renderContent();
-    this.addLibraryGoogleChart().then(() => this.initGraphic('Global', 'Confirmed', 'All period'));
+    this.addLibraryGoogleChart().then(() => this.initGraphic(0, 0));
   }
 
-  renderContent(statusBottom) {
+  renderContent() {
     const containerGraphic = document.createElement('div');
 
     const containerSwitcher = document.createElement('div');
     const switcherLeft = document.createElement('div');
-    const switcherText = document.createElement('div');
+    this.switcherText = document.createElement('div');
     const switcherRight = document.createElement('div');
 
     const select = document.createElement('select');
@@ -40,8 +59,8 @@ export class Graphic {
     select.value = "global";
     select.addEventListener("change", () => {
       this.country = select.value;
-      //console.log(this.dataAttributeBottomSwitcher);
-      this.DrawGraphic(`${this.country}`, `${this.dataAttributeBottomSwitcher}`);
+      //console.log(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+      this.drawGraphic(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     });
 
     const containerChart = document.createElement('div');
@@ -52,37 +71,32 @@ export class Graphic {
 
     for (let i = 0; i < 3; i += 1) {
       const option = document.createElement('div');
-      switch (i) {
-        case 0:
-          option.textContent = 'Confirmed';
-          break;
-        case 1:
-          option.textContent = 'Dead';
-          break;
-        case 2:
-          option.textContent = 'Recovered';
-          break;
-      }
+      option.textContent = OPTIONS_NAMES[i];
+      option.dataset[this.dataAttributeOption] = OPTIONS_NAMES[i];
       option.classList.add('container-graphic-options__item');
       containerOptions.append(option);
     }
 
     containerGraphic.classList.add('container-graphic');
 
-    containerSwitcher.classList.add('container-switcher');
-    switcherLeft.classList.add('container-switcher__left');
-    switcherText.classList.add('container-switcher__title');
+    containerSwitcher.classList.add('container-graphic-switcher');
+    switcherLeft.classList.add(`container-graphic-switcher__${SWITCH.left}`);
+    switcherRight.classList.add(`container-graphic-switcher__${SWITCH.right}`);
+    this.switcherText.classList.add('container-switcher__title');
     switcherRight.classList.add('container-switcher__right');
     switcherLeft.textContent = '<';
     switcherRight.textContent = '>';
-    switcherText.textContent = 'All period';
+    this.switcherText.textContent = 'All period';
+
+    switcherLeft.dataset[this.dataAttributeSwitch] = SWITCH.left;
+    switcherRight.dataset[this.dataAttributeSwitch] = SWITCH.right;
 
     containerChart.classList.add('container-chart');
     chart.classList.add('chart');
 
     containerOptions.classList.add('container-graphic-options');
 
-    containerSwitcher.append(switcherLeft, switcherText, switcherRight);
+    containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
 
     containerGraphic.append(containerSwitcher, select, containerChart, containerOptions);
     this.rootElement.append(containerGraphic);
@@ -104,63 +118,77 @@ export class Graphic {
     })
   }
     
-  initGraphic(countryName, statusBottom) {
-    this.DrawGraphic(countryName, statusBottom);
+  initGraphic(optionsIndex, switchesIndex) {
+    console.log('initGraphic');
+    this.drawGraphic(optionsIndex, switchesIndex);
     this.addListeners();
-    document.querySelectorAll('.container-graphic-options__item')[0].click();
   }
 
-  addListeners(population) {
-    const confirmedButton = document.querySelectorAll('.container-graphic-options__item')[0];
-    const deadButton = document.querySelectorAll('.container-graphic-options__item')[1];
-    const recoveredButton = document.querySelectorAll('.container-graphic-options__item')[2];
-
-    this.clickBottomPanel(confirmedButton, 'Confirmed', this.data, population);
-    this.clickBottomPanel(deadButton, 'Dead', this.data, population);
-    this.clickBottomPanel(recoveredButton, 'Recovered', this.data, population);
+  addListeners() {
+    document.querySelector('.container-graphic-switcher').addEventListener('click', this.onSwitchesClick);
+    document.querySelector('.container-graphic-options').addEventListener('click', this.onOptionsClick);
+  }
+  
+  onSwitchesClick({target}) {
+    const dataSwitch = target.dataset[this.dataAttributeSwitch];
+    if (dataSwitch) {
+      this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
+      //this.drawGraphic(1,1);
+      console.log('onSwitchesClick');
+    }
   }
 
-  clickBottomPanel(button, statusBottom, data, population) {
-
+  onOptionsClick({target}) {
+    const dataOption = target.dataset[this.dataAttributeOption];
     const buttons = document.querySelectorAll('.container-graphic-options__item');
-    button.addEventListener('click', () => {
-      this.dataAttributeBottomSwitcher = statusBottom;
-      //console.log(statusBottom);
-      this.DrawGraphic('Global', `${statusBottom}`);
-
-      this.installActiveButton(buttons);
-      button.classList.toggle('active-background');
-    });
+    if (dataOption) {
+      //this.changeActiveButton(buttons);
+      //target.classList.toggle('active-background');
+      this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
+      //this.drawGraphic(2, 2);
+      console.log('onOptionsClick');
+    }
   }
 
-  DrawGraphic(f, statusBottom) {
+  drawGraphic(optionsIndex, switchesIndex) {
+    console.log('click');
+    console.log(`optionsIndex: ${optionsIndex}`);
+    console.log(`switchesIndex: ${switchesIndex}`);
+
+    this.switcherText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
+    const buttons = document.querySelectorAll('.container-graphic-options__item');
+    this.changeActiveButton(buttons);
+
     const chart = document.querySelector('.chart');
     chart.innerHTML = "";
     let countryName = this.country;
     //console.log(countryName);
 
     let populationFactor;
-    if (/10/.test(this.dataAttributeHeaderSwitcher)) 
-    populationFactor = countryData.filter((item) => item.country === countryName)[0].population / (10 ** 5);
+    if (switchesIndex === 2 || switchesIndex === 3) {
+      console.log(countryName);
+      populationFactor = countryData.filter((item) => item.country === countryName)[0].population / (10 ** 5);
+    }
     else populationFactor = 1;
 
     let srcDataCovid;
+    let optionCases;
     if (countryName === 'Global') {
       srcDataCovid = URL.TIME_LINE;
-      if (statusBottom === 'Confirmed') statusBottom = 'total_cases';
-      if (statusBottom === 'Dead') statusBottom = 'total_deaths';
-      if (statusBottom === 'Recovered') statusBottom = 'total_recovered';
+      if (optionsIndex === 0) optionCases = 'total_cases';
+      if (optionsIndex === 1) optionCases = 'total_deaths';
+      if (optionsIndex === 2) optionCases = 'total_recovered';
     }
     else {
       srcDataCovid = URL.COUNTRY_TOTAL.replace('countryName', `${this.country}`);
-      if (statusBottom === 'Confirmed') statusBottom = 'cases';
-      if (statusBottom === 'Dead') statusBottom = 'deaths';
-      if (statusBottom === 'Recovered') statusBottom = 'recovered';
+      if (optionsIndex === 0) optionCases = 'cases';
+      if (optionsIndex === 1) optionCases = 'deaths';
+      if (optionsIndex === 2) optionCases = 'recovered';
     }
     //console.log(srcDataCovid);
 
     let mode = false;
-    if (/da/.test(this.dataAttributeHeaderSwitcher)) 
+    if (switchesIndex === 1 || switchesIndex === 3) 
     mode = true;
     Array.prototype.cumulativeToDaily = function() {
       let arrDaily = [this[0]];
@@ -203,7 +231,7 @@ export class Graphic {
           let cases = [];
           if (res.length !== 0) {
             res.forEach((day) => {
-              cases.push([new Date(day.last_update), day[statusBottom] / populationFactor]);
+              cases.push([new Date(day.last_update), day[optionCases] / populationFactor]);
             });
             cases.reverse();
             if (mode) cases = cases.cumulativeToDaily();
@@ -225,7 +253,7 @@ export class Graphic {
         .then((res) => {
           let cases = [];
           if (res.length !== 0) {
-            cases = Object.entries(res.timeline[statusBottom]);
+            cases = Object.entries(res.timeline[optionCases]);
             cases = cases.map((item) => [new Date(item[0]), item[1] / populationFactor]);
             let casesNonNull = [];
             for (let i = 0; i < cases.length; i += 1) {
@@ -248,9 +276,11 @@ export class Graphic {
       }
     }
   }
-  installActiveButton(arrayButtons) {
+
+  changeActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
       arrayButtons[i].classList.remove('active-background');
     }
+    arrayButtons[this.mainPage.optionsIndex].classList.add('active-background');
   }
 }

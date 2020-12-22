@@ -82,7 +82,7 @@ export class ListCountries {
     xhr.onload = () => {
       this.data = xhr.response;
       this.addListeners();
-      document.querySelectorAll('.container-list-options__item')[0].click();
+      //document.querySelectorAll('.container-list-options__item')[0].click();
     };
   }
 
