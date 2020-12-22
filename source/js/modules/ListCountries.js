@@ -160,6 +160,7 @@ export class ListCountries {
         navMenu.append(liMenu);
 
         liMenu.addEventListener('click', () => {
+          console.log('Я тут');
           if (this.liMenuVisibility) {
             this.liMenuVisibility = false;
             button.click();
