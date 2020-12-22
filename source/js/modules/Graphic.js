@@ -212,11 +212,13 @@ export class Graphic {
         fontSize: 16,
         hAxis: {
           format: 'MMM',
+          title: 'Month',
           gridlines: {count: 15},
           title: '',
         },
         forceIFrame: true,
         vAxis: {
+          format: 'short',
           gridlines: {color: 'none'},
           minValue: 0,
           title: '',
@@ -224,7 +226,11 @@ export class Graphic {
             color: '#000000'
           }
         },
-        legend: { position: "bottom" },
+        crosshair:{
+          color:'#000000',
+          trigger:'selection'  
+        },
+        legend: 'none',
       };
       if (countryName === 'Global') {
         fetch(srcDataCovid)
@@ -238,7 +244,7 @@ export class Graphic {
             cases.reverse();
             if (mode) cases = cases.cumulativeToDaily();
             let data = google.visualization.arrayToDataTable([
-              ["Date", "Cumulative Cases"],
+              ["Date", `${SWITCHES_NAMES[switchesIndex]}`],
             ...cases
             ]);
   
