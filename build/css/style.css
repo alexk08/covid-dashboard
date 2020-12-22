@@ -1186,9 +1186,10 @@ body.module-fullscreen {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 100%;
   min-width: 300px;
-  padding: 5px; }
+  padding: 5px;
+  position: relative;
+  width: 0px; }
   .container-list-options {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1250,7 +1251,7 @@ body.module-fullscreen {
   .container-list-menu {
     margin: 0;
     overflow-y: scroll;
-    height: 370px;
+    height: 579px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1263,6 +1264,13 @@ body.module-fullscreen {
       -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
               box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
       cursor: pointer; }
+  .container-list__fullscreen {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0; }
+  .container-list:hover .container-list__fullscreen {
+    opacity: 1; }
 
 .container-search-list {
   display: -webkit-box;
@@ -1305,9 +1313,10 @@ body.module-fullscreen {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 100%;
   min-width: 300px;
-  padding: 5px; }
+  padding: 5px;
+  position: relative;
+  width: 0px; }
   .container-table-options {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1331,6 +1340,13 @@ body.module-fullscreen {
       cursor: pointer; }
     .container-table-options__item:active {
       background-color: #ccc; }
+  .container-table__fullscreen {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0; }
+  .container-table:hover .container-table__fullscreen {
+    opacity: 1; }
 
 .container-switcher {
   display: -webkit-box;
@@ -1396,7 +1412,7 @@ body.module-fullscreen {
 .menu {
   margin: 0;
   overflow-y: scroll;
-  height: 370px;
+  height: 559px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1415,6 +1431,11 @@ body.module-fullscreen {
 
 .active-background {
   background-color: #ccc; }
+
+.full-screen {
+  width: 100%;
+  -webkit-transition: width 1s;
+  transition: width 1s; }
 
 .container-graphic {
   display: -webkit-box;

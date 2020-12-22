@@ -117,15 +117,12 @@ export class MainPage {
     // this.graphic.someMethod(this.selectedCountryName);
     //or
     // это пример
-<<<<<<< HEAD
     this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex, this.selectedCountryName);
-    
+
     console.log(this.selectedCountryName);
     console.log(this.selectedCountryId);
-=======
     // this.graphic.someMethod(this.selectedCountryId);
     this.tableCovid.selectCountry(this.selectedCountryName);
     this.listCountries.selectCountry(this.selectedCountryName);
->>>>>>> develop
   }
 }
