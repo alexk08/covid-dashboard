@@ -199,15 +199,22 @@ export class WorldMap {
       info.update();
     }
 
-    function zoomToFeature(e) {
-      map.fitBounds(e.target.getBounds());
+    // function zoomToFeature(e) {
+    //   map.fitBounds(e.target.getBounds());
+    // }
+
+    const selectCountry = (e) =>  {
+      this.mainPage.selectedCountryName = e.target.feature.properties.name;
+      this.mainPage.selectedCountryId = e.target.feature.id;
+      this.mainPage.showRateByCountry();
     }
 
     function onEachFeature(feature, layer) {
       layer.on({
           mouseover: highlightFeature,
           mouseout: resetHighlight,
-          click: zoomToFeature
+          click: selectCountry
+          // click: zoomToFeature
       });
     }
 
@@ -296,7 +303,7 @@ export class WorldMap {
     const dataSwitch = target.dataset[this.dataAttributeSwitch];
     if (dataSwitch) {
       this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
-      this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+      // this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
   }
 
@@ -304,7 +311,7 @@ export class WorldMap {
     const dataOption = target.dataset[this.dataAttributeOption];
     if (dataOption) {
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
-      this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+      // this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
   }
 

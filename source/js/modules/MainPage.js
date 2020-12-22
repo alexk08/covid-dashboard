@@ -27,6 +27,9 @@ export class MainPage {
     this.worldMap = null;
     this.tableCovid = null;
     this.graphic = null;
+
+    this.selectedCountryName = null; 
+    this.selectedCountryId = null; 
   }
 
   init() {
@@ -104,5 +107,16 @@ export class MainPage {
     this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex);
     //console.log(`this.optionsIndex ${this.optionsIndex}`);
     //console.log(`this.switchesIndex ${this.switchesIndex}`);
+  }
+
+  showRateByCountry() {
+    // это пример
+    // this.graphic.someMethod(this.selectedCountryName);
+    //or
+    // это пример
+    // this.graphic.someMethod(this.selectedCountryId); 
+    
+    console.log(this.selectedCountryName);
+    console.log(this.selectedCountryId);
   }
 }
