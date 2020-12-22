@@ -1425,6 +1425,33 @@ button,
   height: 480px;
   min-width: 500px;
   padding: 5px; }
+  .container-graphic-switcher {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: 30px;
+    padding: 4px;
+    border: 1px solid #000;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .container-graphic-switcher__left, .container-graphic-switcher__right {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      width: 24px;
+      cursor: pointer; }
+    .container-graphic-switcher__left:hover, .container-graphic-switcher__right:hover {
+      background-color: #ccc; }
   .container-graphic-options {
     display: -webkit-box;
     display: -ms-flexbox;
