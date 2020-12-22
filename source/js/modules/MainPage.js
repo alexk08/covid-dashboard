@@ -88,7 +88,6 @@ export class MainPage {
   }
 
   changeSwithesIndex(targetDataAttribute, switchRight, switchLeft) {
-    console.log(`MainPage, changeSwithesIndex`);
     if (targetDataAttribute === switchRight) {
       this.switchesIndex = this.switchesIndex === END_INDEX ? START_INDEX : this.switchesIndex + 1;
     } else if (targetDataAttribute === switchLeft) {
@@ -102,7 +101,6 @@ export class MainPage {
   }
 
   changeOptionsIndex(targetDataAttribute, names) {
-    console.log(`MainPage, changeOptionsIndex`);
     this.optionsIndex = names.findIndex((name) => name === targetDataAttribute);
     this.worldMap.changeRate(this.optionsIndex, this.switchesIndex);
     this.tableCovid.changeTable();
@@ -113,19 +111,11 @@ export class MainPage {
   }
 
   showRateByCountry() {
-    // это пример
-    // this.graphic.someMethod(this.selectedCountryName);
-    //or
-    // это пример
-<<<<<<< HEAD
-    this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex, this.selectedCountryName);
-    
     console.log(this.selectedCountryName);
     console.log(this.selectedCountryId);
-=======
-    // this.graphic.someMethod(this.selectedCountryId);
+    
+    this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex, this.selectedCountryName);
     this.tableCovid.selectCountry(this.selectedCountryName);
     this.listCountries.selectCountry(this.selectedCountryName);
->>>>>>> develop
   }
 }
