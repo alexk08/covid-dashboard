@@ -126,7 +126,7 @@ export class Graphic {
     const buttons = document.querySelectorAll('.container-graphic-options__item');
     button.addEventListener('click', () => {
       this.dataAttributeBottomSwitcher = statusBottom;
-      //console.log(this.dataAttributeBottomSwitcher);
+      //console.log(statusBottom);
       this.DrawGraphic('Global', `${statusBottom}`);
 
       this.installActiveButton(buttons);
@@ -140,11 +140,10 @@ export class Graphic {
     let countryName = this.country;
     //console.log(countryName);
 
-    let population;
+    let populationFactor;
     if (/10/.test(this.dataAttributeHeaderSwitcher)) 
-    population = populationData.filter((item) => item.name === countryName)[0].population;
-    else population = 1;
-    //console.log(population);
+    populationFactor = populationData.filter((item) => item.name === countryName)[0].population / (10 ** 5);
+    else populationFactor = 1;
 
     let srcDataCovid;
     if (countryName === 'Global') {
@@ -164,6 +163,13 @@ export class Graphic {
     let mode = false;
     if (/da/.test(this.dataAttributeHeaderSwitcher)) 
     mode = true;
+    Array.prototype.cumulativeToDaily = function() {
+      let arrDaily = [this[0]];
+      for (let i = 1; i < this.length; i += 1) {
+        arrDaily.push([this[i][0], this[i][1] - this[i - 1][1]]);
+      }
+      return arrDaily;
+    }
 
     google.charts.load("current", { packages: ["corechart"] });
     google.charts.setOnLoadCallback(drawChart);
@@ -198,8 +204,10 @@ export class Graphic {
           let cases = [];
           if (res.length !== 0) {
             res.forEach((day) => {
-              cases.push([new Date(day.last_update), (day[statusBottom] / population) * 10 ** 5]);
+              cases.push([new Date(day.last_update), day[statusBottom] / populationFactor]);
             });
+            cases.reverse();
+            if (mode) cases = cases.cumulativeToDaily();
             let data = google.visualization.arrayToDataTable([
               ["Date", "Cumulative Cases"],
             ...cases
@@ -219,12 +227,13 @@ export class Graphic {
           let cases = [];
           if (res.length !== 0) {
             cases = Object.entries(res.timeline[statusBottom]);
-            cases = cases.map((item) => [new Date(item[0]), (item[1] / population) * 10 ** 5]);
+            cases = cases.map((item) => [new Date(item[0]), item[1] / populationFactor]);
             let casesNonNull = [];
             for (let i = 0; i < cases.length; i += 1) {
               if (cases[i][1] !== 0) 
               casesNonNull.push(cases[i]);
             }
+            if (mode) casesNonNull = casesNonNull.cumulativeToDaily();
             //console.log(cases);
             let data = google.visualization.arrayToDataTable([
               ["Date", "Cumulative Cases"],
