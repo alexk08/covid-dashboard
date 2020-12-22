@@ -22,6 +22,7 @@ export class TableCovid {
     this.onSwitchesClick = this.onSwitchesClick.bind(this);
     this.onOptionsClick = this.onOptionsClick.bind(this);
     this.liMenuVisibility = false;
+    this.dataCurrent = null;
   }
 
   init() {
@@ -49,6 +50,9 @@ export class TableCovid {
       const option = document.createElement('div');
       option.textContent = OPTIONS_NAMES[i];
       option.dataset[this.dataAttributeOption] = OPTIONS_NAMES[i];
+      if (i === 0) {
+        option.classList.add('container-table-options__item', 'active-background');
+      }
       option.classList.add('container-table-options__item');
       containerOptions.append(option);
     }
@@ -91,9 +95,11 @@ export class TableCovid {
 
     xhr.onload = () => {
       this.data = xhr.response;
-      this.drawTable(this.data);
+      const sortCountry = this.sortData(this.data);
+      this.dataCurrent = sortCountry;
+      this.drawTable(sortCountry);
       this.addListeners();
-      //document.querySelectorAll('.container-table-options__item')[0].click();
+      // document.querySelectorAll('.container-table-options__item')[0].click();
     };
   }
 
@@ -115,19 +121,24 @@ export class TableCovid {
         if (this.liMenuVisibility) {
           this.clearTable();
           const sortCountry = this.sortData(this.data);
-          this.drawTable(this.data);
-          this.renderTable(sortCountry);
+          this.dataCurrent = sortCountry;
+          this.drawTable(this.dataCurrent);
+          this.renderTable(this.dataCurrent);
           this.liMenuVisibility = false;
         } else {
           this.clearTable();
           const sortCountry = this.sortData(this.data);
-          this.drawTable([sortCountry[i]]);
-          this.renderTable([sortCountry[i]]);
+          this.dataCurrent = [sortCountry[i]];
+          this.drawTable(this.dataCurrent);
+          this.renderTable(this.dataCurrent);
           this.liMenuVisibility = true;
           this.country = sortCountry[i].country;
         }
       });
     }
+
+    this.renderTable(data);
+    this.renderGlobal();
   }
 
   addListeners() {
@@ -221,8 +232,7 @@ export class TableCovid {
 
   changeTable() {
     this.switcherText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
-    const sortCountry = this.sortData(this.data);
-    this.renderTable(sortCountry);
+    this.renderTable(this.dataCurrent);
     this.renderGlobal();
   }
 
@@ -241,9 +251,9 @@ export class TableCovid {
         'todayCases': data[i].todayCases,
         'todayDeaths': data[i].todayDeaths,
         'todayRecovered': data[i].todayRecovered,
-        'allThousandCases': +((data[i].casesPerOneMillion * 10).toFixed()),
-        'allThousandDeaths': +((data[i].deathsPerOneMillion * 10).toFixed()),
-        'allThousandRecovered': +((data[i].recoveredPerOneMillion * 10).toFixed()),
+        'allThousandCases': +((data[i].casesPerOneMillion / 10).toFixed()),
+        'allThousandDeaths': +((data[i].deathsPerOneMillion / 10).toFixed()),
+        'allThousandRecovered': +((data[i].recoveredPerOneMillion / 10).toFixed()),
         'lastThousandCases': lastThousandCases,
         'lastThousandDeaths': lastThousandDeaths,
         'lastThousandRecovered': lastThousandRecovered,
