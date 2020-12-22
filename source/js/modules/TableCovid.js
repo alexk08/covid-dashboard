@@ -30,8 +30,6 @@ export class TableCovid {
   }
 
   renderContent() {
-    const containerTable = document.createElement('div');
-
     const containerGlobalInformation = document.createElement('div');
     const globalInformationTitle = document.createElement('div');
     const globalInformationCount = document.createElement('div');
@@ -40,6 +38,10 @@ export class TableCovid {
     const switcherLeft = document.createElement('div');
     this.switcherText = document.createElement('div');
     const switcherRight = document.createElement('div');
+
+    const fullScreenButton = document.createElement('i');
+    fullScreenButton.classList.add('fa', 'fa-arrows-alt', 'fa-sm', 'container-table__fullscreen');
+    fullScreenButton.setAttribute('aria-hidden', 'true');
 
     const navConfirmed = document.createElement('nav');
     const ulConfirmed = document.createElement('ul');
@@ -54,7 +56,7 @@ export class TableCovid {
       containerOptions.append(option);
     }
 
-    containerTable.classList.add('container-table');
+    this.rootElement.classList.add('container-table');
     containerGlobalInformation.classList.add('container-global-information');
     globalInformationTitle.classList.add('container-global-information__title');
     globalInformationCount.classList.add('container-global-information__count');
@@ -79,8 +81,7 @@ export class TableCovid {
     navConfirmed.append(ulConfirmed);
     containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
 
-    containerTable.append(containerGlobalInformation, containerSwitcher, navConfirmed, containerOptions);
-    this.rootElement.append(containerTable);
+    this.rootElement.append(fullScreenButton, containerGlobalInformation, containerSwitcher, navConfirmed, containerOptions);
     this.getData();
   }
 
@@ -147,6 +148,7 @@ export class TableCovid {
   addListeners() {
     document.querySelector('.container-switcher').addEventListener('click', this.onSwitchesClick);
     document.querySelector('.container-table-options').addEventListener('click', this.onOptionsClick);
+    document.querySelector('.container-table__fullscreen').addEventListener('click', this.onFullScreen);
   }
 
   onSwitchesClick({target}) {
@@ -291,5 +293,13 @@ export class TableCovid {
       this.liMenuVisibility = true;
       this.drawTable([selectedCountry]);
     }
+  }
+
+  onFullScreen() {
+    document.querySelector('.container-list').classList.toggle('visibility');
+    document.querySelector('.map-container').classList.toggle('visibility');
+    document.querySelector('.graphic_container').classList.toggle('visibility');
+
+    document.querySelector('.container-table').classList.toggle('full-screen');
   }
 }

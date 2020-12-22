@@ -113,7 +113,7 @@ export class MainPage {
   showRateByCountry() {
     console.log(this.selectedCountryName);
     console.log(this.selectedCountryId);
-    
+
     this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex, this.selectedCountryName);
     this.tableCovid.selectCountry(this.selectedCountryName);
     this.listCountries.selectCountry(this.selectedCountryName);

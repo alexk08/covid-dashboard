@@ -30,8 +30,6 @@ export class ListCountries {
   }
 
   renderContent() {
-    const containerList = document.createElement('div');
-
     const searchContainer = document.createElement('div');
     const searchText = document.createElement('textarea');
     const searchField = document.createElement('ul');
@@ -42,6 +40,10 @@ export class ListCountries {
     const switcherLeft = document.createElement('div');
     this.switcherText = document.createElement('div');
     const switcherRight = document.createElement('div');
+
+    const fullScreenButton = document.createElement('i');
+    fullScreenButton.classList.add('fa', 'fa-arrows-alt', 'fa-sm', 'container-list__fullscreen');
+    fullScreenButton.setAttribute('aria-hidden', 'true');
 
     const navConfirmed = document.createElement('nav');
     const ulConfirmed = document.createElement('ul');
@@ -56,7 +58,7 @@ export class ListCountries {
       containerOptions.append(option);
     }
 
-    containerList.classList.add('container-list');
+    this.rootElement.classList.add('container-list');
     searchContainer.classList.add('container-search');
     searchText.classList.add('use-keyboard-input');
     searchField.classList.add('container-search-list', 'visibility');
@@ -79,8 +81,7 @@ export class ListCountries {
     navConfirmed.append(ulConfirmed);
     containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
 
-    containerList.append(searchContainer, containerSwitcher, navConfirmed, containerOptions);
-    this.rootElement.append(containerList);
+    this.rootElement.append(fullScreenButton, searchContainer, containerSwitcher, navConfirmed, containerOptions);
     this.getData();
   }
 
@@ -152,6 +153,7 @@ export class ListCountries {
   addListeners() {
     document.querySelector('.container-list-switcher').addEventListener('click', this.onSwitchesClick);
     document.querySelector('.container-list-options').addEventListener('click', this.onOptionsClick);
+    document.querySelector('.container-list__fullscreen').addEventListener('click', this.onFullScreen);
   }
 
   onSwitchesClick({target}) {
@@ -367,5 +369,13 @@ export class ListCountries {
       this.liMenuVisibility = true;
       this.drawList([selectedCountry]);
     }
+  }
+
+  onFullScreen() {
+    document.querySelector('.container-table').classList.toggle('visibility');
+    document.querySelector('.map-container').classList.toggle('visibility');
+    document.querySelector('.graphic_container').classList.toggle('visibility');
+
+    document.querySelector('.container-list').classList.toggle('full-screen');
   }
 }

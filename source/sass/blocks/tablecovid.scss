@@ -7,9 +7,10 @@
   &-table {
     display: flex;
     flex-direction: column;
-    width: 100%;
     min-width: 300px;
     padding: 5px;
+    position: relative;
+    width: 0px;
 
     &-options {
       display: flex;
@@ -29,6 +30,20 @@
 
       &__item:active {
         background-color: #ccc;
+      }
+    }
+
+    &__fullscreen {
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+
+    }
+
+    &:hover &__fullscreen {
+      & {
+        opacity: 1;
       }
     }
   }
@@ -81,7 +96,7 @@
 .menu {
   margin: 0;
   overflow-y: scroll;
-  height: 370px;
+  height: 559px;
   display: flex;
   flex-direction: column;
 
@@ -98,4 +113,10 @@
 
 .active-background {
   background-color: #ccc;
+}
+
+.full-screen {
+  width: 100%;
+
+  transition: width 1s;
 }
