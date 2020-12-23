@@ -76,7 +76,8 @@ export class WorldMap {
 
     this.containerSwitches = this.createSwitches();
     this.containerOptions = this.createOptions();
-    this.rootElement.append(this.containerSwitches, fullScreenButton, this.mapElement, this.containerOptions);
+    //this.rootElement.append(this.containerSwitches, fullScreenButton, this.mapElement, this.containerOptions);
+    this.rootElement.append(this.containerSwitches, this.mapElement, this.containerOptions);
   }
 
   createMap() {

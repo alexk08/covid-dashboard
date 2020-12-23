@@ -56,11 +56,10 @@ export class MainPage {
     this.listContainer = document.createElement('div');
     this.mapContainer = document.createElement('div');
     this.graphicContainer = document.createElement('div');
-    this.graphicContainer.classList.add('graphic_container');
 
     this.mapContainer.classList.add('map-container');
 
-    this.contentElement.append(this.tableContainer, this.mapContainer, this.graphicContainer, this.listContainer);
+    this.contentElement.append(this.listContainer, this.mapContainer, this.tableContainer, this.graphicContainer);
 
     this.worldMap = new WorldMap(this.mapContainer, this);
     this.worldMap.init();

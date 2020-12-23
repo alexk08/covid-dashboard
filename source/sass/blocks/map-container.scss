@@ -1,11 +1,18 @@
 .map-container {
-  width: 800px;
+  //width: 800px;
+  grid-row: 1;
+  grid-column: 2;
+
 
   &.fullscreen {
     position: absolute;
     width: 100vw;
     height: 100vh;
+<<<<<<< HEAD
+    display:none;
+=======
     left: 0;
     top: 0;
+>>>>>>> develop
   }
 }

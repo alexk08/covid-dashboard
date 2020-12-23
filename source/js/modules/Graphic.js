@@ -45,12 +45,18 @@ export class Graphic {
   }
 
   renderContent() {
-    const containerGraphic = document.createElement('div');
+    //const containerGraphic = document.createElement('div');
+    this.rootElement.classList.add('container-graphic');
 
     const containerSwitcher = document.createElement('div');
     const switcherLeft = document.createElement('div');
     this.switcherText = document.createElement('div');
     const switcherRight = document.createElement('div');
+
+    const fullScreenButton = document.createElement('i');
+    fullScreenButton.classList.add('fa', 'fa-arrows-alt', 'fa-sm', 'container-graphic__fullscreen');
+    fullScreenButton.setAttribute('aria-hidden', 'true');
+
 
     const select = document.createElement('select');
     countryData.forEach((item) => {
@@ -78,7 +84,7 @@ export class Graphic {
       containerOptions.append(option);
     }
 
-    containerGraphic.classList.add('container-graphic');
+    //containerGraphic.classList.add('container-graphic');
 
     containerSwitcher.classList.add('container-graphic-switcher');
     switcherLeft.classList.add(`container-graphic-switcher__${SWITCH.left}`);
@@ -99,8 +105,10 @@ export class Graphic {
 
     containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
 
-    containerGraphic.append(containerSwitcher, select, containerChart, containerOptions);
-    this.rootElement.append(containerGraphic);
+    //containerGraphic.append(fullScreenButton, containerSwitcher, select, containerChart, containerOptions);
+    //this.rootElement.append(containerGraphic);
+
+    this.rootElement.append(fullScreenButton, containerSwitcher, select, containerChart, containerOptions);
   }
     
   addLibraryGoogleChart() {
@@ -128,6 +136,7 @@ export class Graphic {
   addListeners() {
     document.querySelector('.container-graphic-switcher').addEventListener('click', this.onSwitchesClick);
     document.querySelector('.container-graphic-options').addEventListener('click', this.onOptionsClick);
+    document.querySelector('.container-graphic__fullscreen').addEventListener('click', this.onFullScreen);
   }
   
   onSwitchesClick({target}) {
@@ -164,7 +173,7 @@ export class Graphic {
     select.value = '';
 
     const chart = document.querySelector('.chart');
-    chart.innerHTML = '';
+    //chart.innerHTML = '';
     if (countryName === null) countryName = 'Global';
 
     let populationFactor;
@@ -206,8 +215,8 @@ export class Graphic {
     function drawChart() {
       let options = {
         title: `${countryName}`,
-        width: 500,
-        height: 400,
+        //width: 500,
+        //height: 100,
         colors: ['#000000'],
         fontSize: 16,
         hAxis: {
@@ -226,9 +235,15 @@ export class Graphic {
             color: '#000000'
           }
         },
-        crosshair:{
-          color:'#000000',
-          trigger:'selection'  
+        chartArea: {
+          height: '70%',
+          width: '70%',
+          top: '15%',
+          left: '20%'
+        },
+        animation:{
+          duration: 1000,
+          easing: 'out'
         },
         legend: 'none',
       };
@@ -271,7 +286,7 @@ export class Graphic {
             if (mode) casesNonNull = casesNonNull.cumulativeToDaily();
             //console.log(cases);
             let data = google.visualization.arrayToDataTable([
-              ["Date", "Cumulative Cases"],
+              ["Date", `${SWITCHES_NAMES[switchesIndex]}`],
               ...casesNonNull
             ]);
             let chart = new google.visualization.LineChart(document.querySelector('.chart'));
@@ -291,5 +306,13 @@ export class Graphic {
       arrayButtons[i].classList.remove('active-background');
     }
     arrayButtons[this.mainPage.optionsIndex].classList.add('active-background');
+  }
+  onFullScreen() {
+    document.querySelector('.container-table').classList.toggle('visibility');
+    document.querySelector('.map-container').classList.toggle('visibility');
+    document.querySelector('.container-list').classList.toggle('visibility');
+    document.querySelector('.main').classList.toggle('main-full-screen');
+
+    document.querySelector('.container-graphic').classList.toggle('full-screen');
   }
 }

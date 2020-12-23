@@ -1,16 +1,37 @@
 .container {
   &-graphic {
-    display: flex;
+    position: relative;
+    //display: flex;
     flex-direction: column;
     width: 100%;
-    height: 480px;
+    //height: 480px;
     min-width: 500px;
-    padding: 5px;
+    //padding: 5px;
+    grid-row: 2/3;
+    grid-column: 2/3;
+
+    &.visibilty {
+      display: none;
+    }
+
+    &__fullscreen {
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+  
+    }
+  
+    &:hover &__fullscreen {
+      & {
+        opacity: 1;
+      }
+    }
 
     &-switcher {
       display: flex;
       height: 30px;
-      padding: 4px;
+      //padding: 4px;
       border: 1px solid #000;
       justify-content: space-between;
       align-items: center;
@@ -53,6 +74,10 @@
   }
 }
 
-.chart {
-  height: 400px;
+//.chart {
+  //height: 400px;
+//}
+
+.container-graphic.visibilty {
+  display: none;
 }

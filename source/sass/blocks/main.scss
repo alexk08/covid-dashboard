@@ -1,3 +1,11 @@
 .main {
-  display: flex;
+  display: grid;
+  grid-template-rows:  auto 300px; /* 2 строки */
+  grid-template-columns: 230px auto 230px; /* 3 столбца */
+  width: calc(100vw - 20px);
+  margin: 0 auto;
+  //height: calc(100vh - 160px);
+  &-full-screen {
+    display: flex;
+  }
 }
