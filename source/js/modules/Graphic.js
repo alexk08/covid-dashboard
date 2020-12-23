@@ -1,5 +1,11 @@
 import {countryData} from './countryData';
 
+const colors = {
+  0: 'red',
+  1: 'black',
+  2: 'green',
+}
+
 const SWITCH = {
   left: 'left',
   right: 'right',
@@ -42,6 +48,9 @@ export class Graphic {
   init() {
     this.renderContent();
     this.addLibraryGoogleChart().then(() => this.initGraphic(0, 0));
+    window.addEventListener('resize', (event) => {
+      this.drawGraphic(this.mainPage.optionsIndex, this.mainPage.switchesIndex, this.mainPage.selectedCountryName);
+    });
   }
 
   renderContent() {
@@ -59,6 +68,7 @@ export class Graphic {
 
 
     const select = document.createElement('select');
+    select.classList.add('select-country')
     countryData.forEach((item) => {
       select.innerHTML += `<option value="${item.country}">${item.country}</option>`;
     });
@@ -173,7 +183,7 @@ export class Graphic {
     select.value = '';
 
     const chart = document.querySelector('.chart');
-    //chart.innerHTML = '';
+    chart.innerHTML = '';
     if (countryName === null) countryName = 'Global';
 
     let populationFactor;
@@ -217,34 +227,39 @@ export class Graphic {
         title: `${countryName}`,
         //width: 500,
         //height: 100,
-        colors: ['#000000'],
+        colors: [`${colors[optionsIndex]}`],
         fontSize: 16,
         hAxis: {
           format: 'MMM',
-          title: 'Month',
-          gridlines: {count: 15},
-          title: '',
+          textStyle:{
+             color:'black',
+             fontSize:14,
+             fontName:'Arial',
+             bold:false,
+             italic:false
+          }
         },
         forceIFrame: true,
         vAxis: {
           format: 'short',
-          gridlines: {color: 'none'},
+          gridlines: {color: 'black'},
           minValue: 0,
-          title: '',
-          titleTextStyle: {
-            color: '#000000'
-          }
+          textStyle:{
+            color:'black',
+            fontSize:14,
+            fontName:'Arial',
+            bold:false,
+            italic:false
+         }
         },
+        backgroundColor:'#999',
         chartArea: {
-          height: '70%',
-          width: '70%',
-          top: '15%',
-          left: '20%'
+          //height: '100%',
+          //width: '70%',
+          //top: '15%',
+          //left: '20%'
         },
-        animation:{
-          duration: 1000,
-          easing: 'out'
-        },
+
         legend: 'none',
       };
       if (countryName === 'Global') {
@@ -263,7 +278,7 @@ export class Graphic {
             ...cases
             ]);
   
-            let chart = new google.visualization.LineChart(document.querySelector('.chart'));
+            let chart = new google.visualization.AreaChart(document.querySelector('.chart'));
             chart.draw(data, options);
   
           } else {
@@ -289,7 +304,7 @@ export class Graphic {
               ["Date", `${SWITCHES_NAMES[switchesIndex]}`],
               ...casesNonNull
             ]);
-            let chart = new google.visualization.LineChart(document.querySelector('.chart'));
+            let chart = new google.visualization.AreaChart(document.querySelector('.chart'));
             chart.draw(data, options);
 
           } else {
