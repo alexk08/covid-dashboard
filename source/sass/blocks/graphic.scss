@@ -32,11 +32,12 @@
 
     &-switcher {
       display: flex;
-      height: 30px;
-      //padding: 4px;
-      border: 1px solid #000;
+      padding: 10px;
       justify-content: space-between;
       align-items: center;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px 0px $color-purple;
+
   
       &__left,
       &__right {
@@ -57,12 +58,15 @@
       width: 230px;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
-      box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+      justify-content: center;
+      // box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
 
       &__item {
-        padding: 0 5px 5px 5px;
+        margin: 5px 10px;
+        padding: 5px 20px;
         display: flex;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 5px 0px $color-purple;
       }
 
       &__item:hover {
@@ -74,10 +78,20 @@
         background-color: #ccc;
       }
     }
+
+    select {
+      background-color: transparent;
+      border-radius: 10px;
+      height: 30px;
+      // color: inherit;
+      outline: none;
+      cursor: pointer;
+      box-shadow: inset 0px 0px 5px 0px $color-purple;
+      margin: 5px 0;
+    }
     
     @include viewport--sm {
       order: 4;
-      // width: 100%;
     }
   }
   &-chart {
