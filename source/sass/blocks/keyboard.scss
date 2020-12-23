@@ -5,6 +5,8 @@
   height: 40px;
   min-height: 20%;
   margin-bottom: 5px;
+  border-radius: 10px;
+  outline: none;
 }
 
 .keyboard {
@@ -17,6 +19,7 @@
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
   transition: bottom 0.4s;
+  z-index: 1000;
 }
 
 .keyboard--hidden {

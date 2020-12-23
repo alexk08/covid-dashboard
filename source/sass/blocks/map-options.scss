@@ -10,6 +10,10 @@
     margin: 0 20px;
     border: 0;
     background-color: transparent;
+
+    &.active-background {
+      background-color: #ccc;
+    }
   }
 
   &__item:hover {

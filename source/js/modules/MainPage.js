@@ -69,16 +69,6 @@ export class MainPage {
     this.listCountries.init();
     this.graphic = new Graphic(this.graphicContainer, this);
     this.graphic.init();
-    // const worldMap = new WorldMap(this.mapContainer, this);
-    // const tableCovid = new TableCovid(this.tableContainer, this);
-    // const listCountries = new ListCountries(this.listContainer);
-    //const graphic = new Graphic(this.graphicContainer);
-    // worldMap.init();
-    // tableCovid.init();
-    // listCountries.init();
-    //graphic.init();
-    // worldMap.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
-    // tableCovid.changeTable();
   }
 
   renderFooter() {
