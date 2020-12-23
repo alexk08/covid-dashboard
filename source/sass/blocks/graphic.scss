@@ -4,11 +4,12 @@
     //display: flex;
     flex-direction: column;
     width: 100%;
-    //height: 480px;
+    height: 100%px;
     min-width: 500px;
     //padding: 5px;
     grid-row: 2/3;
     grid-column: 2/3;
+    background: rgba(3, 68, 48,1);
 
     &.visibilty {
       display: none;
@@ -52,6 +53,7 @@
     }
 
     &-options {
+      width: 230px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -72,11 +74,15 @@
       }
     }
   }
+  &-chart {
+    //height: 214px;
+    width: 100%;
+  }
 }
 
-//.chart {
-  //height: 400px;
-//}
+.row {
+  margin:0 !important;
+}
 
 .container-graphic.visibilty {
   display: none;
