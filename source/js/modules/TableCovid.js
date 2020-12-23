@@ -298,7 +298,8 @@ export class TableCovid {
   onFullScreen() {
     document.querySelector('.container-list').classList.toggle('visibility');
     document.querySelector('.map-container').classList.toggle('visibility');
-    document.querySelector('.graphic_container').classList.toggle('visibility');
+    document.querySelector('.container-graphic').classList.toggle('visibility');
+    document.querySelector('.main').classList.toggle('main-full-screen');
 
     document.querySelector('.container-table').classList.toggle('full-screen');
   }

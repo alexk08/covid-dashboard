@@ -1,6 +1,7 @@
 .map {
   width: 100%;
-  height: 600px;
+  height: calc(100% - 68px);
+  //height: 500px;
 
   &__covid {
     width: 100%;

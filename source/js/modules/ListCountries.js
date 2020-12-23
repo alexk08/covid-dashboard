@@ -374,8 +374,11 @@ export class ListCountries {
   onFullScreen() {
     document.querySelector('.container-table').classList.toggle('visibility');
     document.querySelector('.map-container').classList.toggle('visibility');
-    document.querySelector('.graphic_container').classList.toggle('visibility');
-
+    document.querySelector('.container-graphic').classList.toggle('visibility');
+    //containerGraphic.style.display = containerGraphic.style.display === 'flex' ? 'none' : 'flex';
+    //console.log('click onFullScreen');
+    
+    document.querySelector('.main').classList.toggle('main-full-screen');
     document.querySelector('.container-list').classList.toggle('full-screen');
   }
 }
