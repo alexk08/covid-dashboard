@@ -6,23 +6,17 @@
 
 // Desktop first
 
-@mixin viewport--xl {
-  @media (max-width: $viewport--xxl - 1) {
-    @content;
-  }
-}
+// @mixin viewport--lg {
+//   @media (max-width: $viewport--xl - 1) {
+//     @content;
+//   }
+// }
 
-@mixin viewport--lg {
-  @media (max-width: $viewport--xl - 1) {
-    @content;
-  }
-}
-
-@mixin viewport--md {
-  @media (max-width: $viewport--lg - 1) {
-    @content;
-  }
-}
+// @mixin viewport--md {
+//   @media (max-width: $viewport--lg - 1) {
+//     @content;
+//   }
+// }
 
 @mixin viewport--sm {
   @media (max-width: $viewport--md - 1) {
