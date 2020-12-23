@@ -12,4 +12,9 @@
     left: 0;
     top: 0;
   }
+
+  @include viewport--sm {
+    order: 3;
+    width: 100%;
+  }
 }
