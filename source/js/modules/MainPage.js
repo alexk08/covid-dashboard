@@ -11,8 +11,11 @@ export class MainPage {
   constructor(rootElement) {
     this.rootElement = rootElement;
     this.headerElement = null;
+    this.headerContainer = null;
     this.footerElement = null;
+    this.footerContainer = null;
     this.contentElement = null;
+    this.contentContainer = null;
     this.tableContainer = null;
     this.listContainer = null;
     this.mapContainer = null;
@@ -33,24 +36,38 @@ export class MainPage {
   }
 
   init() {
+    const wrapper = this.createWrapper();
     this.renderHeader();
     this.renderContent();
     this.renderFooter();
-    this.rootElement.append(this.headerElement, this.contentElement, this.footerElement);
+    this.rootElement.appendChild(wrapper);
+    wrapper.append(this.headerElement, this.contentElement, this.footerElement);
     window.addEventListener('DOMContentLoaded', function () {
       Keyboard.init();
     });
   }
 
+  createWrapper() {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('wrapper');
+    return wrapper;
+  }
+
   renderHeader() {
     this.headerElement = document.createElement('header');
     this.headerElement.classList.add('header');
-    this.headerElement.textContent = 'Coronavirus Dashboard';
+    this.headerContainer = document.createElement('div');
+    this.headerContainer.classList.add('container');
+    this.headerContainer.textContent = 'Coronavirus Dashboard';
+    this.headerElement.appendChild(this.headerContainer);
   }
 
   renderContent() {
     this.contentElement = document.createElement('main');
     this.contentElement.classList.add('main');
+    this.contentContainer = document.createElement('div');
+    this.contentContainer.classList.add('container');
+    this.contentElement.appendChild(this.contentContainer);
 
     this.tableContainer = document.createElement('div');
     this.listContainer = document.createElement('div');
@@ -59,7 +76,7 @@ export class MainPage {
 
     this.mapContainer.classList.add('map-container');
 
-    this.contentElement.append(this.listContainer, this.mapContainer, this.tableContainer, this.graphicContainer);
+    this.contentContainer.append(this.listContainer, this.mapContainer, this.tableContainer, this.graphicContainer);
 
     this.worldMap = new WorldMap(this.mapContainer, this);
     this.worldMap.init();
@@ -74,6 +91,9 @@ export class MainPage {
   renderFooter() {
     this.footerElement = document.createElement('footer');
     this.footerElement.classList.add('footer');
+    this.footerContainer = document.createElement('div');
+    this.footerContainer.classList.add('container');
+    this.footerElement.appendChild(this.footerContainer);
   }
 
   changeSwithesIndex(targetDataAttribute, switchRight, switchLeft) {

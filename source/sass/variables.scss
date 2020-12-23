@@ -38,11 +38,10 @@ $modal-transition-settings:         0.6s cubic-bezier(0.55, 0, 0.1, 1);
 // Viewports
 //---------------------------------
 
-$viewport--sm:                      320px;
-$viewport--md:                      768px;
-$viewport--lg:                      1024px;
-$viewport--xl:                      1440px;
-$viewport--xxl:                     1920px;
+$viewport--sm:                      500px;
+$viewport--md:                      1024px;
+$viewport--lg:                      1920px;
+// $viewport--xxl:                     1920px;
 
 // Retina
 //---------------------------------

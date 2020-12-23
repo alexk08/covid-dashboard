@@ -967,6 +967,7 @@ body {
 body {
   width: 100%;
   height: 100%;
+  min-width: 500px;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -1116,17 +1117,11 @@ body.module-fullscreen {
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  padding: 0 40px; }
-  @media (max-width: 1439px) {
-    .container {
-      padding: 0 32px; } }
+  padding: 0 20px; }
   @media (max-width: 1023px) {
     .container {
-      padding: 0 24px; } }
-  @media (max-width: 767px) {
-    .container {
-      padding: 0 16px; } }
-  @media (max-width: 767px) {
+      padding: 0 10px; } }
+  @media (max-width: 1023px) {
     .container--no-padding {
       padding: 0; } }
 
@@ -1169,7 +1164,7 @@ body.module-fullscreen {
   padding: 0 60px;
   background-color: #2c39f2; }
 
-.main {
+.main .container {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: auto 300px;
@@ -1179,11 +1174,21 @@ body.module-fullscreen {
   grid-template-columns: 230px auto 230px;
   /* 3 столбца */
   width: calc(100vw - 20px);
-  margin: 0 auto; }
-  .main-full-screen {
+  margin: 0 auto;
+  min-width: 480px; }
+  .main .container-full-screen {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex; }
+  @media (max-width: 1023px) {
+    .main .container {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+      -ms-flex-pack: distribute;
+          justify-content: space-around; } }
 
 * {
   -webkit-box-sizing: border-box;
@@ -1282,6 +1287,9 @@ body.module-fullscreen {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column; }
+    @media (max-width: 1023px) {
+      .container-list-menu {
+        height: calc(50vh - 250px); } }
     .container-list-menu::-webkit-scrollbar {
       width: 8px;
       background-color: #FFBAC3; }
@@ -1311,6 +1319,13 @@ body.module-fullscreen {
     opacity: 0; }
   .container-list:hover .container-list__fullscreen {
     opacity: 1; }
+  @media (max-width: 1023px) {
+    .container-list {
+      -webkit-box-ordinal-group: 2;
+          -ms-flex-order: 1;
+              order: 1;
+      width: 45%;
+      min-width: 230px; } }
 
 .container-search-list {
   display: -webkit-box;
@@ -1377,9 +1392,7 @@ body.module-fullscreen {
             flex-direction: row;
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
-            justify-content: space-between;
-    -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
-            box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset; }
+            justify-content: space-between; }
     .container-table-options__item {
       padding: 0 5px 5px 5px;
       display: -webkit-box;
@@ -1401,6 +1414,13 @@ body.module-fullscreen {
     opacity: 0; }
   .container-table:hover .container-table__fullscreen {
     opacity: 1; }
+  @media (max-width: 1023px) {
+    .container-table {
+      -webkit-box-ordinal-group: 3;
+          -ms-flex-order: 2;
+              order: 2;
+      width: 45%;
+      min-width: 230px; } }
 
 .container-switcher {
   display: -webkit-box;
@@ -1479,6 +1499,9 @@ body.module-fullscreen {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column; }
+  @media (max-width: 1023px) {
+    .menu {
+      height: calc(50vh - 250px); } }
   .menu::-webkit-scrollbar {
     width: 8px;
     background-color: #FFBAC3; }
@@ -1520,7 +1543,7 @@ body.module-fullscreen {
       -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
-  min-width: 500px;
+  min-width: 480px;
   -ms-grid-row: 2;
   -ms-grid-row-span: 1;
   grid-row: 2/3;
@@ -1585,6 +1608,11 @@ body.module-fullscreen {
       cursor: pointer; }
     .container-graphic-options__item:active {
       background-color: #ccc; }
+  @media (max-width: 1023px) {
+    .container-graphic {
+      -webkit-box-ordinal-group: 5;
+          -ms-flex-order: 4;
+              order: 4; } }
 
 .container-graphic.visibilty {
   display: none; }
@@ -1720,6 +1748,12 @@ body.module-fullscreen {
     display: none;
     left: 0;
     top: 0; }
+  @media (max-width: 1023px) {
+    .map-container {
+      -webkit-box-ordinal-group: 4;
+          -ms-flex-order: 3;
+              order: 3;
+      width: 100%; } }
 
 .map {
   width: 100%;
@@ -1727,6 +1761,9 @@ body.module-fullscreen {
   .map__covid {
     width: 100%;
     height: 100%; }
+  @media (max-width: 1023px) {
+    .map {
+      height: 500px; } }
 
 .map-switches {
   display: -webkit-box;
