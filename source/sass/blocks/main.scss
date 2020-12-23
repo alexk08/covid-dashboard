@@ -1,10 +1,12 @@
 .main {
+  background-color: $color-dark-green;
   .container {
     display: grid;
-    grid-template-rows:  auto 300px; /* 2 строки */
+    grid-template-rows:  auto 340px; /* 2 строки */
     grid-template-columns: 230px auto 230px; /* 3 столбца */
     width: calc(100vw - 20px);
     margin: 0 auto;
+    padding-top: 10px;
     //height: calc(100vh - 160px);
     &-full-screen {
       display: flex;
@@ -14,7 +16,7 @@
     @include viewport--sm {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-around;
+      justify-content: space-between;
     }
   }
 }
