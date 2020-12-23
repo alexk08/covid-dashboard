@@ -2,6 +2,7 @@
   //width: 800px;
   grid-row: 1;
   grid-column: 2;
+  padding: 0 5px;
 
 
   &.fullscreen {
@@ -16,5 +17,6 @@
   @include viewport--sm {
     order: 3;
     width: 100%;
+    padding: 5px 0;
   }
 }
