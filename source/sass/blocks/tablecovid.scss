@@ -7,10 +7,12 @@
   &-table {
     display: flex;
     flex-direction: column;
-    min-width: 300px;
+    // min-width: 230px;
     padding: 5px;
     position: relative;
-    width: 0px;
+    width: 229px;
+    box-shadow: inset 0px 0px 5px 0px $color-purple;
+    border-radius: 10px;
 
     &-options {
       display: flex;
@@ -21,15 +23,18 @@
       &__item {
         padding: 0 5px 5px 5px;
         display: flex;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 5px 0px $color-purple;
       }
 
       &__item:hover {
-        background-color: #ccc;
+        background-color: $color-light-blue;
         cursor: pointer;
+        border-radius: 10px;
       }
 
       &__item:active {
-        background-color: #ccc;
+        background-color: $color-light-blue;
       }
     }
 
@@ -55,6 +60,7 @@
     border: 1px solid #000;
     justify-content: space-between;
     align-items: center;
+    border-radius: 10px;
 
     &__left,
     &__right {
@@ -67,7 +73,8 @@
 
     &__left:hover,
     &__right:hover {
-      background-color: #ccc;
+      background-color: $color-light-blue;
+      border-radius: 10px;
     }
   }
 
@@ -76,6 +83,8 @@
     flex-direction: column;
     border: 1px solid #000;
     margin-bottom: 5px;
+    box-shadow: inset 0px 0px 5px 0px $color-purple;
+    border-radius: 10px;
 
     &__count,
     &__title {
@@ -83,7 +92,7 @@
       justify-content: center;
       align-items: center;
       padding: 5px 5px 0;
-      box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+      box-shadow: 0px -5px 5px -5px $color-purple inset;
     }
   }
 }
@@ -100,10 +109,37 @@
   display: flex;
   flex-direction: column;
 
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: $color-pink;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 8px;
+    background-color: $color-dark-purple;
+    border-radius: 5px;
+    height: 55px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: $color-light-blue;
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 3px 0px rgba(0,0,0,0.3);
+    border-radius: 5px;
+  }
+
   &-item {
     padding: 5px 5px 0 5px;
-    box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+    box-shadow: 0px 0px 5px 0px $color-purple inset;
+    border-radius: 10px;
     cursor: pointer;
+    margin-top: 5px;
+
+    &:hover {
+      background-color: $color-light-blue;
+    }
   }
 }
 
@@ -112,7 +148,7 @@
 }
 
 .active-background {
-  background-color: #ccc;
+  background-color: $color-light-blue;
 }
 
 .full-screen {
