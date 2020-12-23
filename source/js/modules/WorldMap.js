@@ -112,11 +112,12 @@ export class WorldMap {
   createOptions() {
     const containerOptions = document.createElement('div');
 
-    OPTIONS_NAMES.forEach((item) => {
+    OPTIONS_NAMES.forEach((item, index) => {
       const option = document.createElement('button');
       option.textContent = item;
       option.classList.add('map-options__item');
       option.classList.add(`map-options__item--${item.toLowerCase()}`);
+      if (index === 0) option.classList.add('active-background');
       option.dataset[this.dataAttributeOption] = item;
       containerOptions.append(option);
     });
@@ -138,7 +139,8 @@ export class WorldMap {
 
   renderMap(data, rate) {
     var mapboxAccessToken = 'pk.eyJ1Ijoia2FwYWN1ayIsImEiOiJja2l2Z29uZGgzOWMzMnZxanF4NG9neTJxIn0.1-lo4qPbQ2u_XnwjwVQHIA';
-    var map = L.map('map-covid').setView([37.8, 10], 2);
+    var map = L.map('map-covid').setView([37.8, 10], 1);
+    // map.setZoom(1);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
         id: 'mapbox/light-v9',
@@ -216,7 +218,6 @@ export class WorldMap {
 
     const selectCountry = (e) =>  {
       this.mainPage.selectedCountryName = e.target.feature.properties.name;
-      this.mainPage.selectedCountryId = e.target.feature.id;
       this.mainPage.showRateByCountry();
     }
 
@@ -327,6 +328,8 @@ export class WorldMap {
   }
 
   changeRate(optionsIndex, switchesIndex) {
+    const buttons = this.containerOptions.querySelectorAll(`[data-${this.dataAttributeOption}]`);
+    this.changeActiveButton(buttons);
     this.refreshMap();
     this.switchText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
 
@@ -360,5 +363,12 @@ export class WorldMap {
   onFullScreenButtonClick() {
     this.mainPage.mapContainer.classList.toggle('fullscreen');
     this.mainPage.rootElement.classList.toggle('module-fullscreen');
+  }
+
+  changeActiveButton(arrayButtons) {
+    for (let i = 0; i < arrayButtons.length; i += 1) {
+      arrayButtons[i].classList.remove('active-background');
+    }
+    arrayButtons[this.mainPage.optionsIndex].classList.add('active-background');
   }
 }
