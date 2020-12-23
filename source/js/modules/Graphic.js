@@ -219,8 +219,9 @@ export class Graphic {
       return arrDaily;
     }
 
-    google.charts.load("current", { packages: ["corechart"] });
-    google.charts.setOnLoadCallback(drawChart);
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    //google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
       let options = {
@@ -285,6 +286,7 @@ export class Graphic {
             document.querySelector('.chart').innerHTML = "No data";
           }
         })
+        .catch(error => document.querySelector('.chart').innerHTML = "No data, try again later");
       } else {
         fetch(srcDataCovid)
         .then((res) => res.json())
