@@ -1190,6 +1190,7 @@ body.module-fullscreen {
     width: calc(100vw - 20px);
     margin: 0 auto;
     padding-top: 10px;
+    height: calc(100vh - 160px);
     min-width: 480px; }
     .main .container-full-screen {
       display: -webkit-box;
@@ -1588,7 +1589,6 @@ body.module-fullscreen {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 100%;
   min-width: 480px;
   -ms-grid-row: 2;
   -ms-grid-row-span: 1;
@@ -1635,7 +1635,6 @@ body.module-fullscreen {
     .container-graphic-switcher__left:hover, .container-graphic-switcher__right:hover {
       background-color: #ccc; }
   .container-graphic-options {
-    width: 230px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1645,7 +1644,9 @@ body.module-fullscreen {
             flex-direction: row;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
-            justify-content: center; }
+            justify-content: center;
+    -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+            box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset; }
     .container-graphic-options__item {
       margin: 5px 10px;
       padding: 5px 20px;

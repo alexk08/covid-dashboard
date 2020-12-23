@@ -100,6 +100,7 @@ export class Graphic {
     switcherLeft.classList.add(`container-graphic-switcher__${SWITCH.left}`);
     switcherRight.classList.add(`container-graphic-switcher__${SWITCH.right}`);
     this.switcherText.classList.add('container-switcher__title');
+    switcherLeft.classList.add('container-switcher__left');
     switcherRight.classList.add('container-switcher__right');
     switcherLeft.textContent = '<';
     switcherRight.textContent = '>';
@@ -255,10 +256,10 @@ export class Graphic {
         },
         backgroundColor:'#999',
         chartArea: {
-          //height: '100%',
-          //width: '70%',
-          //top: '15%',
-          //left: '20%'
+          height: '70%',
+          width: '70%',
+          top: '15%',
+          left: '20%'
         },
 
         legend: 'none',
@@ -328,7 +329,7 @@ export class Graphic {
     document.querySelector('.container-table').classList.toggle('visibility');
     document.querySelector('.map-container').classList.toggle('visibility');
     document.querySelector('.container-list').classList.toggle('visibility');
-    document.querySelector('.main').classList.toggle('main-full-screen');
+    document.querySelector('.main .container').classList.toggle('container-full-screen');
 
     document.querySelector('.container-graphic').classList.toggle('full-screen');
   }
