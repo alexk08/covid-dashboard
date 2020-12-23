@@ -30,8 +30,6 @@ export class ListCountries {
   }
 
   renderContent() {
-    const containerList = document.createElement('div');
-
     const searchContainer = document.createElement('div');
     const searchText = document.createElement('textarea');
     const searchField = document.createElement('ul');
@@ -43,6 +41,10 @@ export class ListCountries {
     this.switcherText = document.createElement('div');
     const switcherRight = document.createElement('div');
 
+    const fullScreenButton = document.createElement('i');
+    fullScreenButton.classList.add('fa', 'fa-arrows-alt', 'fa-sm', 'container-list__fullscreen');
+    fullScreenButton.setAttribute('aria-hidden', 'true');
+
     const navConfirmed = document.createElement('nav');
     const ulConfirmed = document.createElement('ul');
 
@@ -52,14 +54,11 @@ export class ListCountries {
       const option = document.createElement('div');
       option.textContent = OPTIONS_NAMES[i];
       option.dataset[this.dataAttributeOption] = OPTIONS_NAMES[i];
-      if (i === 0) {
-        option.classList.add('container-list-options__item', 'active-background');
-      }
       option.classList.add('container-list-options__item');
       containerOptions.append(option);
     }
 
-    containerList.classList.add('container-list');
+    this.rootElement.classList.add('container-list');
     searchContainer.classList.add('container-search');
     searchText.classList.add('use-keyboard-input');
     searchField.classList.add('container-search-list', 'visibility');
@@ -82,8 +81,7 @@ export class ListCountries {
     navConfirmed.append(ulConfirmed);
     containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
 
-    containerList.append(searchContainer, containerSwitcher, navConfirmed, containerOptions);
-    this.rootElement.append(containerList);
+    this.rootElement.append(fullScreenButton, searchContainer, containerSwitcher, navConfirmed, containerOptions);
     this.getData();
   }
 
@@ -99,12 +97,13 @@ export class ListCountries {
       this.dataCurrent = sortCountry;
       this.drawList(sortCountry);
       this.addListeners();
-      // document.querySelectorAll('.container-list-options__item')[0].click();
     };
   }
 
   drawList(data) {
     const navMenu = document.querySelector('.container-list-nav.container-list-menu');
+    const buttons = document.querySelectorAll('.container-list-options__item');
+    this.changeActiveButton(buttons);
 
     for (let i = 0; i < data.length; i += 1) {
       const liMenu = document.createElement('li');
@@ -130,6 +129,9 @@ export class ListCountries {
           this.drawList(this.dataCurrent);
           this.renderList(this.dataCurrent);
           this.liMenuVisibility = false;
+          this.country = null;
+          this.mainPage.selectedCountryName = this.country;
+          this.mainPage.showRateByCountry();
         } else {
           this.clearList();
           const sortCountry = this.sortData(this.data);
@@ -138,6 +140,8 @@ export class ListCountries {
           this.renderList(this.dataCurrent);
           this.liMenuVisibility = true;
           this.country = sortCountry[i].country;
+          this.mainPage.selectedCountryName = this.country;
+          this.mainPage.showRateByCountry();
         }
       });
     }
@@ -149,6 +153,7 @@ export class ListCountries {
   addListeners() {
     document.querySelector('.container-list-switcher').addEventListener('click', this.onSwitchesClick);
     document.querySelector('.container-list-options').addEventListener('click', this.onOptionsClick);
+    document.querySelector('.container-list__fullscreen').addEventListener('click', this.onFullScreen);
   }
 
   onSwitchesClick({target}) {
@@ -161,10 +166,7 @@ export class ListCountries {
 
   onOptionsClick({target}) {
     const dataOption = target.dataset[this.dataAttributeOption];
-    const buttons = document.querySelectorAll('.container-list-options__item');
     if (dataOption) {
-      this.removeActiveButton(buttons);
-      target.classList.toggle('active-background');
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
       this.changeList();
     }
@@ -179,6 +181,8 @@ export class ListCountries {
     const menuItemsCountry = document.querySelectorAll('.container-list-menu-item__country');
     const menuItemsCount = document.querySelectorAll('.container-list-menu-item__count');
     const flag = document.querySelectorAll('.flag-container__item');
+    const buttons = document.querySelectorAll('.container-list-options__item');
+    this.changeActiveButton(buttons);
 
     for (let i = 0; i < data.length; i += 1) {
       menuItemsCountry[i].textContent = data[i].country;
@@ -234,8 +238,6 @@ export class ListCountries {
       sortCountry.push(obj);
     }
 
-    console.log(sortCountry);
-
     if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 0) {
       sortCountry.sort((a, b) => b.cases - a.cases);
     } else if (this.mainPage.switchesIndex === 0 && this.mainPage.optionsIndex === 1) {
@@ -287,6 +289,9 @@ export class ListCountries {
             this.dataCurrent = [response[i]];
             this.drawList(this.dataCurrent);
             this.liMenuVisibility = true;
+            this.country = response[i].country;
+            this.mainPage.selectedCountryName = this.country;
+            this.mainPage.showRateByCountry();
           });
           searchItem.classList.add('container-search-list__item');
           searchField.append(searchItem);
@@ -317,6 +322,9 @@ export class ListCountries {
             this.dataCurrent = [response[i]];
             this.drawList(this.dataCurrent);
             this.liMenuVisibility = true;
+            this.country = response[i].country;
+            this.mainPage.selectedCountryName = this.country;
+            this.mainPage.showRateByCountry();
           });
           searchItem.classList.add('container-search-list__item');
           searchField.append(searchItem);
@@ -345,9 +353,29 @@ export class ListCountries {
     }
   }
 
-  removeActiveButton(arrayButtons) {
+  changeActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
       arrayButtons[i].classList.remove('active-background');
     }
+    arrayButtons[this.mainPage.optionsIndex].classList.add('active-background');
+  }
+
+  selectCountry(name) {
+    if (name !== null) {
+      const sortCountry = this.sortData(this.data);
+      const selectedCountry = sortCountry.find((value) => name === value.country);
+      this.dataCurrent = [selectedCountry];
+      this.clearList();
+      this.liMenuVisibility = true;
+      this.drawList([selectedCountry]);
+    }
+  }
+
+  onFullScreen() {
+    document.querySelector('.container-table').classList.toggle('visibility');
+    document.querySelector('.map-container').classList.toggle('visibility');
+    document.querySelector('.graphic_container').classList.toggle('visibility');
+
+    document.querySelector('.container-list').classList.toggle('full-screen');
   }
 }

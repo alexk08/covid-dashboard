@@ -30,8 +30,6 @@ export class TableCovid {
   }
 
   renderContent() {
-    const containerTable = document.createElement('div');
-
     const containerGlobalInformation = document.createElement('div');
     const globalInformationTitle = document.createElement('div');
     const globalInformationCount = document.createElement('div');
@@ -40,6 +38,10 @@ export class TableCovid {
     const switcherLeft = document.createElement('div');
     this.switcherText = document.createElement('div');
     const switcherRight = document.createElement('div');
+
+    const fullScreenButton = document.createElement('i');
+    fullScreenButton.classList.add('fa', 'fa-arrows-alt', 'fa-sm', 'container-table__fullscreen');
+    fullScreenButton.setAttribute('aria-hidden', 'true');
 
     const navConfirmed = document.createElement('nav');
     const ulConfirmed = document.createElement('ul');
@@ -50,14 +52,11 @@ export class TableCovid {
       const option = document.createElement('div');
       option.textContent = OPTIONS_NAMES[i];
       option.dataset[this.dataAttributeOption] = OPTIONS_NAMES[i];
-      if (i === 0) {
-        option.classList.add('container-table-options__item', 'active-background');
-      }
       option.classList.add('container-table-options__item');
       containerOptions.append(option);
     }
 
-    containerTable.classList.add('container-table');
+    this.rootElement.classList.add('container-table');
     containerGlobalInformation.classList.add('container-global-information');
     globalInformationTitle.classList.add('container-global-information__title');
     globalInformationCount.classList.add('container-global-information__count');
@@ -82,8 +81,7 @@ export class TableCovid {
     navConfirmed.append(ulConfirmed);
     containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
 
-    containerTable.append(containerGlobalInformation, containerSwitcher, navConfirmed, containerOptions);
-    this.rootElement.append(containerTable);
+    this.rootElement.append(fullScreenButton, containerGlobalInformation, containerSwitcher, navConfirmed, containerOptions);
     this.getData();
   }
 
@@ -99,12 +97,13 @@ export class TableCovid {
       this.dataCurrent = sortCountry;
       this.drawTable(sortCountry);
       this.addListeners();
-      // document.querySelectorAll('.container-table-options__item')[0].click();
     };
   }
 
   drawTable(data) {
     const navMenu = document.querySelector('.nav.menu');
+    const buttons = document.querySelectorAll('.container-table-options__item');
+    this.changeActiveButton(buttons);
 
     for (let i = 0; i < data.length; i += 1) {
       const liMenu = document.createElement('li');
@@ -125,6 +124,9 @@ export class TableCovid {
           this.drawTable(this.dataCurrent);
           this.renderTable(this.dataCurrent);
           this.liMenuVisibility = false;
+          this.country = null;
+          this.mainPage.selectedCountryName = this.country;
+          this.mainPage.showRateByCountry();
         } else {
           this.clearTable();
           const sortCountry = this.sortData(this.data);
@@ -133,6 +135,8 @@ export class TableCovid {
           this.renderTable(this.dataCurrent);
           this.liMenuVisibility = true;
           this.country = sortCountry[i].country;
+          this.mainPage.selectedCountryName = this.country;
+          this.mainPage.showRateByCountry();
         }
       });
     }
@@ -144,6 +148,7 @@ export class TableCovid {
   addListeners() {
     document.querySelector('.container-switcher').addEventListener('click', this.onSwitchesClick);
     document.querySelector('.container-table-options').addEventListener('click', this.onOptionsClick);
+    document.querySelector('.container-table__fullscreen').addEventListener('click', this.onFullScreen);
   }
 
   onSwitchesClick({target}) {
@@ -156,10 +161,7 @@ export class TableCovid {
 
   onOptionsClick({target}) {
     const dataOption = target.dataset[this.dataAttributeOption];
-    const buttons = document.querySelectorAll('.container-table-options__item');
     if (dataOption) {
-      this.removeActiveButton(buttons);
-      target.classList.toggle('active-background');
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
       this.changeTable();
     }
@@ -168,6 +170,8 @@ export class TableCovid {
   renderTable(data) {
     const menuItemsCountry = document.querySelectorAll('.menu-item__country');
     const menuItemsCount = document.querySelectorAll('.menu-item__count');
+    const buttons = document.querySelectorAll('.container-table-options__item');
+    this.changeActiveButton(buttons);
 
     for (let i = 0; i < data.length; i += 1) {
       menuItemsCountry[i].textContent = data[i].country;
@@ -273,9 +277,29 @@ export class TableCovid {
     }
   }
 
-  removeActiveButton(arrayButtons) {
+  changeActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
       arrayButtons[i].classList.remove('active-background');
     }
+    arrayButtons[this.mainPage.optionsIndex].classList.add('active-background');
+  }
+
+  selectCountry(name) {
+    if (name !== null) {
+      const sortCountry = this.sortData(this.data);
+      const selectedCountry = sortCountry.find((value) => name === value.country);
+      this.dataCurrent = [selectedCountry];
+      this.clearTable();
+      this.liMenuVisibility = true;
+      this.drawTable([selectedCountry]);
+    }
+  }
+
+  onFullScreen() {
+    document.querySelector('.container-list').classList.toggle('visibility');
+    document.querySelector('.map-container').classList.toggle('visibility');
+    document.querySelector('.graphic_container').classList.toggle('visibility');
+
+    document.querySelector('.container-table').classList.toggle('full-screen');
   }
 }

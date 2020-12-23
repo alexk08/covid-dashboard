@@ -7,7 +7,7 @@ const SWITCH = {
 };
 
 const OPTIONS_NAMES = ['Confirmed', 'Dead', 'Recovered'];
-const SWITCHES_NAMES = ['All period', 'Last day', 'All period 100000', 'Last day 100000'];
+const SWITCHES_NAMES = ['Cumulative cases / total number', 'Daily cases / total number', 'Cumulative cases / per 100 thousands', 'Daily cases / per 100 thousands'];
 
 const DATA_ATTRIBUTE = {
   option: 'option',
@@ -58,9 +58,10 @@ export class Graphic {
     });
     select.value = "global";
     select.addEventListener("change", () => {
-      this.country = select.value;
+      this.mainPage.selectedCountryName = select.value;
+      this.mainPage.showRateByCountry();
       //console.log(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
-      this.drawGraphic(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
+      //this.drawGraphic(this.mainPage.optionsIndex, this.mainPage.switchesIndex, this.mainPage.selectedCountryName);
     });
 
     const containerChart = document.createElement('div');
@@ -119,8 +120,8 @@ export class Graphic {
   }
     
   initGraphic(optionsIndex, switchesIndex) {
-    console.log('initGraphic');
-    this.drawGraphic(optionsIndex, switchesIndex);
+    //console.log('initGraphic');
+    this.drawGraphic(optionsIndex, switchesIndex, this.mainPage.selectedCountryName);
     this.addListeners();
   }
 
@@ -146,27 +147,28 @@ export class Graphic {
       //target.classList.toggle('active-background');
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
       //this.drawGraphic(2, 2);
-      console.log('onOptionsClick');
+      //console.log('onOptionsClick');
     }
   }
 
-  drawGraphic(optionsIndex, switchesIndex) {
-    console.log('click');
-    console.log(`optionsIndex: ${optionsIndex}`);
-    console.log(`switchesIndex: ${switchesIndex}`);
+  drawGraphic(optionsIndex, switchesIndex, countryName) {
+    //console.log('click');
+    //console.log(`optionsIndex: ${optionsIndex}`);
+    //console.log(`switchesIndex: ${switchesIndex}`);
+    //console.log(`countryName: ${countryName}`);
 
     this.switcherText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
     const buttons = document.querySelectorAll('.container-graphic-options__item');
     this.changeActiveButton(buttons);
+    const select = document.querySelector('select');
+    select.value = '';
 
     const chart = document.querySelector('.chart');
-    chart.innerHTML = "";
-    let countryName = this.country;
-    //console.log(countryName);
+    chart.innerHTML = '';
+    if (countryName === null) countryName = 'Global';
 
     let populationFactor;
     if (switchesIndex === 2 || switchesIndex === 3) {
-      console.log(countryName);
       populationFactor = countryData.filter((item) => item.country === countryName)[0].population / (10 ** 5);
     }
     else populationFactor = 1;
@@ -180,7 +182,7 @@ export class Graphic {
       if (optionsIndex === 2) optionCases = 'total_recovered';
     }
     else {
-      srcDataCovid = URL.COUNTRY_TOTAL.replace('countryName', `${this.country}`);
+      srcDataCovid = URL.COUNTRY_TOTAL.replace('countryName', `${this.mainPage.selectedCountryName}`);
       if (optionsIndex === 0) optionCases = 'cases';
       if (optionsIndex === 1) optionCases = 'deaths';
       if (optionsIndex === 2) optionCases = 'recovered';
@@ -210,11 +212,13 @@ export class Graphic {
         fontSize: 16,
         hAxis: {
           format: 'MMM',
+          title: 'Month',
           gridlines: {count: 15},
           title: '',
         },
         forceIFrame: true,
         vAxis: {
+          format: 'short',
           gridlines: {color: 'none'},
           minValue: 0,
           title: '',
@@ -222,7 +226,11 @@ export class Graphic {
             color: '#000000'
           }
         },
-        legend: { position: "bottom" },
+        crosshair:{
+          color:'#000000',
+          trigger:'selection'  
+        },
+        legend: 'none',
       };
       if (countryName === 'Global') {
         fetch(srcDataCovid)
@@ -236,7 +244,7 @@ export class Graphic {
             cases.reverse();
             if (mode) cases = cases.cumulativeToDaily();
             let data = google.visualization.arrayToDataTable([
-              ["Date", "Cumulative Cases"],
+              ["Date", `${SWITCHES_NAMES[switchesIndex]}`],
             ...cases
             ]);
   
@@ -272,7 +280,8 @@ export class Graphic {
           } else {
             document.querySelector('.chart').innerHTML = "No data";
           }
-        });
+        })
+        .catch(error => document.querySelector('.chart').innerHTML = "No data for the selected country");
       }
     }
   }
