@@ -1,10 +1,13 @@
 .map-switches {
+  // width: 20%;
+  // margin: 0 auto;
+  margin-bottom: 5px;
   display: flex;
-  height: 30px;
-  padding: 4px;
-  border: 1px solid #000;
+  padding: 10px;
   justify-content: space-between;
   align-items: center;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px 0px $color-purple;
 
   &__left,
   &__right {
@@ -12,15 +15,24 @@
     justify-content: center;
     align-items: center;
     width: 24px;
+    height: 24px;
     cursor: pointer;
     margin: 0;
     padding: 0;
     border: 0;
     background-color: transparent;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px 0px $color-purple;
+    color: inherit;
   }
 
   &__left:hover,
   &__right:hover {
-    background-color: #ccc;
+    background-color: $color-dark-red;
+  }
+
+  &__left:active,
+  &__right:active {
+    background-color: $color-dark-xl-red;
   }
 }

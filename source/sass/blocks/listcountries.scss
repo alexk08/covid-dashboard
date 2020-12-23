@@ -18,34 +18,36 @@
     &-options {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
 
       &__item {
-        padding: 0 5px 5px 5px;
+        padding: 5px;
         display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 10px;
         box-shadow: inset 0px 0px 5px 0px $color-purple;
+        flex-grow: 1;
       }
 
       &__item:hover {
-        background-color: $color-light-blue;
+        background-color: $color-dark-red;
         cursor: pointer;
         border-radius: 10px;
       }
 
       &__item:active {
-        background-color: $color-light-blue;
+        background-color: $color-dark-xl-red;
       }
     }
 
     &-switcher {
       display: flex;
-      height: 30px;
-      padding: 4px;
-      border: 1px solid #000;
+      padding: 10px;
+      // border: 1px solid #000;
       justify-content: space-between;
       align-items: center;
       border-radius: 10px;
+      box-shadow: inset 0px 0px 5px 0px $color-purple;
 
       &__left,
       &__right {
@@ -54,12 +56,19 @@
         align-items: center;
         width: 24px;
         cursor: pointer;
+        box-shadow: inset 0px 0px 5px 0px $color-purple;
+        border-radius: 10px;
       }
 
       &__left:hover,
       &__right:hover {
-        background-color: $color-light-blue;
+        background-color: $color-dark-red;
         border-radius: 10px;
+      }
+
+      &__left:active,
+      &__right:active {
+        background-color: $color-dark-xl-red;
       }
     }
 
@@ -83,12 +92,13 @@
 
       &::-webkit-scrollbar {
         width: 8px;
-        background-color: $color-pink;
+        background-color: $color-light-green;
+        border-radius: 5px;
       }
-
+    
       &::-webkit-scrollbar-thumb {
         width: 8px;
-        background-color: $color-dark-purple;
+        background-color: $color-dark-xl-green;
         border-radius: 5px;
         height: 70px;
       }
@@ -111,6 +121,7 @@
 
         &:hover {
           background-color: $color-light-blue;
+          background-color: $color-dark-red;
         }
       }
     }
@@ -131,7 +142,7 @@
 
     @include viewport--sm {
       order: 1;
-      width: 45%;
+      width: 49%;
       min-width: 230px;
     }
   }

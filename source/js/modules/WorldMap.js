@@ -140,11 +140,11 @@ export class WorldMap {
 
   renderMap(data, rate) {
     var mapboxAccessToken = 'pk.eyJ1Ijoia2FwYWN1ayIsImEiOiJja2l2Z29uZGgzOWMzMnZxanF4NG9neTJxIn0.1-lo4qPbQ2u_XnwjwVQHIA';
-    var map = L.map('map-covid').setView([37.8, 10], 1);
+    var map = L.map('map-covid').setView([37.8, 10], 2);
     // map.setZoom(1);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-        id: 'mapbox/light-v9',
+        id: 'mapbox/dark-v9',
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         tileSize: 512,
         zoomOffset: -1

@@ -27,20 +27,24 @@
       // box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
 
       &__item {
-        padding: 0 5px 5px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
         display: flex;
         border-radius: 10px;
         box-shadow: inset 0px 0px 5px 0px $color-purple;
+        flex-grow: 1;
       }
 
       &__item:hover {
-        background-color: $color-light-blue;
+        background-color: $color-dark-red;
         cursor: pointer;
         border-radius: 10px;
       }
 
       &__item:active {
-        background-color: $color-light-blue;
+        background-color: $color-dark-xl-red;
       }
     }
 
@@ -60,19 +64,20 @@
 
     @include viewport--sm {
       order: 2;
-      width: 45%;
+      width: 49%;
       min-width: 230px;
     }
   }
 
   &-switcher {
     display: flex;
-    height: 30px;
-    padding: 4px;
-    border: 1px solid #000;
+    // height: 30px;
+    padding: 10px;
+    // border: 1px solid #000;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
+    box-shadow: inset 0px 0px 5px 0px $color-purple;
 
     &__left,
     &__right {
@@ -81,30 +86,41 @@
       align-items: center;
       width: 24px;
       cursor: pointer;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px 0px $color-purple;
     }
 
     &__left:hover,
     &__right:hover {
-      background-color: $color-light-blue;
+      background-color: $color-dark-red;
       border-radius: 10px;
+    }
+
+    &__left:active,
+    &__right:active {
+      background-color: $color-dark-xl-red;
     }
   }
 
   &-global-information {
     display: flex;
     flex-direction: column;
-    border: 1px solid #000;
+    // border: 1px solid #000;
     margin-bottom: 5px;
     box-shadow: inset 0px 0px 5px 0px $color-purple;
     border-radius: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
 
     &__count,
     &__title {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 5px 5px 0;
+      padding: 5px;
       box-shadow: 0px -5px 5px -5px $color-purple inset;
+      color: $color-yellow;
     }
   }
 }
@@ -128,12 +144,13 @@
 
   &::-webkit-scrollbar {
     width: 8px;
-    background-color: $color-pink;
+    background-color: $color-light-green;
+    border-radius: 5px;
   }
 
   &::-webkit-scrollbar-thumb {
     width: 8px;
-    background-color: $color-dark-purple;
+    background-color: $color-dark-xl-green;
     border-radius: 5px;
     height: 55px;
   }
@@ -155,7 +172,7 @@
     margin-top: 5px;
 
     &:hover {
-      background-color: $color-light-blue;
+      background-color: $color-dark-red;
     }
   }
 }
@@ -165,7 +182,7 @@
 }
 
 .active-background {
-  background-color: $color-light-blue;
+  background-color: $color-dark-red;
 }
 
 .full-screen {
