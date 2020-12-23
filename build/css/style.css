@@ -1603,7 +1603,9 @@ body.module-fullscreen {
   .map-container.fullscreen {
     position: absolute;
     width: 100vw;
-    height: 100vh; }
+    height: 100vh;
+    left: 0;
+    top: 0; }
 
 .map {
   width: 100%;
@@ -1662,6 +1664,8 @@ body.module-fullscreen {
     margin: 0 20px;
     border: 0;
     background-color: transparent; }
+    .map-options__item.active-background {
+      background-color: #ccc; }
   .map-options__item:hover {
     background-color: #ccc;
     cursor: pointer; }
