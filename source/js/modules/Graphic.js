@@ -65,6 +65,10 @@ export class Graphic {
     const fullScreenButton = document.createElement('i');
     fullScreenButton.classList.add('fa', 'fa-arrows-alt', 'fa-sm', 'container-graphic__fullscreen');
     fullScreenButton.setAttribute('aria-hidden', 'true');
+    fullScreenButton.addEventListener('click', () => {
+      this.onFullScreen();
+      this.mainPage.showRateByCountry();
+    })
 
 
     const select = document.createElement('select');
@@ -81,8 +85,8 @@ export class Graphic {
     });
 
     const containerChart = document.createElement('div');
-    const chart = document.createElement('div');
-    containerChart.append(chart);
+    //const chart = document.createElement('div');
+    //containerChart.append(chart);
 
     const containerOptions = document.createElement('div');
 
@@ -110,7 +114,7 @@ export class Graphic {
     switcherRight.dataset[this.dataAttributeSwitch] = SWITCH.right;
 
     containerChart.classList.add('container-chart');
-    chart.classList.add('chart');
+    //chart.classList.add('chart');
 
     containerOptions.classList.add('container-graphic-options');
 
@@ -147,7 +151,8 @@ export class Graphic {
   addListeners() {
     document.querySelector('.container-graphic-switcher').addEventListener('click', this.onSwitchesClick);
     document.querySelector('.container-graphic-options').addEventListener('click', this.onOptionsClick);
-    document.querySelector('.container-graphic__fullscreen').addEventListener('click', this.onFullScreen);
+    //document.querySelector('.container-graphic__fullscreen').addEventListener('click', this.onFullScreen);
+    //document.querySelector('.container-graphic__fullscreen').addEventListener('click', console.log('click'));
   }
   
   onSwitchesClick({target}) {
@@ -172,7 +177,7 @@ export class Graphic {
   }
 
   drawGraphic(optionsIndex, switchesIndex, countryName) {
-    //console.log('click');
+    console.log('click');
     //console.log(`optionsIndex: ${optionsIndex}`);
     //console.log(`switchesIndex: ${switchesIndex}`);
     //console.log(`countryName: ${countryName}`);
@@ -182,8 +187,8 @@ export class Graphic {
     this.changeActiveButton(buttons);
     const select = document.querySelector('select');
 
-    const chart = document.querySelector('.chart');
-    chart.innerHTML = '';
+    const chart = document.querySelector('.container-chart');
+    //chart.innerHTML = '';
     if (countryName === null) countryName = 'Global';
     select.value = `${countryName}`;
 
@@ -241,7 +246,7 @@ export class Graphic {
              italic:false
           }
         },
-        forceIFrame: true,
+        forceIFrame: false,
         vAxis: {
           format: 'short',
           gridlines: {color: 'black'},
@@ -280,14 +285,14 @@ export class Graphic {
             ...cases
             ]);
   
-            let chart = new google.visualization.AreaChart(document.querySelector('.chart'));
+            let chart = new google.visualization.AreaChart(document.querySelector('.container-chart'));
             chart.draw(data, options);
   
           } else {
-            document.querySelector('.chart').innerHTML = "No data";
+            document.querySelector('.container-chart').innerHTML = "No data";
           }
         })
-        .catch(error => document.querySelector('.chart').innerHTML = "No data, try again later");
+        .catch(error => document.querySelector('.container-chart').innerHTML = "No data, try again later");
       } else {
         fetch(srcDataCovid)
         .then((res) => res.json())
@@ -307,14 +312,14 @@ export class Graphic {
               ["Date", `${SWITCHES_NAMES[switchesIndex]}`],
               ...casesNonNull
             ]);
-            let chart = new google.visualization.AreaChart(document.querySelector('.chart'));
+            let chart = new google.visualization.AreaChart(document.querySelector('.container-chart'));
             chart.draw(data, options);
 
           } else {
-            document.querySelector('.chart').innerHTML = "No data";
+            document.querySelector('.container-chart').innerHTML = "No data";
           }
         })
-        .catch(error => document.querySelector('.chart').innerHTML = "No data for the selected country");
+        .catch(error => document.querySelector('.container-chart').innerHTML = "No data for the selected country");
       }
     }
   }
@@ -332,5 +337,7 @@ export class Graphic {
     document.querySelector('.main .container').classList.toggle('container-full-screen');
 
     document.querySelector('.container-graphic').classList.toggle('full-screen');
+    //console.log(this.mainPage.selectedCountryName);
+    //this.drawGraphic(0, 0, 'Global');
   }
 }
