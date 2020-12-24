@@ -181,11 +181,11 @@ export class Graphic {
     const buttons = document.querySelectorAll('.container-graphic-options__item');
     this.changeActiveButton(buttons);
     const select = document.querySelector('select');
-    select.value = '';
 
     const chart = document.querySelector('.chart');
     chart.innerHTML = '';
     if (countryName === null) countryName = 'Global';
+    select.value = `${countryName}`;
 
     let populationFactor;
     if (switchesIndex === 2 || switchesIndex === 3) {
