@@ -2,7 +2,8 @@ import {countries} from './countries'
 
 const URL = {
   SUMMARY: 'https://corona.lmao.ninja/v2/countries',
-  SUMMARY1: 'https://api.covid19api.com/summary'
+  SUMMARY1: 'https://api.covid19api.com/summary',
+  // SUMMARY: 'https://disease.sh/v3/covid-19/countries'
 };
 
 const RATE = {
@@ -24,6 +25,21 @@ const RATE = {
   population: 'population',
   coefficient: 10,
   oneHundredThousands: 100000
+}
+
+const TEXT_INFO = {
+  cases: 'Total cases',
+  deaths: 'Total deathes',
+  recovered: 'Total recovered',
+  todayCases: 'Today cases',
+  todayDeaths: 'Today deaths',
+  todayRecovered: 'Today recovered',
+  casesPerHundredThousands: 'Cases per 100K',
+  deathsPerHundredThousands: 'Deaths per 100K',
+  recoveredPerHundredThousands: 'Recovered per 100K',
+  todayCasesPerHundredThousands: 'Today cases per 100K',
+  todayDeathsPerHundredThousands: 'Today deaths per 100K',
+  todayRecoveredPerHundredThousands: 'Today recovered per 100K'
 }
 
 const SWITCH = {
@@ -175,7 +191,7 @@ export class WorldMap {
 
     // method that we will use to update the control based on feature properties passed
     info.update = function (props) {
-        this._div.innerHTML = `<h4>${rate} of Covid-19</h4>` +  (props ?
+        this._div.innerHTML = `<h4>${TEXT_INFO[rate]} of Covid-19</h4>` +  (props ?
             '<b>' + props.name + '</b><br />' + props[rate] + ' people'
             : 'Hover over a country');
     };
