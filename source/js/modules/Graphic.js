@@ -54,7 +54,6 @@ export class Graphic {
   }
 
   renderContent() {
-    //const containerGraphic = document.createElement('div');
     this.rootElement.classList.add('container-graphic');
 
     const containerSwitcher = document.createElement('div');
@@ -67,7 +66,6 @@ export class Graphic {
     fullScreenButton.setAttribute('aria-hidden', 'true');
     fullScreenButton.addEventListener('click', () => {
       this.onFullScreen();
-      this.mainPage.showRateByCountry();
     })
 
 
@@ -80,14 +78,9 @@ export class Graphic {
     select.addEventListener("change", () => {
       this.mainPage.selectedCountryName = select.value;
       this.mainPage.showRateByCountry();
-      //console.log(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
-      //this.drawGraphic(this.mainPage.optionsIndex, this.mainPage.switchesIndex, this.mainPage.selectedCountryName);
     });
 
     const containerChart = document.createElement('div');
-    //const chart = document.createElement('div');
-    //containerChart.append(chart);
-
     const containerOptions = document.createElement('div');
 
     for (let i = 0; i < 3; i += 1) {
@@ -97,8 +90,6 @@ export class Graphic {
       option.classList.add('container-graphic-options__item');
       containerOptions.append(option);
     }
-
-    //containerGraphic.classList.add('container-graphic');
 
     containerSwitcher.classList.add('container-graphic-switcher');
     switcherLeft.classList.add(`container-graphic-switcher__${SWITCH.left}`);
@@ -114,14 +105,10 @@ export class Graphic {
     switcherRight.dataset[this.dataAttributeSwitch] = SWITCH.right;
 
     containerChart.classList.add('container-chart');
-    //chart.classList.add('chart');
 
     containerOptions.classList.add('container-graphic-options');
 
     containerSwitcher.append(switcherLeft, this.switcherText, switcherRight);
-
-    //containerGraphic.append(fullScreenButton, containerSwitcher, select, containerChart, containerOptions);
-    //this.rootElement.append(containerGraphic);
 
     this.rootElement.append(fullScreenButton, containerSwitcher, select, containerChart, containerOptions);
   }
@@ -131,11 +118,9 @@ export class Graphic {
       let scriptLibraries = document.createElement('script');
       scriptLibraries.src = URL.GOOGLE_CHART;
       scriptLibraries.onload = () => {
-        //console.log('Library onload');
         return resolve();
       }
       scriptLibraries.onerror =() => {
-        //console.log('Library onerror');
         return reject();
       }
       document.body.append(scriptLibraries);
@@ -143,7 +128,6 @@ export class Graphic {
   }
     
   initGraphic(optionsIndex, switchesIndex) {
-    //console.log('initGraphic');
     this.drawGraphic(optionsIndex, switchesIndex, this.mainPage.selectedCountryName);
     this.addListeners();
   }
@@ -151,16 +135,12 @@ export class Graphic {
   addListeners() {
     document.querySelector('.container-graphic-switcher').addEventListener('click', this.onSwitchesClick);
     document.querySelector('.container-graphic-options').addEventListener('click', this.onOptionsClick);
-    //document.querySelector('.container-graphic__fullscreen').addEventListener('click', this.onFullScreen);
-    //document.querySelector('.container-graphic__fullscreen').addEventListener('click', console.log('click'));
   }
   
   onSwitchesClick({target}) {
     const dataSwitch = target.dataset[this.dataAttributeSwitch];
     if (dataSwitch) {
       this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
-      //this.drawGraphic(1,1);
-      console.log('onSwitchesClick');
     }
   }
 
@@ -168,20 +148,11 @@ export class Graphic {
     const dataOption = target.dataset[this.dataAttributeOption];
     const buttons = document.querySelectorAll('.container-graphic-options__item');
     if (dataOption) {
-      //this.changeActiveButton(buttons);
-      //target.classList.toggle('active-background');
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
-      //this.drawGraphic(2, 2);
-      //console.log('onOptionsClick');
     }
   }
 
   drawGraphic(optionsIndex, switchesIndex, countryName) {
-    console.log('click');
-    //console.log(`optionsIndex: ${optionsIndex}`);
-    //console.log(`switchesIndex: ${switchesIndex}`);
-    //console.log(`countryName: ${countryName}`);
-
     this.switcherText.textContent = SWITCHES_NAMES[this.mainPage.switchesIndex];
     const buttons = document.querySelectorAll('.container-graphic-options__item');
     this.changeActiveButton(buttons);
@@ -212,7 +183,6 @@ export class Graphic {
       if (optionsIndex === 1) optionCases = 'deaths';
       if (optionsIndex === 2) optionCases = 'recovered';
     }
-    //console.log(srcDataCovid);
 
     let mode = false;
     if (switchesIndex === 1 || switchesIndex === 3) 
@@ -227,13 +197,10 @@ export class Graphic {
 
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
-    //google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
       let options = {
         title: `${countryName}`,
-        //width: 500,
-        //height: 100,
         colors: [`${colors[optionsIndex]}`],
         fontSize: 16,
         hAxis: {
@@ -287,6 +254,10 @@ export class Graphic {
   
             let chart = new google.visualization.AreaChart(document.querySelector('.container-chart'));
             chart.draw(data, options);
+            const fullScreenButton = document.querySelector('.container-graphic__fullscreen');
+            fullScreenButton.addEventListener('click', () => {
+              chart.draw(data, options);
+            })
   
           } else {
             document.querySelector('.container-chart').innerHTML = "No data";
@@ -307,13 +278,16 @@ export class Graphic {
               casesNonNull.push(cases[i]);
             }
             if (mode) casesNonNull = casesNonNull.cumulativeToDaily();
-            //console.log(cases);
             let data = google.visualization.arrayToDataTable([
               ["Date", `${SWITCHES_NAMES[switchesIndex]}`],
               ...casesNonNull
             ]);
             let chart = new google.visualization.AreaChart(document.querySelector('.container-chart'));
             chart.draw(data, options);
+            const fullScreenButton = document.querySelector('.container-graphic__fullscreen');
+            fullScreenButton.addEventListener('click', () => {
+              chart.draw(data, options);
+            })
 
           } else {
             document.querySelector('.container-chart').innerHTML = "No data";
@@ -337,7 +311,5 @@ export class Graphic {
     document.querySelector('.main .container').classList.toggle('container-full-screen');
 
     document.querySelector('.container-graphic').classList.toggle('full-screen');
-    //console.log(this.mainPage.selectedCountryName);
-    //this.drawGraphic(0, 0, 'Global');
   }
 }
