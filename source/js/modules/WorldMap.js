@@ -51,12 +51,9 @@ export class WorldMap {
     this.dataAttributeOption = DATA_ATTRIBUTE.option;
     this.dataAttributeSwitch = DATA_ATTRIBUTE.switch;
 
-    // this.optionsIndex = START_INDEX;
-    // this.switchesIndex = START_INDEX;
-
     this.onSwitchesClick = this.onSwitchesClick.bind(this);
     this.onOptionsClick = this.onOptionsClick.bind(this);
-    this.onFullScreenButtonClick = this.onFullScreenButtonClick.bind(this);
+    this.onFullScreen = this.onFullScreen.bind(this);
 
     this.mainPage = mainPage;
   }
@@ -64,20 +61,23 @@ export class WorldMap {
   init() {
     this.getData();
     this.renderContent();
-    // document.addEventListener('DOMContentLoaded', this.renderMap);
   }
 
   renderContent() {
-    const fullScreenButton = this.createFullScreenButton();
     this.mapElement = document.createElement('div');
     this.mapElement.classList.add('map');
     const map = this.createMap();
     this.mapElement.appendChild(map);
 
+    const fullScreenButton = document.createElement('i');
+    fullScreenButton.classList.add('fa', 'fa-arrows-alt', 'fa-sm', 'map-container__fullscreen');
+    fullScreenButton.setAttribute('aria-hidden', 'true');
+    fullScreenButton.addEventListener('click', this.onFullScreen);
+
     this.containerSwitches = this.createSwitches();
     this.containerOptions = this.createOptions();
-    //this.rootElement.append(this.containerSwitches, fullScreenButton, this.mapElement, this.containerOptions);
-    this.rootElement.append(this.containerSwitches, this.mapElement, this.containerOptions);
+    // this.rootElement.append(this.containerSwitches, fullScreenButton, this.mapElement, this.containerOptions);
+    this.rootElement.append(fullScreenButton, this.containerSwitches, this.mapElement, this.containerOptions);
   }
 
   createMap() {
@@ -127,15 +127,6 @@ export class WorldMap {
     containerOptions.addEventListener('click', this.onOptionsClick);
 
     return containerOptions;
-  }
-
-  createFullScreenButton() {
-    const fullScreenButton = document.createElement('button');
-    fullScreenButton.setAttribute('type', 'button');
-    fullScreenButton.classList.add('fullscreen-button');
-    fullScreenButton.classList.add('fullscreen-button--map');
-    fullScreenButton.addEventListener('click', this.onFullScreenButtonClick);
-    return fullScreenButton;
   }
 
   renderMap(data, rate) {
@@ -361,15 +352,20 @@ export class WorldMap {
     }
   }
 
-  onFullScreenButtonClick() {
-    this.mainPage.mapContainer.classList.toggle('fullscreen');
-    this.mainPage.rootElement.classList.toggle('module-fullscreen');
-  }
-
   changeActiveButton(arrayButtons) {
     for (let i = 0; i < arrayButtons.length; i += 1) {
       arrayButtons[i].classList.remove('active-background');
     }
     arrayButtons[this.mainPage.optionsIndex].classList.add('active-background');
+  }
+
+  onFullScreen() {
+    document.querySelector('.container-list').classList.toggle('visibility');
+    document.querySelector('.container-graphic').classList.toggle('visibility');
+    document.querySelector('.container-table').classList.toggle('visibility');
+    document.querySelector('.main .container').classList.toggle('container-full-screen');
+
+    this.rootElement.classList.toggle('full-screen');
+    this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
   }
 }

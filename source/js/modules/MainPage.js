@@ -89,10 +89,56 @@ export class MainPage {
   }
 
   renderFooter() {
+    const yearSpan = document.createElement('span');
+    yearSpan.classList.add('copyright__year');
+    yearSpan.textContent = '2020 ©';
+
+    const by = document.createElement ('span');
+    by.textContent = 'by';
+
+    const student1Link = document.createElement('a');
+    student1Link.classList.add('copyright__student-link');
+    student1Link.setAttribute('href', 'https://github.com/alexk08');
+    student1Link.setAttribute('target', '__blank');
+    student1Link.textContent = 'Aleksandr Krasinikov';
+
+    const student2Link = document.createElement('a');
+    student2Link.classList.add('copyright__student-link');
+    student2Link.setAttribute('href', 'https://github.com/11alexey11');
+    student2Link.setAttribute('target', '__blank');
+    student2Link.textContent = 'Alexey Yanvarev';
+
+    const student3Link = document.createElement('a');
+    student3Link.classList.add('copyright__student-link');
+    student3Link.setAttribute('href', 'https://github.com/gtm003');
+    student3Link.setAttribute('target', '__blank');
+    student3Link.textContent = 'Tatyana Grigorovich';
+
+    const logo = document.createElement('img');
+    logo.classList.add('copyright__logo-rs');
+    logo.setAttribute('src', 'img/svg/rs_school_js.svg');
+    logo.setAttribute('alt', 'Logo RS School');
+
+    const courseLink = document.createElement('a');
+    courseLink.classList.add('copyright__course-link');
+    courseLink.setAttribute('href', 'https://rs.school/js/');
+    courseLink.setAttribute('target', '__blank');
+    courseLink.appendChild(logo);
+
+    const copyrightElement = document.createElement('div');
+    copyrightElement.classList.add('copyright');
+    copyrightElement.append(yearSpan, by, student1Link, student2Link, student3Link, courseLink);
+
+    // const container = document.createElement('div');
+    // container.classList.add('container');
+    // container.appendChild(copyrightElement);
+
+
     this.footerElement = document.createElement('footer');
     this.footerElement.classList.add('footer');
     this.footerContainer = document.createElement('div');
     this.footerContainer.classList.add('container');
+    this.footerContainer.append(copyrightElement);
     this.footerElement.appendChild(this.footerContainer);
   }
 

@@ -7,16 +7,16 @@
     width: calc(100vw - 20px);
     margin: 0 auto;
     padding-top: 10px;
-    height: calc(100vh - 160px);
-    &-full-screen {
-      display: flex;
-    }
     min-width: $viewport--sm - 20px;
     
     @include viewport--sm {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+    }
+
+    &.container-full-screen {
+      display: flex;
     }
   }
 }

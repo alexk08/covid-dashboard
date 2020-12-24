@@ -378,7 +378,7 @@ export class ListCountries {
     //containerGraphic.style.display = containerGraphic.style.display === 'flex' ? 'none' : 'flex';
     //console.log('click onFullScreen');
     
-    document.querySelector('.main').classList.toggle('main-full-screen');
+    document.querySelector('.main .container').classList.toggle('container-full-screen');
     document.querySelector('.container-list').classList.toggle('full-screen');
   }
 }
