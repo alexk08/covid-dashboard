@@ -103,7 +103,7 @@
     }
   }
   &-chart {
-    //height: 214px;
+    height: calc(100% - 128px);
     width: 100%;
   }
 }
@@ -114,4 +114,9 @@
 
 .container-graphic.visibilty {
   display: none;
+}
+
+.container-graphic.full-screen {
+  width: 100%;
+  height: 100%;
 }

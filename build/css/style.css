@@ -1682,6 +1682,7 @@ body.module-fullscreen {
       width: 100%; } }
 
 .container-chart {
+  height: calc(100% - 128px);
   width: 100%; }
 
 .row {
@@ -1689,6 +1690,10 @@ body.module-fullscreen {
 
 .container-graphic.visibilty {
   display: none; }
+
+.container-graphic.full-screen {
+  width: 100%;
+  height: 100%; }
 
 .info {
   padding: 6px 8px;
