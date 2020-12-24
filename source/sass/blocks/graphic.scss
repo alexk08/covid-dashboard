@@ -10,7 +10,6 @@
     //padding: 5px;
     grid-row: 2/3;
     grid-column: 2/3;
-    background: rgba(3, 68, 48,1);
     padding: 0 5px;
 
     &.visibilty {
@@ -100,6 +99,7 @@
     
     @include viewport--sm {
       order: 4;
+      width: 100%;
     }
   }
   &-chart {

@@ -3,20 +3,29 @@
   grid-row: 1;
   grid-column: 2;
   padding: 0 5px;
+  position: relative;
 
-
-  &.fullscreen {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    display:none;
-    left: 0;
-    top: 0;
+  &.full-screen {
+    width: 100%;
+    height: calc(100vh - 130px);
   }
 
   @include viewport--sm {
     order: 3;
     width: 100%;
     padding: 5px 0;
+  }
+
+  &__fullscreen {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    opacity: 0;
+  }
+
+  &:hover &__fullscreen {
+    & {
+      opacity: 1;
+    }
   }
 }
