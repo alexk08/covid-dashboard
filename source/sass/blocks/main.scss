@@ -18,6 +18,7 @@
 
     &.container-full-screen {
       display: flex;
+      height: calc(50vw - 130px);
     }
   }
 }

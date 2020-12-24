@@ -1205,7 +1205,8 @@ body.module-fullscreen {
     .main .container.container-full-screen {
       display: -webkit-box;
       display: -ms-flexbox;
-      display: flex; }
+      display: flex;
+      height: calc(50vw - 130px); }
 
 * {
   -webkit-box-sizing: border-box;
