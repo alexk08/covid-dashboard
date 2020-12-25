@@ -1206,7 +1206,12 @@ body.module-fullscreen {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
-      height: calc(50vw - 130px); }
+      height: calc(100vh - 120px); }
+      @media (max-width: 1023px) {
+        .main .container.container-full-screen .nav.menu {
+          height: calc(100vh - 291px); }
+        .main .container.container-full-screen .container-list-nav.container-list-menu {
+          height: calc(100vh - 270px); } }
 
 * {
   -webkit-box-sizing: border-box;
@@ -1601,7 +1606,7 @@ body.module-fullscreen {
   .container-graphic__fullscreen {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 5px;
     opacity: 0; }
   .container-graphic:hover .container-graphic__fullscreen {
     opacity: 1; }

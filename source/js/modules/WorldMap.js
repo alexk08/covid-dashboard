@@ -92,7 +92,6 @@ export class WorldMap {
 
     this.containerSwitches = this.createSwitches();
     this.containerOptions = this.createOptions();
-    // this.rootElement.append(this.containerSwitches, fullScreenButton, this.mapElement, this.containerOptions);
     this.rootElement.append(fullScreenButton, this.containerSwitches, this.mapElement, this.containerOptions);
   }
 
@@ -148,7 +147,6 @@ export class WorldMap {
   renderMap(data, rate) {
     var mapboxAccessToken = 'pk.eyJ1Ijoia2FwYWN1ayIsImEiOiJja2l2Z29uZGgzOWMzMnZxanF4NG9neTJxIn0.1-lo4qPbQ2u_XnwjwVQHIA';
     var map = L.map('map-covid').setView([37.8, 10], 2);
-    // map.setZoom(1);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
         id: 'mapbox/dark-v9',
@@ -220,10 +218,6 @@ export class WorldMap {
       info.update();
     }
 
-    // function zoomToFeature(e) {
-    //   map.fitBounds(e.target.getBounds());
-    // }
-
     const selectCountry = (e) =>  {
       this.mainPage.selectedCountryName = e.target.feature.properties.name;
       this.mainPage.showRateByCountry();
@@ -234,7 +228,6 @@ export class WorldMap {
           mouseover: highlightFeature,
           mouseout: resetHighlight,
           click: selectCountry
-          // click: zoomToFeature
       });
     }
 
@@ -313,17 +306,12 @@ export class WorldMap {
     });
 
     countries.features = arr;
-
-    // console.log(arr);
-    // console.log(countries.features);
-    // console.log(this.data)
   }
 
   onSwitchesClick({ target }) {
     const dataSwitch = target.dataset[this.dataAttributeSwitch];
     if (dataSwitch) {
       this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
-      // this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
   }
 
@@ -331,7 +319,6 @@ export class WorldMap {
     const dataOption = target.dataset[this.dataAttributeOption];
     if (dataOption) {
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
-      // this.changeRate(this.mainPage.optionsIndex, this.mainPage.switchesIndex);
     }
   }
 

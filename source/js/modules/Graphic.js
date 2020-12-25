@@ -159,7 +159,6 @@ export class Graphic {
     const select = document.querySelector('select');
 
     const chart = document.querySelector('.container-chart');
-    //chart.innerHTML = '';
     if (countryName === null) countryName = 'Global';
     select.value = `${countryName}`;
 

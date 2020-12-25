@@ -129,11 +129,6 @@ export class MainPage {
     copyrightElement.classList.add('copyright');
     copyrightElement.append(yearSpan, by, student1Link, student2Link, student3Link, courseLink);
 
-    // const container = document.createElement('div');
-    // container.classList.add('container');
-    // container.appendChild(copyrightElement);
-
-
     this.footerElement = document.createElement('footer');
     this.footerElement.classList.add('footer');
     this.footerContainer = document.createElement('div');
@@ -161,14 +156,9 @@ export class MainPage {
     this.tableCovid.changeTable();
     this.listCountries.changeList();
     this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex, this.selectedCountryName);
-    //console.log(`this.optionsIndex ${this.optionsIndex}`);
-    //console.log(`this.switchesIndex ${this.switchesIndex}`);
   }
 
   showRateByCountry() {
-    console.log(this.selectedCountryName);
-    console.log(this.selectedCountryId);
-
     this.graphic.drawGraphic(this.optionsIndex, this.switchesIndex, this.selectedCountryName);
     this.tableCovid.selectCountry(this.selectedCountryName);
     this.listCountries.selectCountry(this.selectedCountryName);
