@@ -1,13 +1,11 @@
 .map-switches {
-  // width: 20%;
-  // margin: 0 auto;
   margin-bottom: 5px;
   display: flex;
   padding: 10px;
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  box-shadow: inset 0px 0px 5px 0px $color-purple;
+  box-shadow: inset 0 0 5px 0 $color-purple;
 
   &__left,
   &__right {
@@ -22,7 +20,7 @@
     border: 0;
     background-color: transparent;
     border-radius: 10px;
-    box-shadow: inset 0px 0px 5px 0px $color-purple;
+    box-shadow: inset 0 0 5px 0 $color-purple;
     color: inherit;
     outline: none;
   }

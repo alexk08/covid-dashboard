@@ -375,7 +375,7 @@ export class ListCountries {
     document.querySelector('.container-table').classList.toggle('visibility');
     document.querySelector('.map-container').classList.toggle('visibility');
     document.querySelector('.container-graphic').classList.toggle('visibility');
-    
+
     document.querySelector('.main .container').classList.toggle('container-full-screen');
     document.querySelector('.container-list').classList.toggle('full-screen');
   }

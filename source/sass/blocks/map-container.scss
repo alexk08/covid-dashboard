@@ -1,5 +1,4 @@
 .map-container {
-  //width: 800px;
   grid-row: 1;
   grid-column: 2;
   padding: 0 5px;
@@ -21,11 +20,10 @@
     top: 0;
     right: 5px;
     opacity: 0;
+    cursor: pointer;
   }
 
   &:hover &__fullscreen {
-    & {
-      opacity: 1;
-    }
+    opacity: 1;
   }
 }

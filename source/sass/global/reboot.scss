@@ -25,13 +25,12 @@ body {
   font-size: 16px;
   line-height: 24px;
   font-family: $font-family--;
-  color: $color-default-black;
 
   background-color: $color-default-white;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color:  $color-light;
+  color: $color-light;
 }
 
 a {
