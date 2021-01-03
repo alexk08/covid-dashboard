@@ -93,7 +93,7 @@ export class MainPage {
     yearSpan.classList.add('copyright__year');
     yearSpan.textContent = '2020 ©';
 
-    const by = document.createElement ('span');
+    const by = document.createElement('span');
     by.textContent = 'by';
 
     const student1Link = document.createElement('a');

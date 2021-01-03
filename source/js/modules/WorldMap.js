@@ -1,4 +1,4 @@
-import {countries} from './countries'
+import {countries} from './countries';
 
 const URL = {
   SUMMARY: 'https://corona.lmao.ninja/v2/countries',
@@ -24,8 +24,8 @@ const RATE = {
   todayRecoveredPerHundredThousands: 'todayRecoveredPerHundredThousands',
   population: 'population',
   coefficient: 10,
-  oneHundredThousands: 100000
-}
+  oneHundredThousands: 100000,
+};
 
 const TEXT_INFO = {
   cases: 'Total cases',
@@ -39,21 +39,21 @@ const TEXT_INFO = {
   recoveredPerHundredThousands: 'Recovered per 100K',
   todayCasesPerHundredThousands: 'Today cases per 100K',
   todayDeathsPerHundredThousands: 'Today deaths per 100K',
-  todayRecoveredPerHundredThousands: 'Today recovered per 100K'
-}
+  todayRecoveredPerHundredThousands: 'Today recovered per 100K',
+};
 
 const SWITCH = {
   left: 'left',
   right: 'right',
-  title: 'title'
-}
+  title: 'title',
+};
 
 const OPTIONS_NAMES = ['Confirmed', 'Dead', 'Recovered'];
 const SWITCHES_NAMES = ['All period', 'Last day', 'All period 100000', 'Last day 100000'];
 
 const DATA_ATTRIBUTE = {
   option: 'option',
-  switch: 'switch'
+  switch: 'switch',
 };
 
 export class WorldMap {
@@ -133,7 +133,9 @@ export class WorldMap {
       option.textContent = item;
       option.classList.add('map-options__item');
       option.classList.add(`map-options__item--${item.toLowerCase()}`);
-      if (index === 0) option.classList.add('active-background');
+      if (index === 0) {
+        option.classList.add('active-background');
+      }
       option.dataset[this.dataAttributeOption] = item;
       containerOptions.append(option);
     });
@@ -145,69 +147,69 @@ export class WorldMap {
   }
 
   renderMap(data, rate) {
-    var mapboxAccessToken = 'pk.eyJ1Ijoia2FwYWN1ayIsImEiOiJja2l2Z29uZGgzOWMzMnZxanF4NG9neTJxIn0.1-lo4qPbQ2u_XnwjwVQHIA';
-    var map = L.map('map-covid').setView([37.8, 10], 2);
+    let mapboxAccessToken = 'pk.eyJ1Ijoia2FwYWN1ayIsImEiOiJja2l2Z29uZGgzOWMzMnZxanF4NG9neTJxIn0.1-lo4qPbQ2u_XnwjwVQHIA';
+    let map = L.map('map-covid').setView([37.8, 10], 2);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
-        id: 'mapbox/dark-v9',
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        tileSize: 512,
-        zoomOffset: -1
+      id: 'mapbox/dark-v9',
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      tileSize: 512,
+      zoomOffset: -1,
     }).addTo(map);
 
     function getColor(d) {
       return d > 10000000 ? '#800026' :
-             d > 1000000  ? '#BD0026' :
-             d > 100000  ? '#E31A1C' :
-             d > 10000  ? '#FC4E2A' :
-             d > 1000   ? '#FD8D3C' :
-             d > 500   ? '#FEB24C' :
-             d > 100   ? '#FED976' :
-                        '#FFEDA0';
+        d > 1000000 ? '#BD0026' :
+          d > 100000 ? '#E31A1C' :
+            d > 10000 ? '#FC4E2A' :
+              d > 1000 ? '#FD8D3C' :
+                d > 500 ? '#FEB24C' :
+                  d > 100 ? '#FED976' :
+                    '#FFEDA0';
     }
 
     function style(feature) {
       return {
-          fillColor: getColor(feature.properties[rate]),
-          weight: 2,
-          opacity: 1,
-          color: 'white',
-          dashArray: '3',
-          fillOpacity: 0.7
+        fillColor: getColor(feature.properties[rate]),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7,
       };
     }
 
-    var geojson;
+    let geojson;
 
-    var info = L.control();
+    let info = L.control();
 
     info.onAdd = function (map) {
-        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-        this.update();
-        return this._div;
+      this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+      this.update();
+      return this._div;
     };
 
     // method that we will use to update the control based on feature properties passed
     info.update = function (props) {
-        this._div.innerHTML = `<h4>${TEXT_INFO[rate]} of Covid-19</h4>` +  (props ?
-            '<b>' + props.name + '</b><br />' + props[rate] + ' people'
-            : 'Hover over a country');
+      this._div.innerHTML = `<h4>${TEXT_INFO[rate]} of Covid-19</h4>` + (props ?
+        '<b>' + props.name + '</b><br />' + props[rate] + ' people'
+        : 'Hover over a country');
     };
 
     info.addTo(map);
 
     function highlightFeature(e) {
-      var layer = e.target;
+      let layer = e.target;
 
       layer.setStyle({
-          weight: 2,
-          color: '#666',
-          dashArray: '',
-          fillOpacity: 0.7
+        weight: 2,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7,
       });
 
       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-          layer.bringToFront();
+        layer.bringToFront();
       }
 
       info.update(layer.feature.properties);
@@ -218,40 +220,40 @@ export class WorldMap {
       info.update();
     }
 
-    const selectCountry = (e) =>  {
+    const selectCountry = (e) => {
       this.mainPage.selectedCountryName = e.target.feature.properties.name;
       this.mainPage.showRateByCountry();
-    }
+    };
 
     function onEachFeature(feature, layer) {
       layer.on({
-          mouseover: highlightFeature,
-          mouseout: resetHighlight,
-          click: selectCountry
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: selectCountry,
       });
     }
 
     geojson = L.geoJson(data, {
-        style: style,
-        onEachFeature: onEachFeature
+      style,
+      onEachFeature,
     }).addTo(map);
 
-    var legend = L.control({position: 'bottomright'});
+    let legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
 
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 100, 500, 1000, 10000, 100000, 1000000, 10000000],
-            labels = [];
+      let div = L.DomUtil.create('div', 'info legend');
+      let grades = [0, 100, 500, 1000, 10000, 100000, 1000000, 10000000];
+      let labels = [];
 
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +=
+      // loop through our density intervals and generate a label with a colored square for each interval
+      for (let i = 0; i < grades.length; i++) {
+        div.innerHTML +=
                 '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-        }
+      }
 
-        return div;
+      return div;
     };
 
     legend.addTo(map);
@@ -275,7 +277,7 @@ export class WorldMap {
     xhr.onload = () => {
       if (xhr.status !== 200) {
         console.log(`Error ${xhr.status}: ${xhr.statusText}`);
-        return
+        return;
       }
       this.data = xhr.response;
       this.transformData();
@@ -286,8 +288,8 @@ export class WorldMap {
   transformData() {
     const arr = [];
 
-    this.data.forEach(item => {
-      const goodCountry = countries.features.find(el => el.id === item.countryInfo.iso3);
+    this.data.forEach((item) => {
+      const goodCountry = countries.features.find((el) => el.id === item.countryInfo.iso3);
       if (goodCountry !== undefined) {
         goodCountry.properties[RATE.cases] = item[RATE.cases];
         goodCountry.properties[RATE.deaths] = item[RATE.deaths];
@@ -308,14 +310,14 @@ export class WorldMap {
     countries.features = arr;
   }
 
-  onSwitchesClick({ target }) {
+  onSwitchesClick({target}) {
     const dataSwitch = target.dataset[this.dataAttributeSwitch];
     if (dataSwitch) {
       this.mainPage.changeSwithesIndex(dataSwitch, SWITCH.right, SWITCH.left);
     }
   }
 
-  onOptionsClick({ target }) {
+  onOptionsClick({target}) {
     const dataOption = target.dataset[this.dataAttributeOption];
     if (dataOption) {
       this.mainPage.changeOptionsIndex(dataOption, OPTIONS_NAMES);
