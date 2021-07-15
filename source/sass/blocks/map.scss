@@ -1,0 +1,14 @@
+.map {
+  width: 100%;
+  height: calc(100% - 100px);
+
+  &__covid {
+    width: 100%;
+    height: 100%;
+    background-color: #191a1a;
+  }
+
+  @include viewport--sm {
+    height: 500px;
+  }
+}

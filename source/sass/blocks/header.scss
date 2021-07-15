@@ -1,0 +1,48 @@
+.header {
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  padding: 0 40px;
+
+  background-color: $color-red;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  a,
+  p {
+    color: $color-white;
+  }
+
+  ul {
+    display: flex;
+    margin: 0;
+    margin-right: 20px;
+    margin-left: 60px;
+    padding: 0;
+
+    list-style: none;
+
+    li {
+      margin-right: 20px;
+    }
+  }
+
+  .main-nav__toggle {
+    display: none;
+  }
+
+  .container {
+    text-align: center;
+    color: $color-dark-blue;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 46px;
+
+    @include viewport--sm {
+      font-size: 34px;
+    }
+  }
+}

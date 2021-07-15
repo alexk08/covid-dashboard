@@ -1,0 +1,34 @@
+.main {
+  background-color: $color-dark-green;
+
+  .container {
+    display: grid;
+    grid-template-rows: auto 340px; /* 2 строки */
+    grid-template-columns: 230px auto 230px; /* 3 столбца */
+    width: calc(100vw - 20px);
+    margin: 0 auto;
+    padding-top: 10px;
+    min-width: $viewport--sm - 20px;
+
+    @include viewport--sm {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    &.container-full-screen {
+      display: flex;
+      height: calc(100vh - 120px);
+
+      @include viewport--sm {
+        .nav.menu {
+          height: calc(100vh - 291px);
+        }
+
+        .container-list-nav.container-list-menu {
+          height: calc(100vh - 270px);
+        }
+      }
+    }
+  }
+}
